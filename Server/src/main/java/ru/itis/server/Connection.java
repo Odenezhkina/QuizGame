@@ -1,6 +1,7 @@
-package ru.itis.utils;
+package ru.itis.server;
 
 import ru.itis.messages.Message;
+import ru.itis.models.Player;
 
 import java.io.IOException;
 
@@ -8,7 +9,7 @@ public interface Connection {
 
     void send(Message message) throws IOException;
 
-    Information getInformation();
+    Player getUser();
 
     void close();
 

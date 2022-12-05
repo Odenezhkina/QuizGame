@@ -2,7 +2,6 @@ package ru.itis.server;
 
 import ru.itis.constants.Properties;
 import ru.itis.messages.Message;
-import ru.itis.utils.Connection;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,9 +9,6 @@ import java.net.Socket;
 import java.util.HashMap;
 
 public class Server {
-    //TODO Катя: свои исключения вместо runtime
-    //TODO Катя: хранение вопросов
-    //TODO Катя: комнаты
     private final HashMap<Integer, Connection> connections;
 
     private final ServerSocket serverSocket;
@@ -43,7 +39,7 @@ public class Server {
     public void addConnection(Socket socket){
         PlayerConnection connection = new PlayerConnection(socket,  userId++);
         connections.put(connection.getId(),connection);
-        System.out.println("Connected user Id: " + (connection.getId() + "Nickname: " + connection.getInformation().getDescription()));
+        System.out.println("Connected user Id: " + (connection.getId() + "Nickname: " + connection.getUser().getUsername()));
     }
 
     private void sendToConnection(int connectionId, Message message){

@@ -4,10 +4,10 @@ import ru.itis.constants.MessageTypes;
 
 import java.io.Serializable;
 
-public abstract class Message<T> implements Serializable {
-    public abstract MessageTypes getType();
+public interface Message<T> {
+    MessageTypes getType();
 
-    public abstract T getContent();
+    T getContent();
 
-    public abstract int getSenderId();
+    int getSenderId();
 }

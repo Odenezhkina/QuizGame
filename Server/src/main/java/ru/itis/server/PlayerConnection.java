@@ -1,8 +1,7 @@
 package ru.itis.server;
 
 import ru.itis.messages.Message;
-import ru.itis.utils.Connection;
-import ru.itis.utils.Information;
+import ru.itis.models.Player;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,7 +10,7 @@ public class PlayerConnection implements Connection {
     private final Socket socket;
     private final InputStream in;
     private final OutputStream out;
-    private Information userInformation;
+    private Player user;
 
     public PlayerConnection(Socket socket, int id){
         this.socket = socket;
@@ -19,8 +18,8 @@ public class PlayerConnection implements Connection {
             out = socket.getOutputStream();
             in = socket.getInputStream();
             receiveUserInformation();
-            userInformation.setDescription(userInformation.getDescription() + "#" + id);
-            userInformation.setId(id);
+            user.setUsername(user.getUsername() + "#" + id);
+            user.setId(id);
         }
         catch (IOException e){
             throw new RuntimeException(e.getMessage());
@@ -29,7 +28,7 @@ public class PlayerConnection implements Connection {
     private void receiveUserInformation() {
         try {
             ObjectInputStream inputStream = new ObjectInputStream(in);
-            userInformation = (Information) inputStream.readObject();
+            user = (Player) inputStream.readObject();
         }
         catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e.getMessage());
@@ -43,8 +42,8 @@ public class PlayerConnection implements Connection {
     }
 
     @Override
-    public Information getInformation() {
-        return userInformation;
+    public Player getUser() {
+        return user;
     }
 
     @Override
@@ -55,7 +54,7 @@ public class PlayerConnection implements Connection {
 
     @Override
     public int getId() {
-        return userInformation.getId();
+        return user.getId();
     }
 
     @Override
