@@ -5,9 +5,9 @@ import ru.itis.models.Question;
 import java.util.*;
 
 public class QuestionStorage {
-    private Set<Integer> notAvailableIdSet = new HashSet<>();
-    private List<Question> questionArray = initQuestionArray();
-    private Random randomGenerator = new Random(questionArray.size());
+    private final Set<Integer> notAvailableIdSet = new HashSet<>();
+    private final List<Question> questionArray = initQuestionArray();
+    private final Random randomGenerator = new Random(questionArray.size());
 
     public Question getQuestion() {
         int newPosition = randomGenerator.nextInt();
