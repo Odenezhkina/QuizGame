@@ -1,0 +1,16 @@
+* {
+    -fx-font-family: "JetBrains Mono";
+}
+
+.label-title {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+}
+
+.btn-primary {
+    -fx-background-color: #3170ff;
+    -fx-border-radius: 30px;
+    -fx-padding: 10px;
+    -fx-min-width: 120px;
+}
+

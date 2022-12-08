@@ -11,3 +11,4 @@ public class Question {
     private ArrayList<String> answers;
     private boolean[] correctAnswers;
 }
+
