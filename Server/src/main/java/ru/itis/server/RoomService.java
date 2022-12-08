@@ -1,6 +1,8 @@
 package ru.itis.server;
 
+import ru.itis.messages.JoinRoomUserMessage;
 import ru.itis.messages.Message;
+import ru.itis.messages.PlayerDisconnectMessage;
 import ru.itis.messages.ServerMessage;
 import ru.itis.models.Player;
 import ru.itis.models.Room;
@@ -27,9 +29,9 @@ public class RoomService {
         this.server = server;
     }
 
-    public void handMessage(Message message) throws IOException {
+    public void handMessage(Message message) {
         switch (message.getType()) {
-            case PLAYER_DISCONNECT -> removeConnection(message.getSenderId());
+            case PLAYER_DISCONNECT, PLAYER_LEAVE_ROOM -> removeConnection(message.getSenderId());
             case GAME_START -> {
                 MessageForUser answer = startGame();
                 if (answer != null && !answer.isSuccessful()) {
@@ -45,9 +47,6 @@ public class RoomService {
         }
         if(connections.size()<2) {
             return new MessageForUser(false, "Для старта игры нужно как минимум 2 игрока!");
-        }
-        if(connections.size() > room.getCapacity()) {
-            return new MessageForUser(false, "Слишком много человек для комнаты!");
         }
         game = new Game();
         game.start(this,getPlayers());
@@ -70,15 +69,42 @@ public class RoomService {
     public void sendToConnection(int connectionId, Message message){
         try {
             Connection con = connections.get(connectionId);
-            if (con.isConnected()) con.send(message);
+            if (con.isConnected()){
+                con.send(message);
+            }
         }
         catch (IOException e) {
             removeConnection(connectionId);
         }
     }
 
-    public void removeConnection(int connectionId)  {
+    public void removeConnection(int connectionId) {
         Connection connection = connections.get(connectionId);
+        if (connection == null){
+            return;
+        }
+        if (game != null){
+            game.playerDisconnected(connectionId);
+            server.handMessage(new PlayerDisconnectMessage(connectionId));
+            connections.remove(connectionId);
+            room.setCurrentSize(room.getCurrentSize() - 1);
+            room.removePlayer(connectionId);
+        }
+        if (room.getCurrentSize() == 0){
+            server.removeRoom(room.getId());
+        }
+    }
+    public void addConnection(Connection connection){
+        connection.getUser().setRoomId(room.getId());
+        connections.put(connection.getId(), connection);
+        if (room.getCurrentSize() == room.getCapacity()){
+            sendToConnection(connection.getId(), new JoinRoomUserMessage(false, connection.getId()));
+        }
+        else{
+            sendToConnection(connection.getId(), new JoinRoomUserMessage(true, connection.getId()));
+        }
+        room.addPlayer(connection.getUser());
+        room.setCurrentSize(room.getCurrentSize() + 1);
     }
 }
 

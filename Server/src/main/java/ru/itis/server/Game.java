@@ -16,4 +16,10 @@ public class Game {
         this.room = room;
         this.players = connections;
     }
+    public void playerDisconnected(int id){
+        if (players.get(id) == null){
+            return;
+        }
+        players.remove(id);
+    }
 }

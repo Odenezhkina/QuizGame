@@ -4,19 +4,18 @@ import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
 
 @AllArgsConstructor
-public class ServerMessage extends Message<String>{
-
-    private final String content;
+public class JoinRoomUserMessage extends Message<Boolean>{
+    private final boolean result;
     private final int senderId;
 
     @Override
     public MessageTypes getType() {
-        return MessageTypes.SYSTEM_MESSAGE;
+        return MessageTypes.PLAYER_JOIN_ROOM_STATUS;
     }
 
     @Override
-    public String getContent() {
-        return content;
+    public Boolean getContent() {
+        return result;
     }
 
     @Override
