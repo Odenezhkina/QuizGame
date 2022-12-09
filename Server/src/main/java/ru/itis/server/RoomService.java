@@ -1,11 +1,11 @@
 package ru.itis.server;
 
 import ru.itis.connection.Connection;
+import ru.itis.models.Player;
 import ru.itis.protocol.message.JoinRoomUserMessage;
 import ru.itis.protocol.PlayerDisconnectMessage;
 import ru.itis.protocol.message.Message;
 import ru.itis.protocol.message.ServerMessage;
-import ru.itis.models.Player;
 import ru.itis.models.Room;
 import ru.itis.utils.MessageForUser;
 
@@ -47,14 +47,14 @@ public class RoomService {
             return null;
         }
         if(connections.size()<2) {
-            return new MessageForUser(false, "Для старта игры нужно как минимум 2 игрока!");
+            return new MessageForUser(false, "At least 2 players are needed to start the game!");
         }
         game = new Game();
-        game.start(this,getPlayers());
+        game.start(this, getPlayers());
         return new MessageForUser(true);
     }
     private HashMap<Integer,Player> getPlayers(){
-        HashMap<Integer,Player> hashMap = new HashMap<>();
+        HashMap<Integer, Player> hashMap = new HashMap<>();
         Collection<Connection> collection = connections.values();
         for(Connection connection :collection){
             hashMap.put(connection.getId(), Player.builder()

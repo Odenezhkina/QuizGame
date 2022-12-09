@@ -3,6 +3,7 @@ package ru.itis.server;
 import ru.itis.connection.Connection;
 import ru.itis.constants.Properties;
 import ru.itis.models.Room;
+import ru.itis.protocol.message.CreateRoomMessage;
 import ru.itis.protocol.message.Message;
 
 import java.io.IOException;
@@ -18,6 +19,8 @@ public class Server {
     private final HashMap<Integer, Room> rooms;
 
     private int userId = 1;
+
+    private int roomId = 1;
 
     public Server() {
         connections = new HashMap<>();
@@ -61,7 +64,7 @@ public class Server {
     public void handMessage(Message message) {
         switch (message.getType()) {
             case PLAYER_DISCONNECT -> removeConnection(message.getSenderId());
-
+            case ROOM_CREATE -> createRoom((Room) message.getContent());
         }
     }
 
@@ -71,6 +74,11 @@ public class Server {
             return;
         }
         connections.remove(id);
+    }
+    private int createRoom(Room room){
+        room.setId(roomId++);
+        rooms.put(roomId,room);
+        return room.getId();
     }
 
     public void removeRoom(int roomId) {

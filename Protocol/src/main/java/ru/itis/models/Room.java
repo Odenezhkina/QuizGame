@@ -17,6 +17,8 @@ public class Room {
     private int currentSize;
     private final HashMap<Integer, Player> players;
 
+    private int creatorId;
+
     public Collection<Player> getAllPlayers() {
         return players.values();
     }

@@ -11,9 +11,8 @@ import java.util.ArrayList;
 @Data
 public class Question {
     private int points;
-    private int timeLimit;
     private String question;
-    private ArrayList<String> answers;
-    private boolean[] correctAnswers;
+    private String[] answers;
+    private int correctAnsId;
 }
 
