@@ -2,6 +2,7 @@ package ru.itis.server;
 
 import ru.itis.constants.Properties;
 import ru.itis.messages.Message;
+import ru.itis.models.Room;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -13,10 +14,13 @@ public class Server {
 
     private final ServerSocket serverSocket;
 
+    private final HashMap<Integer,Room> rooms;
+
     private int userId = 1;
 
     public Server(){
         connections = new HashMap<>();
+        rooms = new HashMap<>();
         try {
             serverSocket = new ServerSocket(Properties.port);
         }
@@ -52,5 +56,22 @@ public class Server {
         catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+    public void handMessage(Message message) {
+        switch (message.getType()) {
+            case PLAYER_DISCONNECT ->
+                removeConnection(message.getSenderId());
+
+        }
+    }
+    public void removeConnection(int id){
+        Connection connection = connections.get(id);
+        if (connection == null) {
+            return;
+        }
+        connections.remove(id);
+    }
+    public void removeRoom(int roomId) {
+        rooms.remove(roomId);
     }
 }

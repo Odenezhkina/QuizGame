@@ -4,19 +4,17 @@ import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
 
 @AllArgsConstructor
-public class ServerMessage extends Message<String>{
-
-    private final String content;
-    private final int senderId;
+public class PlayerDisconnectMessage extends Message{
+    private int senderId;
 
     @Override
     public MessageTypes getType() {
-        return MessageTypes.SYSTEM_MESSAGE;
+        return MessageTypes.PLAYER_DISCONNECT;
     }
 
     @Override
-    public String getContent() {
-        return content;
+    public Object getContent() {
+        return null;
     }
 
     @Override
