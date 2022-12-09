@@ -1,21 +1,24 @@
-package ru.itis.server;
+package ru.itis.connection;
 
-import ru.itis.connection.Connection;
 import ru.itis.models.Player;
 import ru.itis.protocol.message.Message;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 
+// todo fix
 public class PlayerConnection implements Connection {
     private final Socket socket;
     private final InputStream in;
     private final OutputStream out;
     private Player player;
 
-    public PlayerConnection(Socket socket, int id) {
-        this.socket = socket;
+    public PlayerConnection(InetAddress address, int port) {
+        // todo generate id
+        int id = (int) (Math.random() * 1000);
         try {
+            socket = new Socket(address, port);
             out = socket.getOutputStream();
             in = socket.getInputStream();
             receiveUserInformation();

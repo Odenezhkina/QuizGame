@@ -1,9 +1,10 @@
 package ru.itis.server;
 
-import ru.itis.messages.JoinRoomUserMessage;
-import ru.itis.messages.Message;
-import ru.itis.messages.PlayerDisconnectMessage;
-import ru.itis.messages.ServerMessage;
+import ru.itis.connection.Connection;
+import ru.itis.protocol.message.JoinRoomUserMessage;
+import ru.itis.protocol.PlayerDisconnectMessage;
+import ru.itis.protocol.message.Message;
+import ru.itis.protocol.message.ServerMessage;
 import ru.itis.models.Player;
 import ru.itis.models.Room;
 import ru.itis.utils.MessageForUser;
@@ -58,7 +59,7 @@ public class RoomService {
         for(Connection connection :collection){
             hashMap.put(connection.getId(), Player.builder()
                     .id(connection.getId())
-                    .username(connection.getUser().getUsername())
+                    .username(connection.getPlayer().getUsername())
                     .points(0)
                     .build());
         }
@@ -95,7 +96,7 @@ public class RoomService {
         }
     }
     public void addConnection(Connection connection){
-        connection.getUser().setRoomId(room.getId());
+        connection.getPlayer().setRoomId(room.getId());
         connections.put(connection.getId(), connection);
         if (room.getCurrentSize() == room.getCapacity()){
             sendToConnection(connection.getId(), new JoinRoomUserMessage(false, connection.getId()));
@@ -103,7 +104,7 @@ public class RoomService {
         else{
             sendToConnection(connection.getId(), new JoinRoomUserMessage(true, connection.getId()));
         }
-        room.addPlayer(connection.getUser());
+        room.addPlayer(connection.getPlayer());
         room.setCurrentSize(room.getCurrentSize() + 1);
     }
 }

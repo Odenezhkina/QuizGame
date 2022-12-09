@@ -1,6 +1,8 @@
 package ru.itis.controllers;
 
+import ru.itis.connection.ConnectionHolder;
 import ru.itis.constants.Constants;
+import ru.itis.protocol.message.Message;
 import ru.itis.utils.UiNavigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
