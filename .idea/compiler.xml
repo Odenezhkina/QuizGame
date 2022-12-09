@@ -10,10 +10,12 @@
         <module name="Server" />
         <module name="Protocol" />
         <module name="Client" />
+        <module name="ClientDemo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Client" target="17" />
+      <module name="ClientDemo" target="17" />
       <module name="demo" target="17" />
       <module name="Protocol" target="16" />
       <module name="Server" target="16" />

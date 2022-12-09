@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class UiNavigator {
 
+
     public Object navigateToScreen(ActionEvent event, String resPathString) throws IOException {
         Stage currStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(resPathString));

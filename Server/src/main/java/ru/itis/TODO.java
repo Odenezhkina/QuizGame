@@ -9,7 +9,7 @@ public class TODO {
     // TODO: свои исключения вместо runtime
 
 
-    // TODO: захардкодить вопросы + fix structure QuestionStorage
+    // TODO: захардкодить вопросы + fix structure QuestionRepositoryImpl
     //
     //
     //

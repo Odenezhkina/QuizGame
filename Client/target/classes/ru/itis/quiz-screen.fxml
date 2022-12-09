@@ -3,15 +3,15 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.VBox?>
 <VBox alignment="CENTER" spacing="5.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="ru.itis.controllers.StartScreenController">
+      fx:controller="ru.itis.controllers.QuizController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <Label fx:id="labelQuiz" text="" styleClass="label-title"/>
-    <Button text="Join game" styleClass="btn-primary" onAction="#navigateToJoinRoomScene"/>
-    <Button text="Create room" styleClass="btn-primary" onAction="#navigateToCreateRoomScene"/>
-    <Button text="Exit" styleClass="btn-primary" onAction="#onExitButtonClick"/>
+    <Label fx:id="labelQuestionTitle" text="" styleClass="label-title"/>
+
+    <Button fx:id="btnAnswer" text="Answer" styleClass="btn-primary" onAction="#answerQuestion"/>
 </VBox>
