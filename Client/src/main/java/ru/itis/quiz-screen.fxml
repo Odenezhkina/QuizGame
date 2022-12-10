@@ -11,6 +11,8 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
+    <Label fx:id="labelTimeUp" text="Time is up" styleClass="label-warning"/>
+
     <Label fx:id="labelQuestionTitle" text="" styleClass="label-title"/>
 
     <Button fx:id="btnAnswer" text="Answer" styleClass="btn-primary" onAction="#answerQuestion"/>

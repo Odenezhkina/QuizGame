@@ -14,5 +14,5 @@
     <Spinner fx:id="spinnerMaxMembers" editable="true">
     </Spinner>
     <Button text="Create" styleClass="btn-primary" onAction="#createRoom"/>
-    <Button text="Back" styleClass="btn-primary" onAction="#navigateBack"/>
+    <Button text="Back" styleClass="btn-default" onAction="#navigateBack"/>
 </VBox>

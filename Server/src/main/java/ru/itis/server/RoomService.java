@@ -2,7 +2,7 @@ package ru.itis.server;
 
 import ru.itis.connection.Connection;
 import ru.itis.models.Player;
-import ru.itis.protocol.message.JoinRoomUserMessage;
+import ru.itis.protocol.message.JoinRoomMessage;
 import ru.itis.protocol.PlayerDisconnectMessage;
 import ru.itis.protocol.message.Message;
 import ru.itis.protocol.message.ServerMessage;
@@ -99,10 +99,10 @@ public class RoomService {
         connection.getPlayer().setRoomId(room.getId());
         connections.put(connection.getId(), connection);
         if (room.getCurrentSize() == room.getCapacity()){
-            sendToConnection(connection.getId(), new JoinRoomUserMessage(false, connection.getId()));
+            sendToConnection(connection.getId(), new JoinRoomMessage(false, connection.getId()));
         }
         else{
-            sendToConnection(connection.getId(), new JoinRoomUserMessage(true, connection.getId()));
+            sendToConnection(connection.getId(), new JoinRoomMessage(true, connection.getId()));
         }
         room.addPlayer(connection.getPlayer());
         room.setCurrentSize(room.getCurrentSize() + 1);

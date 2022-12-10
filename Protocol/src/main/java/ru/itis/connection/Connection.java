@@ -9,7 +9,7 @@ public interface Connection {
 
     <T> void send(Message<T> message) throws IOException;
 
-    <T> Message<T> receive() throws IOException;
+//    <T> Message<T> receive() throws IOException;
 
     Player getPlayer();
 

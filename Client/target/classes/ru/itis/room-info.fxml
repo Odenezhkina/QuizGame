@@ -18,6 +18,6 @@
 <!--        already joined members -->
     </ListView>
     <Button text="Start quiz" styleClass="btn-primary" onAction="#onStartQuizClick"/>
-    <Button text="Leave room" styleClass="btn-primary" onAction="#onLeaveRoomClick"/>
+    <Button text="Leave room" styleClass="btn-default" onAction="#onLeaveRoomClick"/>
 
 </VBox>

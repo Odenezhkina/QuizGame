@@ -37,8 +37,8 @@ public class CreateRoomController implements Initializable {
     protected void createRoom(ActionEvent event) {
         try {
             RoomInfoController controller = (RoomInfoController) new UiNavigator().navigateToScreen(event, "room-info.fxml");
-            // todo get created room id
-            controller.initRoomInfo(-1, Integer.parseInt(spinnerMaxMembers.getValue().toString()), tfUsername.getText());
+//            // todo get created room id
+//            controller.initRoomInfo(-1, Integer.parseInt(spinnerMaxMembers.getValue().toString()), tfUsername.getText());
         } catch (IOException e) {
             e.printStackTrace();
         }

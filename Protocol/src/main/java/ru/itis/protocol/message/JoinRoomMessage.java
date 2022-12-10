@@ -2,11 +2,10 @@ package ru.itis.protocol.message;
 
 import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
-import ru.itis.models.Room;
 
 @AllArgsConstructor
-public class JoinRoomServerMessage extends Message<Room>{
-    private final Room room;
+public class JoinRoomMessage extends Message<Boolean> {
+    private final boolean result; // ???
     private final int senderId;
 
     @Override
@@ -15,8 +14,8 @@ public class JoinRoomServerMessage extends Message<Room>{
     }
 
     @Override
-    public Room getContent() {
-        return room;
+    public Boolean getContent() {
+        return result;
     }
 
     @Override
