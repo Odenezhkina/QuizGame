@@ -1,17 +1,19 @@
 package ru.itis.server;
 
+import lombok.Getter;
 import ru.itis.connection.Connection;
 import ru.itis.models.Player;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
-import ru.itis.protocol.message.server.JoinRoomStatusMessage;
 import ru.itis.protocol.message.server.SystemMessage;
+import ru.itis.protocol.message.client.UpdateRoomMessage;
 import ru.itis.utils.MessageForUser;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 
+@Getter
 public class RoomService {
     private final HashMap<Integer, Connection> connections;
     private final Server server;
@@ -22,6 +24,10 @@ public class RoomService {
         room = Room.builder().id(id).name(name).capacity(capacity).currentSize(currentSize).build();
         connections = new HashMap<>();
         this.server = server;
+    }
+
+    public void finishGame(){
+        game = null;
     }
 
     public void handMessage(ContentMessage message) {
@@ -57,6 +63,15 @@ public class RoomService {
         return hashMap;
     }
 
+    public void sendToConnections(ContentMessage message){
+        for (Connection con : connections.values()) {
+            try {
+                con.send(message);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     public void sendToConnection(int connectionId, ContentMessage message) {
         try {
@@ -76,29 +91,24 @@ public class RoomService {
         }
         if (game != null) {
             game.playerDisconnected(connectionId);
-//            server.handMessage(new PlayerDisconnectMessage(connectionId)); ??
-            connections.remove(connectionId);
-            room.setCurrentSize(room.getCurrentSize() - 1);
-            room.removePlayer(connectionId);
         }
         if (room.getCurrentSize() == 0) {
             server.removeRoom(room.getId());
         }
+        connections.get(connectionId).getPlayer().setRoomId(-1);
+        connections.remove(connectionId);
+        room.setCurrentSize(room.getCurrentSize() - 1);
+        room.removePlayer(connectionId);
     }
+
 
     public void addConnection(Connection connection) {
         connection.getPlayer().setRoomId(room.getId());
         connections.put(connection.getId(), connection);
-        if (room.getCurrentSize() == room.getCapacity()) {
-            sendToConnection(connection.getId(), new SystemMessage("Room is already full", connection.getId()));
-//            sendToConnection(connection.getId(), new JoinRoomStatusMessage(null, connection.getId()));
-//            sendToConnection(connection.getId(), new JoinRoomStatusMessage(false, connection.getId()));
-        } else {
-            sendToConnection(connection.getId(), new JoinRoomStatusMessage(room, connection.getId()));
-//            sendToConnection(connection.getId(), new JoinRoomStatusMessage(true, connection.getId()));
-        }
         room.addPlayer(connection.getPlayer());
         room.setCurrentSize(room.getCurrentSize() + 1);
+
+        sendToConnections(new UpdateRoomMessage(room, room.getId()));
     }
 }
 

@@ -2,27 +2,25 @@ package ru.itis.protocol.message.server;
 
 import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
-import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
 
 @AllArgsConstructor
-public class UpdateRoomMessage implements ContentMessage<Room> {
-    private final Room room;
+public class StatusMessage implements ContentMessage<String> {
+    private final String string;
     private final int senderId;
 
     @Override
     public MessageTypes getType() {
-        return MessageTypes.UPDATE_ROOM;
+        return MessageTypes.PLAYER_JOIN_ROOM_STATUS;
     }
 
     @Override
-    public Room getContent() {
-        return room;
+    public String getContent() {
+        return string;
     }
 
     @Override
     public int getSenderId() {
         return senderId;
     }
-
 }

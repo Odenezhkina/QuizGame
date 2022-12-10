@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
 import ru.itis.protocol.message.BasicMessage;
 
+
 @AllArgsConstructor
 public class PlayerLeaveRoomMessage implements BasicMessage {
     private final int playerId;
+
 
     @Override
     public MessageTypes getType() {

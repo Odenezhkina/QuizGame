@@ -30,7 +30,8 @@ public class PlayerConnection implements Connection {
         try {
             ObjectInputStream inputStream = new ObjectInputStream(in);
             player = (Player) inputStream.readObject();
-        } catch (ClassNotFoundException | IOException e) {
+        }
+        catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -51,7 +52,8 @@ public class PlayerConnection implements Connection {
     public void close() {
         try {
             socket.close();
-        } catch (IOException ignored) {
+        }
+        catch (IOException ignored) {
         }
     }
 
