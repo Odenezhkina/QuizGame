@@ -1,13 +1,11 @@
 package ru.itis.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import ru.itis.models.Player;
-import ru.itis.utils.UiNavigatorHolder;
 
 import java.util.Comparator;
 import java.util.List;

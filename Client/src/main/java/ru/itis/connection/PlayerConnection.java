@@ -1,7 +1,8 @@
 package ru.itis.connection;
 
 import ru.itis.models.Player;
-import ru.itis.protocol.message.Message;
+import ru.itis.protocol.message.BasicMessage;
+import ru.itis.protocol.message.ContentMessage;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -37,7 +38,7 @@ public class PlayerConnection implements Connection {
     }
 
     @Override
-    public <T> void send(Message<T> message) throws IOException {
+    public void send(BasicMessage message) throws IOException {
         ObjectOutputStream objOut = new ObjectOutputStream(out);
         objOut.writeObject(message);
         objOut.flush();

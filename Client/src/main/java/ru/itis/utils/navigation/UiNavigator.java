@@ -1,4 +1,4 @@
-package ru.itis.utils;
+package ru.itis.utils.navigation;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;

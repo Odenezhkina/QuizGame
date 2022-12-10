@@ -1,9 +1,15 @@
 package ru.itis.controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import ru.itis.connection.ConnectionHolder;
 import ru.itis.models.Question;
+import ru.itis.protocol.message.client.RightAnswerMessage;
+
+import java.io.IOException;
 
 
 public class QuizController {
@@ -14,16 +20,17 @@ public class QuizController {
     private Label labelTimeUp;
 
     @FXML
-    private ListView<String> listViewAnswers;
-
-    @FXML
     private Button btnAnswer;
 
+    private Question currentQuestion;
+
     public void initQuestion(Question question) {
+        currentQuestion = question;
         labelQuiz.setText(question.getQuestion());
         ToggleGroup group = new ToggleGroup();
-        for (String answer : question.getAnswers()) {
-            RadioButton newAnswer = new RadioButton(answer);
+        for (int i = 0; i < question.getAnswers().length; i++) {
+            RadioButton newAnswer = new RadioButton(question.getAnswers()[i]);
+            newAnswer.setId(String.valueOf(i));
             newAnswer.setToggleGroup(group);
             labelQuiz.getScene().getRoot().getChildrenUnmodifiable().add(newAnswer);
         }
@@ -32,7 +39,22 @@ public class QuizController {
     }
 
     public void answerQuestion(ActionEvent event) {
-        // todo send message to server (point right answer or not)
+        ObservableList<Node> nodesOnScreen = btnAnswer.getScene().getRoot().getChildrenUnmodifiable();
+        Integer checkedId = Integer.parseInt(nodesOnScreen.stream()
+                .filter(it -> it instanceof RadioButton)
+                .map(it -> (RadioButton) it)
+                .filter(ToggleButton::isSelected)
+                .findFirst()
+                .get()
+                .getId());
+        if (checkedId == currentQuestion.getCorrectAnsId()) {
+            int playerId = ConnectionHolder.getConnection().getPlayer().getId();
+            try {
+                ConnectionHolder.getConnection().send(new RightAnswerMessage(playerId, currentQuestion.getPoints()));
+            } catch (IOException e) {
+                e.printStackTrace(); // todo
+            }
+        }
     }
 
     public void timeUp() {

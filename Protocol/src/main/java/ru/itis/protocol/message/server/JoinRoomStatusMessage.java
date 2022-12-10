@@ -1,11 +1,12 @@
-package ru.itis.protocol.message;
+package ru.itis.protocol.message.server;
 
 import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
 import ru.itis.models.Room;
+import ru.itis.protocol.message.ContentMessage;
 
 @AllArgsConstructor
-public class JoinRoomStatusMessage extends Message<Room>{
+public class JoinRoomStatusMessage implements ContentMessage<Room> {
     private final Room room;
     private final int senderId;
 

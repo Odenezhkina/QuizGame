@@ -1,8 +1,10 @@
 package ru.itis.connection;
 
 import ru.itis.models.Player;
+import ru.itis.models.Question;
 import ru.itis.models.Room;
-import ru.itis.protocol.message.*;
+import ru.itis.protocol.message.ContentMessage;
+import ru.itis.protocol.message.server.*;
 import ru.itis.utils.UiEventHandler;
 
 import java.io.BufferedInputStream;
@@ -20,7 +22,7 @@ public class MessageListener extends Thread {
         this.handler = handler;
     }
 
-//    GAME_START // client -> server | content: -
+//    DONE GAME_START // client -> server | content: - or roomId
 //    GAME_OVER // server -> client | content: List<Player>
 
 //    WAITING_FOR_PLAYERS, // server -> client | content: - (what if
@@ -28,41 +30,36 @@ public class MessageListener extends Thread {
 //    WAITING_FOR_OTHER_PLAYERS, // server -> client | content: -
 //    WAITING_FOR_ANSWERS, // ??
 //    WAITING_FOR_NEXT_Q, // client -> server | content: waitingPlayerId (for notifying server that player is finished)
-//    NEXT_QUESTION // server -> client | content: Question
-//    RIGHT_QUESTION_ANSWER // client -> server | content: playerId, diffPoints?
-//    TIME_IS_UP // server -> client | content: -
+//    DONE NEXT_QUESTION // server -> client | content: Question
+//    DONE RIGHT_QUESTION_ANSWER // client -> server | content: playerId, diffPoints?
+//    DONE TIME_IS_UP // server -> client | content: -
 
-//    PLAYER_LEAVE_ROOM, // client -> server | content: playerId
-//    ROOM_CREATE // server -> client | content: Room
-//    PLAYER_JOIN_ROOM // client -> server | content: playerId, roomId
-//    PLAYER_JOIN_ROOM_STATUS, // server -> client | content: Room
+//    DONE PLAYER_LEAVE_ROOM, // client -> server | content: playerId
+//    DONE ROOM_CREATE // server -> client | content: Room
+//    DONE PLAYER_JOIN_ROOM // client -> server | content: playerId, roomId
+//    DONE PLAYER_JOIN_ROOM_STATUS, // server -> client | content: Room
 
 //    PLAYER_DISCONNECT,  // server -> client | content: -
 //    PLAYER_ACCEPTED, // server -> client | content: -
 
-//    SYSTEM_MESSAGE // server -> client | content: errorMessage
+//    DONE SYSTEM_MESSAGE // server -> client | content: errorMessage
 
     @Override
     public void run() {
-        Message message;
+        ContentMessage message;
         try {
-            while ((message = (Message) in.readObject()) != null) {
+            while ((message = (ContentMessage) in.readObject()) != null) {
                 switch (message.getType()) {
-                    case GAME_START -> {
-                        // ?? game start == quiz start?
-                        handler.startGame();
-                    }
                     case GAME_OVER -> {
                         List<Player> playerList = ((GameOverMessage) message).getContent();
                         handler.showStats(playerList);
                     }
                     case SYSTEM_MESSAGE -> {
-                        // show like some alarm or what?
-                        String serverMessage = ((ServerMessage) message).getContent();
+                        String serverMessage = ((SystemMessage) message).getContent();
                         handler.showSystemMessage(serverMessage);
                     }
-                    case ROOM_CREATE -> {
-                        Room createdRoom = ((CreateRoomMessage) message).getContent();
+                    case ROOM_CREATE_STATUS -> {
+                        Room createdRoom = ((CreateRoomStatusMessage) message).getContent();
                         handler.roomCreated(createdRoom);
                     }
                     case PLAYER_JOIN_ROOM_STATUS -> {
@@ -70,6 +67,10 @@ public class MessageListener extends Thread {
                         handler.joinRoom(room);
                     }
                     case TIME_IS_UP -> handler.timeUp();
+                    case NEXT_QUESTION -> {
+                        Question question = ((NextQuestionMessage) message).getContent();
+                        handler.showNextQuestion(question);
+                    }
                 }
             }
         } catch (ClassNotFoundException e) {

@@ -1,25 +1,21 @@
-package ru.itis.protocol.message;
+package ru.itis.protocol.message.client;
 
 import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
+import ru.itis.protocol.message.BasicMessage;
 
 @AllArgsConstructor
-public class JoinRoomMessage extends Message<Boolean> {
-    private final boolean result; // ???
+public class StartGameMessage implements BasicMessage {
     private final int senderId;
 
     @Override
     public MessageTypes getType() {
-        return MessageTypes.PLAYER_JOIN_ROOM_STATUS;
-    }
-
-    @Override
-    public Boolean getContent() {
-        return result;
+        return MessageTypes.GAME_START;
     }
 
     @Override
     public int getSenderId() {
         return senderId;
     }
+
 }

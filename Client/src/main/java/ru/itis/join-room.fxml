@@ -12,6 +12,7 @@
 
     <Label fx:id="joinRoomTitle" text="Join room" styleClass="label-title"/>
     <TextField fx:id="tfUsername" text="Username"/>
+    <Label fx:id="labelRoomCodeError" text="Invalid room code" visible="false"/>
     <TextField fx:id="tfRoomCode" text="Room code"/>
     <Button text="Join" styleClass="btn-primary" onAction="#joinRoom"/>
     <Button text="Back" styleClass="btn-default" onAction="#onBackButtonClick"/>

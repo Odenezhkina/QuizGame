@@ -1,12 +1,14 @@
 package ru.itis.utils;
 
 import javafx.scene.control.Alert;
+import ru.itis.controllers.FinalScoreController;
 import ru.itis.controllers.QuizController;
 import ru.itis.controllers.RoomInfoController;
 import ru.itis.models.Player;
 import ru.itis.models.Question;
 import ru.itis.models.Room;
 import ru.itis.utils.exceptions.InvalidStageStateException;
+import ru.itis.utils.navigation.UiNavigatorHolder;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,12 +18,6 @@ public class UiEventHandler {
 
     public UiEventHandler(UiNavigatorHolder uiNavigatorHolder) {
         this.uiNavigatorHolder = uiNavigatorHolder;
-    }
-
-    public void startGame() {
-    }
-
-    public void endGame() {
     }
 
     public void showSystemMessage(String content) {
@@ -38,7 +34,6 @@ public class UiEventHandler {
     public void roomCreated(Room room) {
         navigateToRoomInfo(room);
     }
-
 
     public void showNextQuestion(Question question) {
         try {
@@ -59,12 +54,12 @@ public class UiEventHandler {
     }
 
     public void showStats(List<Player> players) {
-//        try {
-////            QuizController controller = (QuizController) uiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("quiz-screen.fxml");
-////            controller.timeUp();
-//        } catch (InvalidStageStateException | IOException e) {
-//            showSystemMessage(e.getMessage());
-//        }
+        try {
+            FinalScoreController controller = (FinalScoreController) uiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("final-score.fxml");
+            controller.showStats(players);
+        } catch (InvalidStageStateException | IOException e) {
+            showSystemMessage(e.getMessage());
+        }
     }
 
     private void navigateToRoomInfo(Room room) {

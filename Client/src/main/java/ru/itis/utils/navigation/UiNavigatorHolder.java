@@ -1,4 +1,6 @@
-package ru.itis.utils;
+package ru.itis.utils.navigation;
+
+import ru.itis.utils.navigation.UiNavigator;
 
 public class UiNavigatorHolder {
     private static UiNavigator navigator;
