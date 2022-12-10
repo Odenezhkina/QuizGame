@@ -1,5 +1,7 @@
 package ru.itis.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,6 +9,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import ru.itis.constants.Constants;
+import ru.itis.models.Player;
+import ru.itis.models.Room;
 import ru.itis.utils.UiNavigator;
 
 import java.io.IOException;
@@ -24,7 +28,7 @@ public class RoomInfoController implements Initializable {
     private Label labelRoomCreator;
 
     @FXML
-    private ListView listViewActiveMembers;
+    private ListView<Player> listViewActiveMembers;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -32,11 +36,13 @@ public class RoomInfoController implements Initializable {
 //        listViewActiveMembers.setItems();
     }
 
-    public void initRoomInfo(int roomNumber, int maxMembers, String creatorUsername) {
-        labelRoomNumber.setText("Room №" + roomNumber);
-        labelRoomMaxMembers.setText("Max members: " + maxMembers);
-        labelRoomCreator.setText("Creator: " + creatorUsername);
+    public void initRoomInfo(Room room) {
+        labelRoomNumber.setText("Room №" + room.getId());
+        labelRoomMaxMembers.setText("Max members: " + room.getCapacity());
+        labelRoomCreator.setText("Creator: " + room.getCreatorUsername());
         // todo init active members by roomNumber?
+        ObservableList<Player> activePlayers = FXCollections.observableArrayList(room.getPlayers().values().stream().toList());
+        listViewActiveMembers.setItems(activePlayers);
     }
 
     public void onStartQuizClick(ActionEvent event) throws IOException {

@@ -1,5 +1,5 @@
 * {
-    -fx-font-family: "JetBrains Mono";
+    -fx-font-family: "Roboto";
 }
 
 .label-title {
@@ -8,9 +8,9 @@
 }
 
 .btn-primary {
-    -fx-background-color: #3170ff;
+    -fx-background-color: #6C3DF2;
     -fx-border-radius: 30px;
     -fx-padding: 10px;
-    -fx-min-width: 120px;
+    -fx-min-width: 180px;
 }
 

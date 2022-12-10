@@ -11,13 +11,12 @@ import java.util.HashMap;
 @Setter
 @Getter
 public class Room {
-    private int id;
     private final String name;
     private final int capacity;
-    private int currentSize;
     private final HashMap<Integer, Player> players;
-
-    private int creatorId;
+    private int id;
+    private int currentSize;
+    private String creatorUsername;
 
     public Collection<Player> getAllPlayers() {
         return players.values();

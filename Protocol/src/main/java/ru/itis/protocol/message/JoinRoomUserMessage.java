@@ -5,7 +5,7 @@ import ru.itis.constants.MessageTypes;
 
 @AllArgsConstructor
 public class JoinRoomUserMessage extends Message<Boolean> {
-    private final boolean result;
+    private final boolean result; // ???
     private final int senderId;
 
     @Override

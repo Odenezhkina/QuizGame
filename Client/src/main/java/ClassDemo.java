@@ -1,4 +1,3 @@
-import com.sun.tools.javac.Main;
 import ru.itis.MainApplication;
 
 import static javafx.application.Application.launch;
