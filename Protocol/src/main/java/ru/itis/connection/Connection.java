@@ -1,15 +1,15 @@
 package ru.itis.connection;
 
 import ru.itis.models.Player;
-import ru.itis.protocol.message.Message;
+import ru.itis.protocol.message.BasicMessage;
 
 import java.io.IOException;
 
 public interface Connection {
 
-    <T> void send(Message<T> message) throws IOException;
+    void send(BasicMessage message) throws IOException;
 
-    <T> Message<T> receive() throws IOException;
+//    <T> ContentMessage<T> receive() throws IOException;
 
     Player getPlayer();
 

@@ -4,20 +4,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import ru.itis.constants.Constants;
-import ru.itis.models.Player;
+import ru.itis.connection.ConnectionHolder;
+import ru.itis.constants.RoomPreferences;
 import ru.itis.models.Room;
-import ru.itis.utils.UiNavigator;
+import ru.itis.protocol.message.client.PlayerLeaveRoomMessage;
+import ru.itis.protocol.message.client.StartGameMessage;
+import ru.itis.utils.navigation.UiNavigator;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
-public class RoomInfoController implements Initializable {
+public class RoomInfoController {
     @FXML
     private Label labelRoomNumber;
 
@@ -28,39 +27,39 @@ public class RoomInfoController implements Initializable {
     private Label labelRoomCreator;
 
     @FXML
-    private ListView<Player> listViewActiveMembers;
+    private Label labelError;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // todo init active members ??
-//        listViewActiveMembers.setItems();
-    }
+    @FXML
+    private ListView<String> listViewActiveMembers;
+
 
     public void initRoomInfo(Room room) {
         labelRoomNumber.setText("Room №" + room.getId());
         labelRoomMaxMembers.setText("Max members: " + room.getCapacity());
         labelRoomCreator.setText("Creator: " + room.getCreatorUsername());
-        // todo init active members by roomNumber?
-        ObservableList<Player> activePlayers = FXCollections.observableArrayList(room.getPlayers().values().stream().toList());
+
+        ObservableList<String> activePlayers = FXCollections.observableArrayList(room.getPlayers().values().stream().map(it -> it.getUsername()).collect(Collectors.toList()));
         listViewActiveMembers.setItems(activePlayers);
     }
 
     public void onStartQuizClick(ActionEvent event) throws IOException {
-        // todo check if there are enough members
         int activeMembers = listViewActiveMembers.getItems().size();
-        // start quiz or show warning
-        if (activeMembers >= Constants.MIN_ROOM_MEMBER) {
-            new UiNavigator().navigateToScreen(event, "quiz-screen.fxml");
+        if (activeMembers < RoomPreferences.MIN_ROOM_MEMBER) {
+            showErrorMessage("There are not enough participants for the quiz. " + "The minimum member count for starting the quiz: " + RoomPreferences.MIN_ROOM_MEMBER);
         } else {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("There are not enough participants for the quiz");
-            errorAlert.setContentText("The minimum member count for starting the quiz: " + Constants.MIN_ROOM_MEMBER);
-            errorAlert.showAndWait();
+            int playerId = ConnectionHolder.getConnection().getPlayer().getId();
+            ConnectionHolder.getConnection().send(new StartGameMessage(playerId));
         }
+    }
+
+    private void showErrorMessage(String errorMessage) {
+        labelError.setText(errorMessage);
     }
 
     public void onLeaveRoomClick(ActionEvent event) {
         try {
+            int playerId = ConnectionHolder.getConnection().getPlayer().getId();
+            ConnectionHolder.getConnection().send(new PlayerLeaveRoomMessage(playerId));
             new UiNavigator().navigateToStartScreen(event);
         } catch (IOException e) {
             e.printStackTrace();

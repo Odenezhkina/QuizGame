@@ -17,5 +17,5 @@
     <Label fx:id="labelQuizGame" text="QuizGame" styleClass="label-title"/>
     <Button text="Join game" styleClass="btn-primary" onAction="#navigateToJoinRoomScene"/>
     <Button text="Create room" styleClass="btn-primary" onAction="#navigateToCreateRoomScene"/>
-    <Button text="Exit" styleClass="btn-primary" onAction="#onExitButtonClick"/>
+    <Button text="Exit" styleClass="btn-default" onAction="#onExitButtonClick"/>
 </VBox>

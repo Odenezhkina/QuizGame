@@ -4,7 +4,7 @@ import ru.itis.models.Question;
 
 import java.util.*;
 
-public class QuestionRepositoryImpl implements QuestionRepository {
+public class QuestionRepositoryImpl {
     private final Set<Integer> notAvailableIdSet = new HashSet<>();
     private final List<Question> questionArray = initQuestionArray();
     private final Random randomGenerator = new Random(questionArray.size());

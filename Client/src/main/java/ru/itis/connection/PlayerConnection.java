@@ -1,13 +1,13 @@
 package ru.itis.connection;
 
 import ru.itis.models.Player;
-import ru.itis.protocol.message.Message;
+import ru.itis.protocol.message.BasicMessage;
+import ru.itis.protocol.message.ContentMessage;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
-// todo fix
 public class PlayerConnection implements Connection {
     private final Socket socket;
     private final InputStream in;
@@ -15,15 +15,14 @@ public class PlayerConnection implements Connection {
     private Player player;
 
     public PlayerConnection(InetAddress address, int port) {
-        // todo generate id
-        int id = (int) (Math.random() * 1000);
         try {
             socket = new Socket(address, port);
             out = socket.getOutputStream();
             in = socket.getInputStream();
             receiveUserInformation();
-            player.setUsername(player.getUsername() + "#" + id);
-            player.setId(id);
+//            int id = (int) (Math.random() * 1000);
+//            player.setUsername(player.getUsername() + "#" + id);
+//            player.setId(id);
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -39,7 +38,7 @@ public class PlayerConnection implements Connection {
     }
 
     @Override
-    public <T> void send(Message<T> message) throws IOException {
+    public void send(BasicMessage message) throws IOException {
         ObjectOutputStream objOut = new ObjectOutputStream(out);
         objOut.writeObject(message);
         objOut.flush();
@@ -53,6 +52,8 @@ public class PlayerConnection implements Connection {
     @Override
     public void close() {
         try {
+            in.close();
+            out.close();
             socket.close();
         } catch (IOException ignored) {
         }
@@ -66,5 +67,9 @@ public class PlayerConnection implements Connection {
     @Override
     public boolean isConnected() {
         return !socket.isClosed();
+    }
+
+    public InputStream getInputStream() {
+        return in;
     }
 }

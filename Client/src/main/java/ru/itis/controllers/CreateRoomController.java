@@ -1,9 +1,5 @@
 package ru.itis.controllers;
 
-import ru.itis.connection.ConnectionHolder;
-import ru.itis.constants.Constants;
-import ru.itis.protocol.message.Message;
-import ru.itis.utils.UiNavigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,6 +7,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import ru.itis.connection.ConnectionHolder;
+import ru.itis.constants.Constants;
+import ru.itis.protocol.message.client.CreateRoomMessage;
+import ru.itis.utils.navigation.UiNavigator;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,9 +36,8 @@ public class CreateRoomController implements Initializable {
     @FXML
     protected void createRoom(ActionEvent event) {
         try {
-            RoomInfoController controller = (RoomInfoController) new UiNavigator().navigateToScreen(event, "room-info.fxml");
-            // todo get created room id
-            controller.initRoomInfo(-1, Integer.parseInt(spinnerMaxMembers.getValue().toString()), tfUsername.getText());
+            int playerId = ConnectionHolder.getConnection().getId();
+            ConnectionHolder.getConnection().send(new CreateRoomMessage(spinnerMaxMembers.getValue(), playerId));
         } catch (IOException e) {
             e.printStackTrace();
         }

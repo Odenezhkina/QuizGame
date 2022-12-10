@@ -2,7 +2,7 @@ package ru.itis.server;
 
 import ru.itis.connection.Connection;
 import ru.itis.models.Player;
-import ru.itis.protocol.message.Message;
+import ru.itis.protocol.message.BasicMessage;
 
 import java.io.*;
 import java.net.Socket;
@@ -36,7 +36,7 @@ public class PlayerConnection implements Connection {
     }
 
     @Override
-    public <T> void send(Message<T> message) throws IOException {
+    public void send(BasicMessage message) throws IOException {
         ObjectOutputStream objOut = new ObjectOutputStream(out);
         objOut.writeObject(message);
         objOut.flush();

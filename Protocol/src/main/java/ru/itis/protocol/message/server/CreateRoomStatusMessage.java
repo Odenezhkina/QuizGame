@@ -1,17 +1,18 @@
-package ru.itis.protocol.message;
+package ru.itis.protocol.message.server;
 
 import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
 import ru.itis.models.Room;
+import ru.itis.protocol.message.ContentMessage;
 
 @AllArgsConstructor
-public class CreateRoomMessage extends Message<Room>{
+public class CreateRoomStatusMessage implements ContentMessage<Room> {
     private final Room content;
     private final int userId;
 
     @Override
     public MessageTypes getType() {
-        return MessageTypes.ROOM_CREATE;
+        return MessageTypes.ROOM_CREATE_STATUS;
     }
 
     @Override

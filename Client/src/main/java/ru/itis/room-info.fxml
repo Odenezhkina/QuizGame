@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Button?>
 <VBox alignment="CENTER" spacing="5.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="ru.itis.controllers.RoomInfoController">
     <padding>
@@ -15,9 +12,10 @@
     <Label fx:id="labelRoomCreator" text="Creator: #username"/>
     <Label fx:id="labelRoomMaxMembers" text="Maximum number of members: #roomMembers"/>
     <ListView fx:id="lvActiveMembers">
-<!--        already joined members -->
+        <!--        already joined members -->
     </ListView>
     <Button text="Start quiz" styleClass="btn-primary" onAction="#onStartQuizClick"/>
-    <Button text="Leave room" styleClass="btn-primary" onAction="#onLeaveRoomClick"/>
+    <Label fx:id="labelError" styleClass="label-warning"/>
+    <Button text="Leave room" styleClass="btn-default" onAction="#onLeaveRoomClick"/>
 
 </VBox>

@@ -1,13 +1,15 @@
 package ru.itis.controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import ru.itis.connection.ConnectionHolder;
 import ru.itis.models.Question;
-import ru.itis.repository.QuestionRepository;
+import ru.itis.protocol.message.client.RightAnswerMessage;
+
+import java.io.IOException;
 
 
 public class QuizController {
@@ -15,26 +17,48 @@ public class QuizController {
     private Label labelQuiz;
 
     @FXML
-    private ListView<String> listViewAnswers;
+    private Label labelTimeUp;
 
-    private QuestionRepository questionRepository; // todo how to init?
+    @FXML
+    private Button btnAnswer;
 
-    public void initQuestion() {
-        Question question = questionRepository.getQuestion();
+    private Question currentQuestion;
+
+    public void initQuestion(Question question) {
+        currentQuestion = question;
         labelQuiz.setText(question.getQuestion());
         ToggleGroup group = new ToggleGroup();
-        for (String answer : question.getAnswers()) {
-            RadioButton newAnswer = new RadioButton(answer);
+        for (int i = 0; i < question.getAnswers().length; i++) {
+            RadioButton newAnswer = new RadioButton(question.getAnswers()[i]);
+            newAnswer.setId(String.valueOf(i));
             newAnswer.setToggleGroup(group);
             labelQuiz.getScene().getRoot().getChildrenUnmodifiable().add(newAnswer);
         }
+        btnAnswer.setDisable(false);
+        labelTimeUp.setVisible(false);
     }
 
     public void answerQuestion(ActionEvent event) {
-        // send message to server (point right answer or not)
-
-        // init new question
-        initQuestion();
+        ObservableList<Node> nodesOnScreen = btnAnswer.getScene().getRoot().getChildrenUnmodifiable();
+        Integer checkedId = Integer.parseInt(nodesOnScreen.stream()
+                .filter(it -> it instanceof RadioButton)
+                .map(it -> (RadioButton) it)
+                .filter(ToggleButton::isSelected)
+                .findFirst()
+                .get()
+                .getId());
+        if (checkedId == currentQuestion.getCorrectAnsId()) {
+            int playerId = ConnectionHolder.getConnection().getPlayer().getId();
+            try {
+                ConnectionHolder.getConnection().send(new RightAnswerMessage(playerId, currentQuestion.getPoints()));
+            } catch (IOException e) {
+                e.printStackTrace(); // todo
+            }
+        }
     }
 
+    public void timeUp() {
+        labelTimeUp.setVisible(true);
+        btnAnswer.setDisable(true);
+    }
 }

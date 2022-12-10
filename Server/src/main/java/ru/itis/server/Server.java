@@ -3,8 +3,7 @@ package ru.itis.server;
 import ru.itis.connection.Connection;
 import ru.itis.constants.Properties;
 import ru.itis.models.Room;
-import ru.itis.protocol.message.CreateRoomMessage;
-import ru.itis.protocol.message.Message;
+import ru.itis.protocol.message.ContentMessage;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -50,7 +49,7 @@ public class Server {
         System.out.println("Connected user Id: " + (connection.getId() + "Nickname: " + connection.getPlayer().getUsername()));
     }
 
-    private void sendToConnection(int connectionId, Message message) {
+    private void sendToConnection(int connectionId, ContentMessage message) {
         try {
             Connection con = connections.get(connectionId);
             if (con.isConnected()) {
@@ -61,7 +60,7 @@ public class Server {
         }
     }
 
-    public void handMessage(Message message) {
+    public void handMessage(ContentMessage message) {
         switch (message.getType()) {
             case PLAYER_DISCONNECT -> removeConnection(message.getSenderId());
             case ROOM_CREATE -> createRoom((Room) message.getContent());
