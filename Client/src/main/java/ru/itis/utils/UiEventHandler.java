@@ -70,4 +70,13 @@ public class UiEventHandler {
             showSystemMessage(e.getMessage());
         }
     }
+
+    public void updateRoom(Room room) {
+        try {
+            RoomInfoController controller = (RoomInfoController) uiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("room-info.fxml");
+            controller.initRoomInfo(room);
+        } catch (InvalidStageStateException | IOException e) {
+            showSystemMessage(e.getMessage());
+        }
+    }
 }

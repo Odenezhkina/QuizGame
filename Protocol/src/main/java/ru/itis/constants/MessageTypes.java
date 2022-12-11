@@ -22,5 +22,6 @@ public enum MessageTypes {
     SYSTEM_MESSAGE,
 
     NEXT_QUESTION,
-    RIGHT_ANSWER
+    RIGHT_ANSWER,
+    UPDATE_ROOM
 }

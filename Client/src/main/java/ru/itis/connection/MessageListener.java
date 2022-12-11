@@ -71,6 +71,10 @@ public class MessageListener extends Thread {
                         Question question = ((NextQuestionMessage) message).getContent();
                         handler.showNextQuestion(question);
                     }
+                    case UPDATE_ROOM -> {
+                       Room room = ((UpdateRoomMessage) message).getContent();
+                        handler.updateRoom(room);
+                    }
                 }
             }
         } catch (ClassNotFoundException e) {
