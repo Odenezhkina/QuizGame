@@ -2,11 +2,12 @@ package ru.itis.protocol.message.server;
 
 import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
+import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
 
 @AllArgsConstructor
-public class StatusMessage implements ContentMessage<String> {
-    private final String string;
+public class JoinRoomStatusMessage implements ContentMessage<Room> {
+    private final Room room;
     private final int senderId;
 
     @Override
@@ -15,8 +16,8 @@ public class StatusMessage implements ContentMessage<String> {
     }
 
     @Override
-    public String getContent() {
-        return string;
+    public Room getContent() {
+        return room;
     }
 
     @Override
