@@ -8,7 +8,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import ru.itis.connection.ConnectionHolder;
-import ru.itis.constants.Constants;
+import ru.itis.constants.RoomPreferences;
 import ru.itis.protocol.message.client.CreateRoomMessage;
 import ru.itis.utils.navigation.UiNavigator;
 
@@ -28,8 +28,8 @@ public class CreateRoomController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(Constants.MIN_ROOM_MEMBER, Constants.MAX_ROOM_MEMBER);
-        valueFactory.setValue(Constants.MIN_ROOM_MEMBER);
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(RoomPreferences.MIN_ROOM_MEMBER, RoomPreferences.MAX_ROOM_MEMBER);
+        valueFactory.setValue(RoomPreferences.MIN_ROOM_MEMBER);
         spinnerMaxMembers.setValueFactory(valueFactory);
     }
 

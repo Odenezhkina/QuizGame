@@ -5,11 +5,11 @@ import ru.itis.constants.MessageTypes;
 import ru.itis.models.Player;
 import ru.itis.protocol.message.ContentMessage;
 
-import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
-public class GameOverMessage implements ContentMessage<Collection<Player>> {
-    private final Collection<Player> content;
+public class GameOverMessage implements ContentMessage<List<Player>> {
+    private final List<Player> content;
     private final int userId;
 
     @Override
@@ -18,7 +18,7 @@ public class GameOverMessage implements ContentMessage<Collection<Player>> {
     }
 
     @Override
-    public Collection<Player> getContent() {
+    public List<Player> getContent() {
         return content;
     }
 

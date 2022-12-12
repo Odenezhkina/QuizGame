@@ -1,4 +1,4 @@
-package ru.itis.protocol.message.client;
+package ru.itis.protocol.message.server;
 
 import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
@@ -6,13 +6,13 @@ import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
 
 @AllArgsConstructor
-public class UpdateRoomMessage implements ContentMessage<Room> {
+public class PlayerLeaveRoomStatusMessage implements ContentMessage<Room> {
     private final Room room;
     private final int senderId;
 
     @Override
     public MessageTypes getType() {
-        return MessageTypes.UPDATE_ROOM;
+        return MessageTypes.PLAYER_LEAVE_ROOM_STATUS;
     }
 
     @Override
@@ -24,5 +24,4 @@ public class UpdateRoomMessage implements ContentMessage<Room> {
     public int getSenderId() {
         return senderId;
     }
-
 }

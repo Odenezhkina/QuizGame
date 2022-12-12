@@ -72,7 +72,7 @@ public class MessageListener extends Thread {
                         handler.showNextQuestion(question);
                     }
                     case UPDATE_ROOM -> {
-                       Room room = ((UpdateRoomMessage) message).getContent();
+                        Room room = ((PlayerLeaveRoomStatusMessage) message).getContent();
                         handler.updateRoom(room);
                     }
                 }
