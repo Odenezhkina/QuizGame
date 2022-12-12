@@ -6,7 +6,7 @@ import ru.itis.models.Player;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
 import ru.itis.protocol.message.server.SystemMessage;
-import ru.itis.protocol.message.client.UpdateRoomMessage;
+
 import ru.itis.utils.MessageForUser;
 
 import java.io.IOException;
@@ -108,7 +108,7 @@ public class RoomService {
         room.addPlayer(connection.getPlayer());
         room.setCurrentSize(room.getCurrentSize() + 1);
 
-        sendToConnections(new UpdateRoomMessage(room, room.getId()));
+//        sendToConnections(new UpdateRoomMessage(room, room.getId()));
     }
 }
 

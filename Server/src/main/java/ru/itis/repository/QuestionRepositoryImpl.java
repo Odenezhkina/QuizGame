@@ -28,6 +28,20 @@ public class QuestionRepositoryImpl {
                         .build(),
                 Question
                         .builder()
+                        .question("What’s Collections in Java?")
+                        .answers(new String[]{"Library", "Framework", "Plugin", "All answers incorrect"})
+                        .correctAnsId(2)
+                        .points(defaultPoints)
+                        .build(),
+                Question
+                        .builder()
+                        .question("What is marked with an annotation @Bean (Spring Framework)")
+                        .answers(new String[]{"Class", "Variable", "Fabric method", "All answers incorrect"})
+                        .correctAnsId(2)
+                        .points(defaultPoints)
+                        .build(),
+                Question
+                        .builder()
                         .question("List down the visibility modifiers available in Kotlin. What’s the default visibility modifier?")
                         .answers(new String[]{
                                 "public(default), private, protected",
@@ -157,7 +171,5 @@ public class QuestionRepositoryImpl {
                         .correctAnsId(1)
                         .points(defaultPoints)
                         .build());
-
-
     }
 }

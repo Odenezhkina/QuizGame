@@ -1,11 +1,11 @@
 package ru.itis.server;
 
 import ru.itis.connection.Connection;
-import ru.itis.constants.Properties;
+import ru.itis.constants.ConnectionPreferences;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
 
-import ru.itis.protocol.message.server.StatusMessage;
+import ru.itis.protocol.message.server.SystemMessage;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -27,7 +27,7 @@ public class Server {
         connections = new HashMap<>();
         rooms = new HashMap<>();
         try {
-            serverSocket = new ServerSocket(Properties.port);
+            serverSocket = new ServerSocket(ConnectionPreferences.port);
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -89,20 +89,20 @@ public class Server {
     public void joinRoom(int roomId, int senderId) {
         RoomService roomService = rooms.get(roomId);
         if (roomService.getGame() != null){
-            sendToConnection(senderId, new StatusMessage("Game has already started", -1));
+            sendToConnection(senderId, new SystemMessage("Game has already started", -1));
         }
         else if(roomService.getRoom().getCurrentSize() < roomService.getRoom().getCapacity()) {
             Connection connection = connections.get(senderId);
             roomService.addConnection(connection);
         }
         else {
-            sendToConnection(senderId, new StatusMessage("Room is full", -1));
+            sendToConnection(senderId, new SystemMessage("Room is full", -1));
         }
     }
     public void leaveRoom(int roomId, int senderId) {
         RoomService roomService = rooms.get(roomId);
         roomService.removeConnection(senderId);
-        roomService.sendToConnections(new StatusMessage("Player" + " " + senderId + " disconnect", -1));
+        roomService.sendToConnections(new SystemMessage("Player" + " " + senderId + " disconnect", -1));
     }
 
     public void removeRoom(int roomId) {
