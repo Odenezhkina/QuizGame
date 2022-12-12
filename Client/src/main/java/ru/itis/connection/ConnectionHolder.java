@@ -6,12 +6,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class ConnectionHolder {
-    private static Connection connection;
+    private static Client connection;
 
-    public static Connection getConnection() {
+    public static Client getConnection() {
         if (connection == null) {
             try {
-                connection = new PlayerConnection(InetAddress.getLocalHost(), 8088);
+                connection = new Client(InetAddress.getLocalHost(), 8088);
             } catch (UnknownHostException ex) {
                 new ErrorHandler().handleError("Invalid host");
             }

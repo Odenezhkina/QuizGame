@@ -82,6 +82,5 @@ public class MessageListener extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

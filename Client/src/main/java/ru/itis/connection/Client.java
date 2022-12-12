@@ -1,5 +1,6 @@
 package ru.itis.connection;
 
+import ru.itis.constants.ConnectionPreferences;
 import ru.itis.models.Player;
 import ru.itis.protocol.message.BasicMessage;
 
@@ -7,18 +8,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
 
-public class PlayerConnection {
+public class Client {
     private final Socket socket;
     private final InputStream in;
     private final OutputStream out;
     private Player player;
 
-    public PlayerConnection(InetAddress address, int port) {
+    public Client() {
         try {
-            socket = new Socket(address, port);
+            socket = new Socket(ConnectionPreferences.host, ConnectionPreferences.port);
             out = socket.getOutputStream();
             in = socket.getInputStream();
 //            receiveUserInformation();
@@ -64,7 +64,6 @@ public class PlayerConnection {
     public int getId() {
         return player.getId();
     }
-
 
     public boolean isConnected() {
         return !socket.isClosed();
