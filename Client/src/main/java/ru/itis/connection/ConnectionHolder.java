@@ -11,7 +11,7 @@ public class ConnectionHolder {
     public static Client getConnection() {
         if (connection == null) {
             try {
-                connection = new Client(InetAddress.getLocalHost(), 8088);
+                connection = new Client();
             } catch (UnknownHostException ex) {
                 new ErrorHandler().handleError("Invalid host");
             }

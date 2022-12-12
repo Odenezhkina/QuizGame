@@ -3,6 +3,7 @@ package ru.itis.connection;
 import ru.itis.constants.ConnectionPreferences;
 import ru.itis.models.Player;
 import ru.itis.protocol.message.BasicMessage;
+import ru.itis.protocol.message.client.PlayerAcceptedMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,29 +17,19 @@ public class Client {
     private final OutputStream out;
     private Player player;
 
-    public Client() {
+    public Client(String username) {
         try {
             socket = new Socket(ConnectionPreferences.host, ConnectionPreferences.port);
             out = socket.getOutputStream();
             in = socket.getInputStream();
-//            receiveUserInformation();
 //            int id = (int) (Math.random() * 1000);
-//            player.setUsername(player.getUsername() + "#" + id);
-//            player.setId(id);
+            // roomId?? id??
+            player = Player.builder().username(username).points(0).roomId(0).build();
+            send(new PlayerAcceptedMessage(player.getId(), player.getUsername()));
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
-
-//    private void receiveUserInformation() {
-//        try {
-//            ObjectInputStream inputStream = new ObjectInputStream(in);
-//            player = (Player) inputStream.readObject();
-//        } catch (ClassNotFoundException | IOException e) {
-//            throw new RuntimeException(e.getMessage());
-//        }
-//    }
-
 
     public void send(BasicMessage message) throws IOException {
         ObjectOutputStream objOut = new ObjectOutputStream(out);
