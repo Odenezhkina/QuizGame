@@ -5,23 +5,23 @@ import ru.itis.constants.MessageTypes;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
 
-@AllArgsConstructor
-public class JoinRoomStatusMessage implements ContentMessage<Room> {
-    private final Room room;
-    private final int senderId;
-
-    @Override
-    public MessageTypes getType() {
-        return MessageTypes.PLAYER_JOIN_ROOM_STATUS;
-    }
-
-    @Override
-    public Room getContent() {
-        return room;
-    }
-
-    @Override
-    public int getSenderId() {
-        return senderId;
-    }
-}
+//@AllArgsConstructor
+//public class JoinRoomStatusMessage implements ContentMessage<Room> {
+//    private final Room room;
+//    private final int senderId;
+//
+//    @Override
+//    public MessageTypes getType() {
+//        return MessageTypes.PLAYER_JOIN_ROOM_STATUS;
+//    }
+//
+//    @Override
+//    public Room getContent() {
+//        return room;
+//    }
+//
+//    @Override
+//    public int getSenderId() {
+//        return senderId;
+//    }
+//}

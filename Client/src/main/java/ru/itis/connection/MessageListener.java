@@ -62,17 +62,17 @@ public class MessageListener extends Thread {
                         Room createdRoom = ((CreateRoomStatusMessage) message).getContent();
                         handler.roomCreated(createdRoom);
                     }
-                    case PLAYER_JOIN_ROOM_STATUS -> {
-                        Room room = ((JoinRoomStatusMessage) message).getContent();
-                        handler.joinRoom(room);
-                    }
+//                    case PLAYER_JOIN_ROOM_STATUS -> {
+//                        Room room = ((JoinRoomStatusMessage) message).getContent();
+//                        handler.joinRoom(room);
+//                    }
                     case TIME_IS_UP -> handler.timeUp();
                     case NEXT_QUESTION -> {
                         Question question = ((NextQuestionMessage) message).getContent();
                         handler.showNextQuestion(question);
                     }
                     case UPDATE_ROOM -> {
-                        Room room = ((PlayerLeaveRoomStatusMessage) message).getContent();
+                        Room room = ((RoomWasUpdatedMessage) message).getContent();
                         handler.updateRoom(room);
                     }
                 }
