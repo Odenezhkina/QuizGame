@@ -6,7 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import ru.itis.connection.ConnectionHolder;
+import ru.itis.connection.impl.ConnectionHolderImpl;
 import ru.itis.constants.RoomPreferences;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.client.PlayerLeaveRoomMessage;
@@ -47,8 +47,8 @@ public class RoomInfoController {
         if (activeMembers < RoomPreferences.MIN_ROOM_MEMBER) {
             showErrorMessage("There are not enough participants for the quiz. " + "The minimum member count for starting the quiz: " + RoomPreferences.MIN_ROOM_MEMBER);
         } else {
-            int playerId = ConnectionHolder.getConnection().getPlayer().getId();
-            ConnectionHolder.getConnection().send(new StartGameMessage(playerId));
+            int playerId = ConnectionHolderImpl.getConnection().getPlayer().getId();
+            ConnectionHolderImpl.getConnection().send(new StartGameMessage(playerId));
         }
     }
 
@@ -58,8 +58,8 @@ public class RoomInfoController {
 
     public void onLeaveRoomClick(ActionEvent event) {
         try {
-            int playerId = ConnectionHolder.getConnection().getPlayer().getId();
-            ConnectionHolder.getConnection().send(new PlayerLeaveRoomMessage(playerId));
+            int playerId = ConnectionHolderImpl.getConnection().getPlayer().getId();
+            ConnectionHolderImpl.getConnection().send(new PlayerLeaveRoomMessage(playerId));
             new UiNavigator().navigateToStartScreen(event);
         } catch (IOException e) {
             e.printStackTrace();

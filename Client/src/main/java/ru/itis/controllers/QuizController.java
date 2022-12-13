@@ -5,7 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import ru.itis.connection.ConnectionHolder;
+import ru.itis.connection.impl.ConnectionHolderImpl;
 import ru.itis.models.Question;
 import ru.itis.protocol.message.client.RightAnswerMessage;
 
@@ -48,9 +48,9 @@ public class QuizController {
                 .get()
                 .getId());
         if (checkedId == currentQuestion.getCorrectAnsId()) {
-            int playerId = ConnectionHolder.getConnection().getPlayer().getId();
+            int playerId = ConnectionHolderImpl.getConnection().getPlayer().getId();
             try {
-                ConnectionHolder.getConnection().send(new RightAnswerMessage(playerId, currentQuestion.getPoints()));
+                ConnectionHolderImpl.getConnection().send(new RightAnswerMessage(playerId, currentQuestion.getPoints()));
             } catch (IOException e) {
                 e.printStackTrace(); // todo
             }

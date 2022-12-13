@@ -1,30 +1,29 @@
-package ru.itis.connection;
+package ru.itis.connection.impl;
 
+import ru.itis.connection.ClientConnection;
 import ru.itis.constants.ConnectionPreferences;
 import ru.itis.models.Player;
 import ru.itis.protocol.message.BasicMessage;
 import ru.itis.protocol.message.client.PlayerAcceptedMessage;
+import ru.itis.utils.exceptions.DisconnectedFromServerException;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 
-public class Client {
+public class ClientConnectionImpl implements ClientConnection {
     private final Socket socket;
-    private final InputStream in;
-    private final OutputStream out;
+    private final ObjectInputStream in;
+    private final ObjectOutputStream out;
     private Player player;
 
-    public Client(String username) {
+    public ClientConnectionImpl(String username, int roomId) {
         try {
             socket = new Socket(ConnectionPreferences.host, ConnectionPreferences.port);
-            out = socket.getOutputStream();
-            in = socket.getInputStream();
-//            int id = (int) (Math.random() * 1000);
-            // roomId?? id??
-            player = Player.builder().username(username).points(0).roomId(0).build();
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+            player = Player.builder().username(username).points(0).roomId(roomId).build();
             send(new PlayerAcceptedMessage(player.getId(), player.getUsername()));
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
@@ -37,18 +36,18 @@ public class Client {
         objOut.flush();
     }
 
+    // todo object??
+    @Override
+    public Object receive() throws IOException, DisconnectedFromServerException, ClassNotFoundException {
+        if (!isConnected()) {
+            throw new DisconnectedFromServerException("Disconnected from server");
+        }
+        return in.readObject();
+    }
+
 
     public Player getPlayer() {
         return player;
-    }
-
-    public void close() {
-        try {
-            in.close();
-            out.close();
-            socket.close();
-        } catch (IOException ignored) {
-        }
     }
 
 
@@ -60,7 +59,10 @@ public class Client {
         return !socket.isClosed();
     }
 
-    public InputStream getInputStream() {
-        return in;
+    @Override
+    public void close() throws Exception {
+        in.close();
+        out.close();
+        socket.close();
     }
 }

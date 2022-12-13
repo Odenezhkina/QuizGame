@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
-import ru.itis.connection.ConnectionHolder;
+import ru.itis.connection.impl.ConnectionHolderImpl;
 import ru.itis.constants.RoomPreferences;
 import ru.itis.protocol.message.client.CreateRoomMessage;
 import ru.itis.utils.navigation.UiNavigator;
@@ -36,8 +36,8 @@ public class CreateRoomController implements Initializable {
     @FXML
     protected void createRoom(ActionEvent event) {
         try {
-            int playerId = ConnectionHolder.getConnection().getId();
-            ConnectionHolder.getConnection().send(new CreateRoomMessage(spinnerMaxMembers.getValue(), playerId));
+            int playerId = ConnectionHolderImpl.getConnection().getId();
+            ConnectionHolderImpl.getConnection().send(new CreateRoomMessage(spinnerMaxMembers.getValue(), playerId));
         } catch (IOException e) {
             e.printStackTrace();
         }

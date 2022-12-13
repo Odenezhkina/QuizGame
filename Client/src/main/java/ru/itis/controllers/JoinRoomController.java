@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import ru.itis.connection.ConnectionHolder;
+import ru.itis.connection.impl.ConnectionHolderImpl;
 import ru.itis.protocol.message.client.JoinRoomMessage;
 import ru.itis.utils.navigation.UiNavigator;
 
@@ -24,10 +24,10 @@ public class JoinRoomController {
     protected void joinRoom(ActionEvent event) {
         try {
             int roomCode = Integer.parseInt(tfRoomCode.getText());
-            int playerId = ConnectionHolder.getConnection().getPlayer().getId();
-            ConnectionHolder.getConnection().getPlayer().setUsername(tfUsername.getText());
+            int playerId = ConnectionHolderImpl.getConnection().getPlayer().getId();
+            ConnectionHolderImpl.getConnection().getPlayer().setUsername(tfUsername.getText());
             // send message
-            ConnectionHolder.getConnection().send(new JoinRoomMessage(playerId, roomCode));
+            ConnectionHolderImpl.getConnection().send(new JoinRoomMessage(playerId, roomCode));
         } catch (NumberFormatException ex) {
             labelRoomCodeError.setVisible(true);
         } catch (IOException e) {

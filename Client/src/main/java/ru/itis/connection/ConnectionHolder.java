@@ -1,21 +1,10 @@
 package ru.itis.connection;
 
-import ru.itis.utils.ErrorHandler;
+public interface ConnectionHolder {
+    void closeConnection() throws Exception;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+//    boolean isConnectionInitialized();
 
-public class ConnectionHolder {
-    private static Client connection;
+    void initializeConnection(String username);
 
-    public static Client getConnection() {
-        if (connection == null) {
-            try {
-                connection = new Client();
-            } catch (UnknownHostException ex) {
-                new ErrorHandler().handleError("Invalid host");
-            }
-        }
-        return connection;
-    }
 }
