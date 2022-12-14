@@ -23,8 +23,9 @@ public class ClientConnectionImpl implements ClientConnection {
             socket = new Socket(ConnectionPreferences.host, ConnectionPreferences.port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            player = Player.builder().username(username).points(0).build();
-            send(new PlayerAcceptedMessage(player.getId(), player.getUsername()));
+            out.writeUTF("username");
+//            player = Player.builder().username(username).points(0).build();
+//            send(new PlayerAcceptedMessage(player.getId(), player.getUsername()));
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }

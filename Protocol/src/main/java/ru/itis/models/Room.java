@@ -4,13 +4,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 
 @Builder
 @Setter
 @Getter
-public class Room {
+public class Room implements Serializable {
     private final String name;
     private final int capacity;
     private final HashMap<Integer, Player> players;

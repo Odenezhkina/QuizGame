@@ -12,12 +12,12 @@ import java.util.List;
 public class Game implements Runnable{
     private RoomService room;
     private HashMap<Integer, Player> players;
-    private List<Question> questions;
 
     private QuestionRepositoryImpl repository ;
 
     private int currentQ = 1;
-    private final int TIME_FOR_QUESTION = 15;
+    //вынести в протокол
+    private final int TIME_FOR_QUESTION = 15000;
 
     public void start(RoomService room, HashMap<Integer,Player> connections) {
         this.room = room;
@@ -33,7 +33,8 @@ public class Game implements Runnable{
             while(currentQ < 10){
                 room.sendToConnections(new NextQuestionMessage(repository.getQuestion(), -1));
                 Thread.sleep(TIME_FOR_QUESTION);
-                // здесь может быть обработка ответов
+                //прохожусь по плеерам и считаю очки (алгоритм)
+
                 currentQ++;
             }
             gameOver();

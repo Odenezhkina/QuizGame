@@ -48,6 +48,7 @@ public class Server {
     public void addConnection(Socket socket) {
         PlayerConnection connection = new PlayerConnection(socket, userId++);
         connections.put(connection.getId(), connection);
+        //выслать сообщение  с готовым игроком
         System.out.println("Connected user Id: " + (connection.getId() + "Nickname: " + connection.getPlayer().getUsername()));
     }
 

@@ -5,6 +5,7 @@ import ru.itis.connection.Connection;
 import ru.itis.models.Player;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
+import ru.itis.protocol.message.server.RoomWasUpdatedMessage;
 import ru.itis.protocol.message.server.SystemMessage;
 
 import ru.itis.utils.MessageForUser;
@@ -42,6 +43,7 @@ public class RoomService {
         }
     }
 
+    //поменять на void
     public MessageForUser startGame() {
         if (game != null) {
             return null;
@@ -92,23 +94,22 @@ public class RoomService {
         if (game != null) {
             game.playerDisconnected(connectionId);
         }
+        room.removePlayer(connectionId);
+        connections.get(connectionId).getPlayer().setRoomId(-1);
         if (room.getCurrentSize() == 0) {
             server.removeRoom(room.getId());
         }
-        connections.get(connectionId).getPlayer().setRoomId(-1);
-        connections.remove(connectionId);
-        room.setCurrentSize(room.getCurrentSize() - 1);
-        room.removePlayer(connectionId);
     }
 
 
     public void addConnection(Connection connection) {
+        // отправить в ответ если игра уже есть
         connection.getPlayer().setRoomId(room.getId());
         connections.put(connection.getId(), connection);
         room.addPlayer(connection.getPlayer());
         room.setCurrentSize(room.getCurrentSize() + 1);
 
-//        sendToConnections(new UpdateRoomMessage(room, room.getId()));
+        sendToConnections(new RoomWasUpdatedMessage(room, room.getId()));
     }
 }
 

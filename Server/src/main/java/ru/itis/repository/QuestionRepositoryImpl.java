@@ -11,7 +11,7 @@ public class QuestionRepositoryImpl {
 
     public Question getQuestion() {
         int newPosition = randomGenerator.nextInt();
-        if (!notAvailableIdSet.add(newPosition)) {
+        while (!notAvailableIdSet.add(newPosition)) {
             newPosition = randomGenerator.nextInt();
         }
         return questionArray.get(newPosition);
@@ -29,7 +29,7 @@ public class QuestionRepositoryImpl {
                 Question
                         .builder()
                         .question("What’s Collections in Java?")
-                        .answers(new String[]{"Library", "Framework", "Plugin", "All answers incorrect"})
+                        .answers(new String[]{"Library", "Framework", "Plugin", "Class"})
                         .correctAnsId(2)
                         .points(defaultPoints)
                         .build(),
