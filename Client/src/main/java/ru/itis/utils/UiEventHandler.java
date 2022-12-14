@@ -1,6 +1,5 @@
 package ru.itis.utils;
 
-import javafx.scene.control.Alert;
 import ru.itis.controllers.FinalScoreController;
 import ru.itis.controllers.QuizController;
 import ru.itis.controllers.RoomInfoController;
@@ -21,10 +20,7 @@ public class UiEventHandler {
     }
 
     public void showSystemMessage(String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(null); // default title
-        alert.setHeaderText(content);
-        alert.showAndWait();
+        new SystemErrorHandler().handleError(content);
     }
 
     public void joinRoom(Room room) {

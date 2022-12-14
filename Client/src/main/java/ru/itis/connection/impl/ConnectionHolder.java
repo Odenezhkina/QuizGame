@@ -1,9 +1,8 @@
 package ru.itis.connection.impl;
 
-import ru.itis.connection.ConnectionHolder;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 
-public class ConnectionHolderImpl implements ConnectionHolder {
+public class ConnectionHolder {
     private static ClientConnectionImpl connection;
     private static String playerUsername;
 
@@ -14,17 +13,10 @@ public class ConnectionHolderImpl implements ConnectionHolder {
         return connection;
     }
 
-    @Override
     public void closeConnection() throws Exception {
         connection.close();
     }
 
-//    @Override
-//    public boolean isConnectionInitialized() {
-//        return playerUsername == null;
-//    }
-
-    @Override
     public void initializeConnection(String username) {
         connection = new ClientConnectionImpl(username);
     }

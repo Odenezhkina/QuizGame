@@ -18,12 +18,12 @@ public class ClientConnectionImpl implements ClientConnection {
     private final ObjectOutputStream out;
     private Player player;
 
-    public ClientConnectionImpl(String username, int roomId) {
+    public ClientConnectionImpl(String username) {
         try {
             socket = new Socket(ConnectionPreferences.host, ConnectionPreferences.port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            player = Player.builder().username(username).points(0).roomId(roomId).build();
+            player = Player.builder().username(username).points(0).build();
             send(new PlayerAcceptedMessage(player.getId(), player.getUsername()));
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
@@ -50,6 +50,9 @@ public class ClientConnectionImpl implements ClientConnection {
         return player;
     }
 
+    public void setPlayerName(String name) {
+        player.setUsername(name);
+    }
 
     public int getId() {
         return player.getId();

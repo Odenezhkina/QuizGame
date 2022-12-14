@@ -1,11 +1,13 @@
 package ru.itis.connection;
 
+import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.models.Player;
 import ru.itis.models.Question;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
 import ru.itis.protocol.message.server.*;
 import ru.itis.utils.UiEventHandler;
+import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -60,27 +62,30 @@ public class MessageListener extends Thread {
                     }
                     case ROOM_CREATE_STATUS -> {
                         Room createdRoom = ((CreateRoomStatusMessage) message).getContent();
+                        initPlayerRoom(createdRoom.getId());
                         handler.roomCreated(createdRoom);
                     }
-//                    case PLAYER_JOIN_ROOM_STATUS -> {
-//                        Room room = ((JoinRoomStatusMessage) message).getContent();
-//                        handler.joinRoom(room);
-//                    }
                     case TIME_IS_UP -> handler.timeUp();
                     case NEXT_QUESTION -> {
                         Question question = ((NextQuestionMessage) message).getContent();
                         handler.showNextQuestion(question);
                     }
                     case UPDATE_ROOM -> {
+//                        case PLAYER_JOIN_ROOM_STATUS ->
                         Room room = ((RoomWasUpdatedMessage) message).getContent();
+                        initPlayerRoom(room.getId());
                         handler.updateRoom(room);
                     }
                 }
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ClassNotFoundException | ConnectionNotInitializedException | IOException e) {
             e.printStackTrace();
         }
     }
+
+    private void initPlayerRoom(int roomId) throws ConnectionNotInitializedException {
+        Player player = ConnectionHolder.getConnection().getPlayer();
+        player.setRoomId(roomId);
+    }
+
 }

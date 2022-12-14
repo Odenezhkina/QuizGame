@@ -7,9 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
-import ru.itis.connection.impl.ConnectionHolderImpl;
+import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.constants.RoomPreferences;
 import ru.itis.protocol.message.client.CreateRoomMessage;
+import ru.itis.utils.SystemErrorHandler;
+import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 import ru.itis.utils.navigation.UiNavigator;
 
 import java.io.IOException;
@@ -36,10 +38,11 @@ public class CreateRoomController implements Initializable {
     @FXML
     protected void createRoom(ActionEvent event) {
         try {
-            int playerId = ConnectionHolderImpl.getConnection().getId();
-            ConnectionHolderImpl.getConnection().send(new CreateRoomMessage(spinnerMaxMembers.getValue(), playerId));
-        } catch (IOException e) {
-            e.printStackTrace();
+            int playerId = ConnectionHolder.getConnection().getId();
+            ConnectionHolder.getConnection().getPlayer().setUsername(tfUsername.getText());
+            ConnectionHolder.getConnection().send(new CreateRoomMessage(spinnerMaxMembers.getValue(), playerId));
+        } catch (IOException | ConnectionNotInitializedException e) {
+            new SystemErrorHandler().handleError(e.getMessage());
         }
     }
 
@@ -47,7 +50,7 @@ public class CreateRoomController implements Initializable {
         try {
             new UiNavigator().navigateToStartScreen(event);
         } catch (IOException e) {
-            e.printStackTrace();
+            new SystemErrorHandler().handleError(e.getMessage());
         }
     }
 

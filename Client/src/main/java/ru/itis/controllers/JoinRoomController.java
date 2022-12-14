@@ -4,8 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import ru.itis.connection.impl.ConnectionHolderImpl;
+import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.protocol.message.client.JoinRoomMessage;
+import ru.itis.utils.SystemErrorHandler;
+import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 import ru.itis.utils.navigation.UiNavigator;
 
 import java.io.IOException;
@@ -24,14 +26,13 @@ public class JoinRoomController {
     protected void joinRoom(ActionEvent event) {
         try {
             int roomCode = Integer.parseInt(tfRoomCode.getText());
-            int playerId = ConnectionHolderImpl.getConnection().getPlayer().getId();
-            ConnectionHolderImpl.getConnection().getPlayer().setUsername(tfUsername.getText());
-            // send message
-            ConnectionHolderImpl.getConnection().send(new JoinRoomMessage(playerId, roomCode));
+            int playerId = ConnectionHolder.getConnection().getId();
+            ConnectionHolder.getConnection().setPlayerName(tfUsername.getText());
+            ConnectionHolder.getConnection().send(new JoinRoomMessage(playerId, roomCode));
         } catch (NumberFormatException ex) {
             labelRoomCodeError.setVisible(true);
-        } catch (IOException e) {
-            e.printStackTrace(); // todo
+        } catch (IOException | ConnectionNotInitializedException e) {
+            new SystemErrorHandler().handleError(e.getMessage());
         }
     }
 
@@ -39,7 +40,7 @@ public class JoinRoomController {
         try {
             new UiNavigator().navigateToStartScreen(event);
         } catch (IOException e) {
-            e.printStackTrace();
+            new SystemErrorHandler().handleError(e.getMessage());
         }
     }
 }

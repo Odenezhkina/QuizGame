@@ -5,9 +5,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import ru.itis.connection.impl.ConnectionHolderImpl;
+import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.models.Question;
 import ru.itis.protocol.message.client.RightAnswerMessage;
+import ru.itis.utils.SystemErrorHandler;
+import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 
 import java.io.IOException;
 
@@ -48,11 +50,11 @@ public class QuizController {
                 .get()
                 .getId());
         if (checkedId == currentQuestion.getCorrectAnsId()) {
-            int playerId = ConnectionHolderImpl.getConnection().getPlayer().getId();
             try {
-                ConnectionHolderImpl.getConnection().send(new RightAnswerMessage(playerId, currentQuestion.getPoints()));
-            } catch (IOException e) {
-                e.printStackTrace(); // todo
+                int playerId = ConnectionHolder.getConnection().getPlayer().getId();
+                ConnectionHolder.getConnection().send(new RightAnswerMessage(playerId, currentQuestion.getPoints()));
+            } catch (IOException | ConnectionNotInitializedException e) {
+                new SystemErrorHandler().handleError(e.getMessage());
             }
         }
     }
