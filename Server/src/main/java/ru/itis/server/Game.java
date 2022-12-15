@@ -1,13 +1,14 @@
 package ru.itis.server;
 
 import ru.itis.models.Player;
-import ru.itis.models.Question;
 import ru.itis.protocol.message.server.GameOverMessage;
 import ru.itis.protocol.message.server.NextQuestionMessage;
 import ru.itis.repository.QuestionRepositoryImpl;
 
 import java.util.HashMap;
 import java.util.List;
+
+import static ru.itis.constants.GameSettings.TIME_FOR_QUESTION;
 
 public class Game implements Runnable{
     private RoomService room;
@@ -16,8 +17,6 @@ public class Game implements Runnable{
     private QuestionRepositoryImpl repository ;
 
     private int currentQ = 1;
-    //вынести в протокол
-    private final int TIME_FOR_QUESTION = 15000;
 
     public void start(RoomService room, HashMap<Integer,Player> connections) {
         this.room = room;
@@ -33,8 +32,6 @@ public class Game implements Runnable{
             while(currentQ < 10){
                 room.sendToConnections(new NextQuestionMessage(repository.getQuestion(), -1));
                 Thread.sleep(TIME_FOR_QUESTION);
-                //прохожусь по плеерам и считаю очки (алгоритм)
-
                 currentQ++;
             }
             gameOver();

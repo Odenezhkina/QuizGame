@@ -31,29 +31,9 @@ public class RoomService {
         game = null;
     }
 
-    public void handMessage(ContentMessage message) {
-        switch (message.getType()) {
-            case PLAYER_DISCONNECT, PLAYER_LEAVE_ROOM -> removeConnection(message.getSenderId());
-            case GAME_START -> {
-                MessageForUser answer = startGame();
-                if (answer != null && !answer.isSuccessful()) {
-                    sendToConnection(message.getSenderId(), new SystemMessage(answer.getDescription(), message.getSenderId()));
-                }
-            }
-        }
-    }
-
-    //поменять на void
-    public MessageForUser startGame() {
-        if (game != null) {
-            return null;
-        }
-        if (connections.size() < 2) {
-            return new MessageForUser(false, "At least 2 players are needed to start the game!");
-        }
+    public void startGame() {
         game = new Game();
         game.start(this, getPlayers());
-        return new MessageForUser(true);
     }
 
     private HashMap<Integer, Player> getPlayers() {
@@ -75,17 +55,6 @@ public class RoomService {
         }
     }
 
-    public void sendToConnection(int connectionId, ContentMessage message) {
-        try {
-            Connection con = connections.get(connectionId);
-            if (con.isConnected()) {
-                con.send(message);
-            }
-        } catch (IOException e) {
-            removeConnection(connectionId);
-        }
-    }
-
     public void removeConnection(int connectionId) {
         Connection connection = connections.get(connectionId);
         if (connection == null) {
@@ -101,9 +70,7 @@ public class RoomService {
         }
     }
 
-
     public void addConnection(Connection connection) {
-        // отправить в ответ если игра уже есть
         connection.getPlayer().setRoomId(room.getId());
         connections.put(connection.getId(), connection);
         room.addPlayer(connection.getPlayer());
@@ -112,4 +79,3 @@ public class RoomService {
         sendToConnections(new RoomWasUpdatedMessage(room, room.getId()));
     }
 }
-

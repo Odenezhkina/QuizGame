@@ -5,6 +5,7 @@ import ru.itis.constants.ConnectionPreferences;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
 
+import ru.itis.protocol.message.server.PlayerAcceptedStatusMessage;
 import ru.itis.protocol.message.server.SystemMessage;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class Server {
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
+                System.out.println("add connection");
                 addConnection(socket);
             } catch (IOException e) {
                 throw new RuntimeException(e.getMessage());
@@ -48,7 +50,7 @@ public class Server {
     public void addConnection(Socket socket) {
         PlayerConnection connection = new PlayerConnection(socket, userId++);
         connections.put(connection.getId(), connection);
-        //выслать сообщение  с готовым игроком
+        sendToConnection(connection.getId(), new PlayerAcceptedStatusMessage(connection.getId(), connection.getPlayer()));
         System.out.println("Connected user Id: " + (connection.getId() + "Nickname: " + connection.getPlayer().getUsername()));
     }
 
@@ -65,9 +67,11 @@ public class Server {
 
     public void handMessage(ContentMessage message) {
         switch (message.getType()) {
+            case GAME_START -> rooms.get(connections.get(message.getSenderId()).getPlayer().getRoomId()).startGame();
             case ROOM_CREATE -> createRoom((Room) message.getContent());
             case PLAYER_JOIN_ROOM -> joinRoom((Integer) message.getContent(), message.getSenderId());
             case PLAYER_LEAVE_ROOM -> leaveRoom(connections.get(message.getSenderId()).getPlayer().getRoomId(), message.getSenderId());
+            case PLAYER_DISCONNECT -> removeConnection(message.getSenderId());
         }
     }
 
@@ -77,7 +81,7 @@ public class Server {
             return;
         }
         RoomService roomService = rooms.get(connection.getPlayer().getRoomId());
-        if(roomService != null) {
+        if (roomService != null) {
             roomService.removeConnection(id);
         }
         connections.remove(id);

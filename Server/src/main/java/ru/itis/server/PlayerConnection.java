@@ -29,8 +29,8 @@ public class PlayerConnection implements Connection {
     private void receiveUserInformation() {
         try {
             ObjectInputStream inputStream = new ObjectInputStream(in);
-            player = (Player) inputStream.readObject();
-            // accept message with initialized player
+            String username = (String) inputStream.readObject();
+            player.setUsername(username);
         }
         catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e.getMessage());
