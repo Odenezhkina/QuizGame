@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import ru.itis.connection.impl.ConnectionHolder;
+import ru.itis.protocol.message.client.InitUsernameMessage;
 import ru.itis.protocol.message.client.JoinRoomMessage;
 import ru.itis.utils.SystemErrorHandler;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
@@ -27,7 +28,8 @@ public class JoinRoomController {
         try {
             int roomCode = Integer.parseInt(tfRoomCode.getText());
             int playerId = ConnectionHolder.getConnection().getId();
-            ConnectionHolder.getConnection().setPlayerName(tfUsername.getText());
+
+            ConnectionHolder.getConnection().send(new InitUsernameMessage(playerId, tfUsername.getText()));
             ConnectionHolder.getConnection().send(new JoinRoomMessage(playerId, roomCode));
         } catch (NumberFormatException ex) {
             labelRoomCodeError.setVisible(true);

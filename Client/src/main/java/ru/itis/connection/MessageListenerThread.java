@@ -15,36 +15,13 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.List;
 
-public class MessageListener extends Thread {
+public class MessageListenerThread extends Thread {
     private final ObjectInputStream in;
-    private final UiEventHandler handler;
+    private final UiEventHandler handler = new UiEventHandler();
 
-    public MessageListener(InputStream in, UiEventHandler handler) throws IOException {
+    public MessageListenerThread(InputStream in) throws IOException {
         this.in = new ObjectInputStream(new BufferedInputStream(in));
-        this.handler = handler;
     }
-
-//    DONE GAME_START // client -> server | content: - or roomId
-//    GAME_OVER // server -> client | content: List<Player>
-
-//    WAITING_FOR_PLAYERS, // server -> client | content: - (what if
-//    we replace it with SYSTEM_MESSAGE with content like "Not enough players in the room")
-//    WAITING_FOR_OTHER_PLAYERS, // server -> client | content: -
-//    WAITING_FOR_ANSWERS, // ??
-//    WAITING_FOR_NEXT_Q, // client -> server | content: waitingPlayerId (for notifying server that player is finished)
-//    DONE NEXT_QUESTION // server -> client | content: Question
-//    DONE RIGHT_QUESTION_ANSWER // client -> server | content: playerId, diffPoints?
-//    DONE TIME_IS_UP // server -> client | content: -
-
-//    DONE PLAYER_LEAVE_ROOM, // client -> server | content: playerId
-//    DONE ROOM_CREATE // server -> client | content: Room
-//    DONE PLAYER_JOIN_ROOM // client -> server | content: playerId, roomId
-//    DONE PLAYER_JOIN_ROOM_STATUS, // server -> client | content: Room
-
-//    PLAYER_DISCONNECT,  // server -> client | content: -
-//    PLAYER_ACCEPTED, // server -> client | content: -
-
-//    DONE SYSTEM_MESSAGE // server -> client | content: errorMessage
 
     @Override
     public void run() {
@@ -70,11 +47,15 @@ public class MessageListener extends Thread {
                         Question question = ((NextQuestionMessage) message).getContent();
                         handler.showNextQuestion(question);
                     }
-                    case UPDATE_ROOM -> {
-//                        case PLAYER_JOIN_ROOM_STATUS ->
+                    case UPDATE_ROOM -> { //case PLAYER_JOIN_ROOM_STATUS
                         Room room = ((RoomWasUpdatedMessage) message).getContent();
                         initPlayerRoom(room.getId());
                         handler.updateRoom(room);
+                    }
+                    case PLAYER_ACCEPTED -> {
+                        Player player = ((PlayerAcceptedStatusMessage) message).getContent();
+                        // initializing default player
+                        ConnectionHolder.getConnection().setPlayer(player);
                     }
                 }
             }
@@ -84,8 +65,7 @@ public class MessageListener extends Thread {
     }
 
     private void initPlayerRoom(int roomId) throws ConnectionNotInitializedException {
-        Player player = ConnectionHolder.getConnection().getPlayer();
-        player.setRoomId(roomId);
+        ConnectionHolder.getConnection().getPlayer().setRoomId(roomId);
     }
 
 }

@@ -9,7 +9,6 @@ public class JoinRoomMessage implements ContentMessage<Integer> {
     private final int senderId;
     private final Integer roomId;
 
-
     @Override
     public MessageTypes getType() {
         return MessageTypes.PLAYER_JOIN_ROOM;

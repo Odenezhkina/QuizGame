@@ -9,8 +9,8 @@ import javafx.scene.control.ListView;
 import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.constants.RoomPreferences;
 import ru.itis.models.Room;
+import ru.itis.protocol.message.client.GetNewQuestionMessage;
 import ru.itis.protocol.message.client.PlayerLeaveRoomMessage;
-import ru.itis.protocol.message.client.StartGameMessage;
 import ru.itis.utils.SystemErrorHandler;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 import ru.itis.utils.navigation.UiNavigator;
@@ -50,8 +50,10 @@ public class RoomInfoController {
             showErrorMessage("There are not enough participants for the quiz. " + "The minimum member count for starting the quiz: " + RoomPreferences.MIN_ROOM_MEMBER);
         } else {
             try {
-                int playerId = ConnectionHolder.getConnection().getPlayer().getId();
-                ConnectionHolder.getConnection().send(new StartGameMessage(playerId));
+                int roomId = ConnectionHolder.getConnection().getPlayer().getRoomId();
+
+                // send player room NOT player id
+                ConnectionHolder.getConnection().send(new GetNewQuestionMessage(roomId));
             } catch (ConnectionNotInitializedException e) {
                 new SystemErrorHandler().handleError(e.getMessage());
             }

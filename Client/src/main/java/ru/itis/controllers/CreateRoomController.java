@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.constants.RoomPreferences;
 import ru.itis.protocol.message.client.CreateRoomMessage;
+import ru.itis.protocol.message.client.InitUsernameMessage;
 import ru.itis.utils.SystemErrorHandler;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 import ru.itis.utils.navigation.UiNavigator;
@@ -40,6 +41,8 @@ public class CreateRoomController implements Initializable {
         try {
             int playerId = ConnectionHolder.getConnection().getId();
             ConnectionHolder.getConnection().getPlayer().setUsername(tfUsername.getText());
+
+            ConnectionHolder.getConnection().send(new InitUsernameMessage(playerId, tfUsername.getText()));
             ConnectionHolder.getConnection().send(new CreateRoomMessage(spinnerMaxMembers.getValue(), playerId));
         } catch (IOException | ConnectionNotInitializedException e) {
             new SystemErrorHandler().handleError(e.getMessage());

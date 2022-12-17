@@ -1,10 +1,9 @@
 package ru.itis.connection.impl;
 
-import ru.itis.connection.ClientConnection;
+import ru.itis.connection.MessageListenerThread;
 import ru.itis.constants.ConnectionPreferences;
 import ru.itis.models.Player;
 import ru.itis.protocol.message.BasicMessage;
-import ru.itis.protocol.message.client.PlayerAcceptedMessage;
 import ru.itis.utils.exceptions.DisconnectedFromServerException;
 
 import java.io.IOException;
@@ -12,22 +11,23 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ClientConnectionImpl implements ClientConnection {
+public class ClientConnectionThread {
     private final Socket socket;
     private final ObjectInputStream in;
     private final ObjectOutputStream out;
     private Player player;
 
-    public ClientConnectionImpl(String username) {
+    public ClientConnectionThread() {
         try {
             socket = new Socket(ConnectionPreferences.host, ConnectionPreferences.port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            out.writeUTF(username);
-//            player = Player.builder().username(username).points(0).build();
-//            send(new PlayerAcceptedMessage(player.getId(), player.getUsername()));
+            // if server receives socket created earlier
+            // we have to wait until PlayerAcceptedStatusMessage from server init default player
+            MessageListenerThread messageListenerThread = new MessageListenerThread(in);
+            messageListenerThread.start();
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new IllegalArgumentException(e);
         }
     }
 
@@ -37,8 +37,6 @@ public class ClientConnectionImpl implements ClientConnection {
         objOut.flush();
     }
 
-    // todo object??
-    @Override
     public Object receive() throws IOException, DisconnectedFromServerException, ClassNotFoundException {
         if (!isConnected()) {
             throw new DisconnectedFromServerException("Disconnected from server");
@@ -51,8 +49,8 @@ public class ClientConnectionImpl implements ClientConnection {
         return player;
     }
 
-    public void setPlayerName(String name) {
-        player.setUsername(name);
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public int getId() {
@@ -63,7 +61,6 @@ public class ClientConnectionImpl implements ClientConnection {
         return !socket.isClosed();
     }
 
-    @Override
     public void close() throws Exception {
         in.close();
         out.close();

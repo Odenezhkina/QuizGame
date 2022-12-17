@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
 import ru.itis.protocol.message.ContentMessage;
 
+
 @AllArgsConstructor
 public class RightAnswerMessage implements ContentMessage<Integer> {
     private final int senderId;

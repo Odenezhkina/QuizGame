@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.utils.navigation.UiNavigator;
 
 import java.io.IOException;

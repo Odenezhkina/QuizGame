@@ -1,12 +1,17 @@
 package ru.itis.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import ru.itis.models.Player;
+import ru.itis.utils.SystemErrorHandler;
+import ru.itis.utils.navigation.UiNavigatorHolder;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -53,7 +58,11 @@ public class FinalScoreController {
         }
     }
 
-//    public void backToRoomInfo(ActionEvent event) {
-//        new UiNavigatorHolder().getUiNavigator().na
-//    }
+    public void backToRoomInfo(ActionEvent event) {
+        try {
+            UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "room-info.fxml");
+        } catch (IOException e) {
+            new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.INFORMATION);
+        }
+    }
 }
