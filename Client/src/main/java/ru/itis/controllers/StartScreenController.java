@@ -31,7 +31,7 @@ public class StartScreenController implements Initializable {
     @FXML
     protected void navigateToJoinRoomScene(ActionEvent event) {
         try {
-            new UiNavigator().navigateToScreen(event, "join-room.fxml");
+            new UiNavigator().navigateToScreen(event, "screens/join-room.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,7 +41,7 @@ public class StartScreenController implements Initializable {
     @FXML
     protected void navigateToCreateRoomScene(ActionEvent event) {
         try {
-            new UiNavigator().navigateToScreen(event, "create-room.fxml");
+            new UiNavigator().navigateToScreen(event, "screens/create-room.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

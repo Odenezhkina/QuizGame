@@ -6,22 +6,21 @@ import ru.itis.models.Player;
 import ru.itis.protocol.message.BasicMessage;
 import ru.itis.utils.exceptions.DisconnectedFromServerException;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class ClientConnectionThread {
     private final Socket socket;
-    private final ObjectInputStream in;
-    private final ObjectOutputStream out;
+    private final InputStream in;
+    private final OutputStream out;
     private Player player;
 
     public ClientConnectionThread() {
         try {
-            socket = new Socket(ConnectionPreferences.host, ConnectionPreferences.port);
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+            socket = new Socket(InetAddress.getByName(ConnectionPreferences.host), ConnectionPreferences.port);
+            in = socket.getInputStream();
+            out = socket.getOutputStream();
             // if server receives socket created earlier
             // we have to wait until PlayerAcceptedStatusMessage from server init default player
             MessageListenerThread messageListenerThread = new MessageListenerThread(in);
@@ -41,7 +40,8 @@ public class ClientConnectionThread {
         if (!isConnected()) {
             throw new DisconnectedFromServerException("Disconnected from server");
         }
-        return in.readObject();
+        ObjectInputStream objIn = new ObjectInputStream(in);
+        return objIn.readObject();
     }
 
 

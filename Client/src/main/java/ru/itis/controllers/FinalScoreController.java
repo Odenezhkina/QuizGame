@@ -60,7 +60,7 @@ public class FinalScoreController {
 
     public void backToRoomInfo(ActionEvent event) {
         try {
-            UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "room-info.fxml");
+            UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "screens/room-info.fxml");
         } catch (IOException e) {
             new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.INFORMATION);
         }

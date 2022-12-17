@@ -8,31 +8,22 @@ import java.io.*;
 import java.net.Socket;
 
 public class PlayerConnection implements Connection {
+    private Server server;
     private final Socket socket;
     private final InputStream in;
     private final OutputStream out;
-    private Player player;
+    private Player player = Player.builder().build();
 
-    public PlayerConnection(Socket socket, int id) {
+    public PlayerConnection(Socket socket, int id, Server server) {
         this.socket = socket;
+        this.server = server;
         try {
             out = socket.getOutputStream();
             in = socket.getInputStream();
-            receiveUserInformation();
-            player.setUsername(player.getUsername() + "#" + id);
             player.setId(id);
+            ServerMessageListener listenerThread = new ServerMessageListener(in, server);
+            listenerThread.start();
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    private void receiveUserInformation() {
-        try {
-            ObjectInputStream inputStream = new ObjectInputStream(in);
-            String username = (String) inputStream.readObject();
-            player.setUsername(username);
-        }
-        catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -52,6 +43,8 @@ public class PlayerConnection implements Connection {
     @Override
     public void close() {
         try {
+            in.close();
+            out.close();
             socket.close();
         }
         catch (IOException ignored) {

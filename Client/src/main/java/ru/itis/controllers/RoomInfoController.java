@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.constants.RoomPreferences;
+import ru.itis.models.Player;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.client.GetNewQuestionMessage;
 import ru.itis.protocol.message.client.PlayerLeaveRoomMessage;
@@ -79,7 +80,7 @@ public class RoomInfoController {
         ObservableList<String> activePlayers = FXCollections.observableArrayList(
                 currentRoom.getPlayers().values().
                         stream()
-                        .map(it -> it.getUsername())
+                        .map(Player::getUsername)
                         .collect(Collectors.toList()));
         listViewActiveMembers.setItems(activePlayers);
     }

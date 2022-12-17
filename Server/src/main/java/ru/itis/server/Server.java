@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 public class Server {
     private final HashMap<Integer, Connection> connections;
+    private final HashMap<Integer, ServerMessageListener> listeners;
 
     private final ServerSocket serverSocket;
 
@@ -26,6 +27,7 @@ public class Server {
 
     public Server() {
         connections = new HashMap<>();
+        listeners = new HashMap<>();
         rooms = new HashMap<>();
         try {
             serverSocket = new ServerSocket(ConnectionPreferences.port);
@@ -41,6 +43,7 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 System.out.println("add connection");
                 addConnection(socket);
+
             } catch (IOException e) {
                 throw new RuntimeException(e.getMessage());
             }
@@ -48,10 +51,10 @@ public class Server {
     }
 
     public void addConnection(Socket socket) {
-        PlayerConnection connection = new PlayerConnection(socket, userId++);
+        PlayerConnection connection = new PlayerConnection(socket, userId++, this);
         connections.put(connection.getId(), connection);
         sendToConnection(connection.getId(), new PlayerAcceptedStatusMessage(connection.getId(), connection.getPlayer()));
-        System.out.println("Connected user Id: " + (connection.getId() + "Nickname: " + connection.getPlayer().getUsername()));
+        System.out.println("User: " + connection.getId());
     }
 
     private void sendToConnection(int connectionId, ContentMessage message) {
@@ -84,7 +87,10 @@ public class Server {
         if (roomService != null) {
             roomService.removeConnection(id);
         }
+        listeners.get(id).interrupt();
+        listeners.remove(id);
         connections.remove(id);
+        connection.close();
     }
     private int createRoom(Room room){
         room.setId(roomId++);

@@ -6,9 +6,7 @@ import ru.itis.models.Player;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
 import ru.itis.protocol.message.server.RoomWasUpdatedMessage;
-import ru.itis.protocol.message.server.SystemMessage;
 
-import ru.itis.utils.MessageForUser;
 
 import java.io.IOException;
 import java.util.Collection;
