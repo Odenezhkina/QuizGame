@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class Room implements Serializable {
     private final String name;
     private final int capacity;
-    private final HashMap<Integer, Player> players;
+    private final HashMap<Integer, Player> players = new HashMap<>();
     private int id;
     private int currentSize;
     private String creatorUsername;

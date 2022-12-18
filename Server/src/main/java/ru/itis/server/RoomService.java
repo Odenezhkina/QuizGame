@@ -19,8 +19,8 @@ public class RoomService {
     private final Room room;
     private Game game;
 
-    public RoomService(int id, String name, int capacity, int currentSize, Server server) {
-        room = Room.builder().id(id).name(name).capacity(capacity).currentSize(currentSize).build();
+    public RoomService(Room room, Server server) {
+        this.room = room;
         connections = new HashMap<>();
         this.server = server;
     }
@@ -43,7 +43,7 @@ public class RoomService {
         return hashMap;
     }
 
-    public void sendToConnections(ContentMessage message){
+    public void sendToConnections(ContentMessage<?> message){
         for (Connection con : connections.values()) {
             try {
                 con.send(message);

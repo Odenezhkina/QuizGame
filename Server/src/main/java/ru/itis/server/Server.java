@@ -2,9 +2,11 @@ package ru.itis.server;
 
 import ru.itis.connection.Connection;
 import ru.itis.constants.ConnectionPreferences;
+import ru.itis.models.Player;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
 
+import ru.itis.protocol.message.server.CreateRoomStatusMessage;
 import ru.itis.protocol.message.server.PlayerAcceptedStatusMessage;
 import ru.itis.protocol.message.server.SystemMessage;
 
@@ -15,7 +17,6 @@ import java.util.HashMap;
 
 public class Server {
     private final HashMap<Integer, Connection> connections;
-    private final HashMap<Integer, ServerMessageListener> listeners;
 
     private final ServerSocket serverSocket;
 
@@ -27,7 +28,6 @@ public class Server {
 
     public Server() {
         connections = new HashMap<>();
-        listeners = new HashMap<>();
         rooms = new HashMap<>();
         try {
             serverSocket = new ServerSocket(ConnectionPreferences.port);
@@ -51,13 +51,17 @@ public class Server {
     }
 
     public void addConnection(Socket socket) {
-        PlayerConnection connection = new PlayerConnection(socket, userId++, this);
+        Player player = Player.builder()
+                .id(userId++)
+                .build();
+        PlayerConnection connection = new PlayerConnection(socket, this, player );
         connections.put(connection.getId(), connection);
+        new Thread(connection).start();
         sendToConnection(connection.getId(), new PlayerAcceptedStatusMessage(connection.getId(), connection.getPlayer()));
         System.out.println("User: " + connection.getId());
     }
 
-    private void sendToConnection(int connectionId, ContentMessage message) {
+    private void sendToConnection(int connectionId, ContentMessage<?> message) {
         try {
             Connection con = connections.get(connectionId);
             if (con.isConnected()) {
@@ -68,14 +72,17 @@ public class Server {
         }
     }
 
-    public void handMessage(ContentMessage message) {
+    public void handMessage(ContentMessage<?> message) {
         switch (message.getType()) {
-            case GAME_START -> rooms.get(connections.get(message.getSenderId()).getPlayer().getRoomId()).startGame();
-            case ROOM_CREATE -> createRoom((Room) message.getContent());
-            case PLAYER_JOIN_ROOM -> joinRoom((Integer) message.getContent(), message.getSenderId());
+//            case GAME_START -> rooms.get(connections.get(message.getSenderId()).getPlayer().getRoomId()).startGame();
             case PLAYER_LEAVE_ROOM -> leaveRoom(connections.get(message.getSenderId()).getPlayer().getRoomId(), message.getSenderId());
             case PLAYER_DISCONNECT -> removeConnection(message.getSenderId());
         }
+    }
+
+    public void initUsername(int id, String username){
+        Connection connection = connections.get(id);
+        connection.getPlayer().setUsername(username);
     }
 
     public void removeConnection(int id) {
@@ -87,15 +94,19 @@ public class Server {
         if (roomService != null) {
             roomService.removeConnection(id);
         }
-        listeners.get(id).interrupt();
-        listeners.remove(id);
         connections.remove(id);
         connection.close();
     }
-    private int createRoom(Room room){
-        room.setId(roomId++);
-        rooms.put(roomId,new RoomService(room.getId(), room.getName(), room.getCapacity(), room.getCurrentSize(), this));
-        return room.getId();
+    public void createRoom(int creatorId, int maxSize){
+        Room room = Room.builder()
+                .id(roomId++)
+                .creatorUsername(connections.get(creatorId).getPlayer().getUsername())
+                .capacity(maxSize)
+                .currentSize(1)
+                .build();
+        room.addPlayer(connections.get(creatorId).getPlayer());
+        rooms.put(roomId,new RoomService(room, this));
+        sendToConnection(creatorId, new CreateRoomStatusMessage(room, creatorId));
     }
     public void joinRoom(int roomId, int senderId) {
         RoomService roomService = rooms.get(roomId);

@@ -3,26 +3,27 @@ package ru.itis.server;
 import ru.itis.connection.Connection;
 import ru.itis.models.Player;
 import ru.itis.protocol.message.BasicMessage;
+import ru.itis.protocol.message.ContentMessage;
+import ru.itis.server.listeners.ClientEventListener;
+import ru.itis.server.listeners.ServerEventListener;
 
 import java.io.*;
 import java.net.Socket;
 
-public class PlayerConnection implements Connection {
+public class PlayerConnection implements Connection, Runnable {
     private Server server;
     private final Socket socket;
     private final InputStream in;
     private final OutputStream out;
-    private Player player = Player.builder().build();
+    private Player player;
 
-    public PlayerConnection(Socket socket, int id, Server server) {
+    public PlayerConnection(Socket socket, Server server, Player player) {
         this.socket = socket;
         this.server = server;
+        this.player = player;
         try {
             out = socket.getOutputStream();
             in = socket.getInputStream();
-            player.setId(id);
-            ServerMessageListener listenerThread = new ServerMessageListener(in, server);
-            listenerThread.start();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -51,6 +52,33 @@ public class PlayerConnection implements Connection {
         }
     }
 
+    @Override
+    public void run() {
+        try {
+            while(socket.isConnected()){
+                int b = in.available();
+                if (b != 0) {
+                    ObjectInputStream objIn = new ObjectInputStream(in);
+                    ContentMessage<?> message = (ContentMessage<?>) objIn.readObject();
+                    ClientEventListener listener = ServerEventListener.getListener(message.getType());
+                    listener.initServer(server);
+                    listener.handMessage(this, message);
+                }
+                else {
+                    Thread.sleep(200);
+                }
+            }
+//            ObjectInputStream objIn = new ObjectInputStream(in);
+//            while ((message = (ContentMessage<?>) objIn.readObject()) != null) {
+//                ClientEventListener listener = ServerEventListener.getListener(message.getType());
+//                listener.initServer(server);
+//                listener.handMessage(this, message);
+//            }
+        }
+        catch (IOException | ClassNotFoundException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @Override
     public int getId() {
         return player.getId();
