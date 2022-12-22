@@ -7,14 +7,18 @@ import java.util.*;
 public class QuestionRepositoryImpl {
     private final Set<Integer> notAvailableIdSet = new HashSet<>();
     private final List<Question> questionArray = initQuestionArray();
-    private final Random randomGenerator = new Random(questionArray.size());
+    //private final Random randomGenerator = new Random(questionArray.size());
 
     public Question getQuestion() {
-        int newPosition = randomGenerator.nextInt();
+        int newPosition = generate();
         while (!notAvailableIdSet.add(newPosition)) {
-            newPosition = randomGenerator.nextInt();
+            newPosition = generate();
         }
         return questionArray.get(newPosition);
+    }
+
+    private int generate(){
+        return (int) (Math.random() * 18);
     }
 
     private List<Question> initQuestionArray() {

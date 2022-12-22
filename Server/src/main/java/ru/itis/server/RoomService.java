@@ -4,6 +4,7 @@ import lombok.Getter;
 import ru.itis.connection.Connection;
 import ru.itis.models.Player;
 import ru.itis.models.Room;
+import ru.itis.protocol.message.BasicMessage;
 import ru.itis.protocol.message.ContentMessage;
 import ru.itis.protocol.message.server.RoomWasUpdatedMessage;
 
@@ -45,7 +46,7 @@ public class RoomService {
         return hashMap;
     }
 
-    public void sendToConnections(ContentMessage<?> message){
+    public void sendToConnections(BasicMessage message){
         for (Connection con : connections.values()) {
             try {
                 con.send(message);

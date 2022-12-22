@@ -3,6 +3,7 @@ package ru.itis.server;
 import ru.itis.models.Player;
 import ru.itis.protocol.message.server.GameOverMessage;
 import ru.itis.protocol.message.server.NextQuestionMessage;
+import ru.itis.protocol.message.server.TimeUpMessage;
 import ru.itis.repository.QuestionRepositoryImpl;
 
 import java.util.HashMap;
@@ -33,6 +34,7 @@ public class Game implements Runnable{
                 room.sendToConnections(new NextQuestionMessage(repository.getQuestion(), -1));
                 Thread.sleep(TIME_FOR_QUESTION);
                 currentQ++;
+                room.sendToConnections(new TimeUpMessage(-1));
             }
             gameOver();
         } catch (InterruptedException e) {

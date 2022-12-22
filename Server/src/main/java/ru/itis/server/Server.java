@@ -127,4 +127,14 @@ public class Server {
         roomService.removeConnection(senderId);
         roomService.sendToConnections(new SystemMessage(connections.get(senderId).getPlayer().getUsername() + " disconnect", -1));
     }
+
+    public void nextQuestion(int roomId){
+        RoomService roomService = rooms.get(roomId);
+        if(roomService.getGame() != null){
+            return;
+        }
+        else {
+            roomService.startGame();
+        }
+    }
 }
