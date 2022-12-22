@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.utils.exceptions.NavigatorNotInitializedException;
 import ru.itis.utils.navigation.UiNavigatorHolder;
@@ -44,7 +45,6 @@ public class StartScreenController implements Initializable {
     protected void navigateToCreateRoomScene(ActionEvent event) {
         try {
             UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "screens/create-room.fxml");
-//            new UiNavigator(currentStage).navigateToScreen(event, "screens/create-room.fxml");
         } catch (IOException | NavigatorNotInitializedException e) {
             e.printStackTrace();
         }
@@ -53,9 +53,8 @@ public class StartScreenController implements Initializable {
     @FXML
     protected void onExitButtonClick(ActionEvent event) {
         try {
-//            new UiNavigator(currentStage).exit(event);
-            UiNavigatorHolder.getUiNavigator().navigateToStartScreen(event);
-            ConnectionHolder.closeConnection();
+            Stage stage = (Stage) labelQuizGame.getScene().getWindow();
+            stage.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

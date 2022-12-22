@@ -27,19 +27,6 @@ public class MessageListener extends Thread {
         this.in = socket.getInputStream();
     }
 
-//     while (socket.isConnected()) {
-//            int b = in.available();
-//            if (b != 0) {
-//                ObjectInputStream objIn = new ObjectInputStream(in);
-//                ContentMessage<?> message = (ContentMessage<?>) objIn.readObject();
-//                MessageListener listener = MessageListener
-//                listener.initServer(server);
-//                listener.handMessage(this, message);
-//            } else {
-//                Thread.sleep(200);
-//            }
-//        }
-
     @Override
     public void run() {
         try {
@@ -61,7 +48,7 @@ public class MessageListener extends Thread {
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-            handler.showSystemMessage(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 

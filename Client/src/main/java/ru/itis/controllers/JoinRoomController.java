@@ -1,10 +1,13 @@
 package ru.itis.controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.protocol.message.client.InitUsernameMessage;
 import ru.itis.protocol.message.client.JoinRoomMessage;
@@ -36,6 +39,11 @@ public class JoinRoomController {
 
             bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
             bar.setVisible(true);
+
+            Timeline loadingTimer = new Timeline(new KeyFrame(Duration.seconds(3), (ActionEvent e) -> {
+                bar.setVisible(false);
+            }));
+            loadingTimer.play();
 
             ConnectionHolder.getConnection().send(new InitUsernameMessage(playerId, tfUsername.getText()));
             ConnectionHolder.getConnection().send(new JoinRoomMessage(playerId, roomCode));

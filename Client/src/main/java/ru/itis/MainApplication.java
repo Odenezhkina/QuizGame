@@ -10,6 +10,9 @@ import ru.itis.utils.navigation.UiNavigatorHolder;
 import java.io.IOException;
 
 public class MainApplication extends Application {
+    private int WINDOW_WIDTH = 600;
+    private int WINDOW_HEIGHT = 600;
+
     public static void main(String[] args) {
         launch();
     }
@@ -25,7 +28,13 @@ public class MainApplication extends Application {
         scene.getStylesheets().add(css);
         stage.setTitle("QuizGame");
         stage.setScene(scene);
-        stage.minHeightProperty().bind(scene.heightProperty());
+
+//        stage.minHeightProperty().bind(scene.heightProperty());
+//        stage.minWidthProperty().bind(scene.widthProperty());
+        stage.setResizable(false);
+        stage.setWidth(WINDOW_WIDTH);
+        stage.setHeight(WINDOW_HEIGHT);
+
         stage.minWidthProperty().bind(scene.widthProperty());
         stage.show();
 

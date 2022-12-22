@@ -5,6 +5,9 @@
 .label-title {
     -fx-font-size: 40px;
     -fx-font-weight: bold;
+    -fx-max-width: 500px;
+    -fx-alignment: center;
+    -fx-wrap-text: true
 }
 
 .btn-primary {
@@ -27,7 +30,8 @@
 /* time up */
 .label-warning {
     -fx-text-fill: #d25656;
-    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-max-width: 300px;
 }
 
 .label-important {
