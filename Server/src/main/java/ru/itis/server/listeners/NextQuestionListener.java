@@ -4,7 +4,7 @@ import ru.itis.protocol.message.ContentMessage;
 import ru.itis.server.PlayerConnection;
 import ru.itis.server.Server;
 
-public class StartGameListener implements ClientEventListener{
+public class NextQuestionListener implements ClientEventListener{
     private Server server;
 
 
@@ -13,7 +13,7 @@ public class StartGameListener implements ClientEventListener{
     }
 
     @Override
-    public void handMessage(PlayerConnection connection, ContentMessage<?> message) {
+    public void handMessage(PlayerConnection connection) {
 
     }
 }

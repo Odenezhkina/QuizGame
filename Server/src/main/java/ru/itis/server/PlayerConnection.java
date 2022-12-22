@@ -3,7 +3,6 @@ package ru.itis.server;
 import ru.itis.connection.Connection;
 import ru.itis.models.Player;
 import ru.itis.protocol.message.BasicMessage;
-import ru.itis.protocol.message.ContentMessage;
 import ru.itis.server.listeners.ClientEventListener;
 import ru.itis.server.listeners.ServerEventListener;
 
@@ -14,8 +13,8 @@ public class PlayerConnection implements Connection, Runnable {
     private final Socket socket;
     private final InputStream in;
     private final OutputStream out;
-    private Server server;
-    private Player player;
+    private final Server server;
+    private final Player player;
 
     public PlayerConnection(Socket socket, Server server, Player player) {
         this.socket = socket;
@@ -58,19 +57,19 @@ public class PlayerConnection implements Connection, Runnable {
                 int b = in.available();
                 if (b != 0) {
                     ObjectInputStream objIn = new ObjectInputStream(in);
-                    ContentMessage<?> message = (ContentMessage<?>) objIn.readObject();
+                    BasicMessage message = (BasicMessage) objIn.readObject();
                     //
                     System.out.println(message.toString());
                     //
-                    ClientEventListener listener = ServerEventListener.getListener(message.getType());
+                    ClientEventListener listener = ServerEventListener.getListener(message.getType(), message);
                     listener.initServer(server);
-                    listener.handMessage(this, message);
+                    listener.handMessage(this);
                 } else {
                     Thread.sleep(200);
                 }
             }
         }
-        catch (IOException | ClassNotFoundException | InterruptedException e) {
+        catch (IOException | ClassNotFoundException | InterruptedException | NullPointerException e) {
             throw new RuntimeException(e);
         }
     }

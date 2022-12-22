@@ -8,6 +8,7 @@ import ru.itis.protocol.message.ContentMessage;
 
 import ru.itis.protocol.message.server.CreateRoomStatusMessage;
 import ru.itis.protocol.message.server.PlayerAcceptedStatusMessage;
+import ru.itis.protocol.message.server.RoomWasUpdatedMessage;
 import ru.itis.protocol.message.server.SystemMessage;
 
 import java.io.IOException;
@@ -72,14 +73,6 @@ public class Server {
         }
     }
 
-    public void handMessage(ContentMessage<?> message) {
-        switch (message.getType()) {
-//            case GAME_START -> rooms.get(connections.get(message.getSenderId()).getPlayer().getRoomId()).startGame();
-            case PLAYER_LEAVE_ROOM -> leaveRoom(connections.get(message.getSenderId()).getPlayer().getRoomId(), message.getSenderId());
-            case PLAYER_DISCONNECT -> removeConnection(message.getSenderId());
-        }
-    }
-
     public void initUsername(int id, String username){
         Connection connection = connections.get(id);
         connection.getPlayer().setUsername(username);
@@ -99,23 +92,31 @@ public class Server {
     }
     public void createRoom(int creatorId, int maxSize){
         Room room = Room.builder()
-                .id(roomId++)
+                .id(roomId)
                 .creatorUsername(connections.get(creatorId).getPlayer().getUsername())
                 .capacity(maxSize)
                 .currentSize(1)
                 .build();
         room.addPlayer(connections.get(creatorId).getPlayer());
-        rooms.put(roomId,new RoomService(room, this));
+        rooms.put(roomId, new RoomService(room, this));
         sendToConnection(creatorId, new CreateRoomStatusMessage(room, creatorId));
+        roomId++;
     }
     public void joinRoom(int roomId, int senderId) {
         RoomService roomService = rooms.get(roomId);
         if (roomService.getGame() != null){
             sendToConnection(senderId, new SystemMessage("Game has already started", -1));
         }
+        else if(roomService.checkUsernames(connections.get(senderId).getPlayer().getUsername())){
+            sendToConnection(senderId, new SystemMessage("Player with that username is already in the room", -1));
+        }
+        else if(roomService.isClosed()){
+            sendToConnection(senderId, new SystemMessage("This room does not exist", -1));
+        }
         else if(roomService.getRoom().getCurrentSize() < roomService.getRoom().getCapacity()) {
             Connection connection = connections.get(senderId);
             roomService.addConnection(connection);
+            roomService.sendToConnections(new RoomWasUpdatedMessage(roomService.getRoom(), -1));
         }
         else {
             sendToConnection(senderId, new SystemMessage("Room is full", -1));
@@ -124,10 +125,6 @@ public class Server {
     public void leaveRoom(int roomId, int senderId) {
         RoomService roomService = rooms.get(roomId);
         roomService.removeConnection(senderId);
-        roomService.sendToConnections(new SystemMessage("Player" + " " + senderId + " disconnect", -1));
-    }
-
-    public void removeRoom(int roomId) {
-        rooms.remove(roomId);
+        roomService.sendToConnections(new SystemMessage(connections.get(senderId).getPlayer().getUsername() + " disconnect", -1));
     }
 }

@@ -1,6 +1,6 @@
 package ru.itis.server.listeners;
 
-import ru.itis.protocol.message.ContentMessage;
+
 import ru.itis.server.PlayerConnection;
 import ru.itis.server.Server;
 
@@ -13,7 +13,7 @@ public class LeaveRoomListener  implements ClientEventListener {
     }
 
     @Override
-    public void handMessage(PlayerConnection connection, ContentMessage<?> message) {
+    public void handMessage(PlayerConnection connection) {
         server.leaveRoom(connection.getPlayer().getRoomId(), connection.getId());
     }
 }

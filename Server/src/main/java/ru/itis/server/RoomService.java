@@ -18,11 +18,13 @@ public class RoomService {
     private final Server server;
     private final Room room;
     private Game game;
+    private boolean closed;
 
     public RoomService(Room room, Server server) {
         this.room = room;
         connections = new HashMap<>();
         this.server = server;
+        closed = false;
     }
 
     public void finishGame(){
@@ -52,6 +54,14 @@ public class RoomService {
             }
         }
     }
+    public boolean checkUsernames(String username){
+        for (Player player: room.getPlayers().values()){
+            if(player.getUsername().equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void removeConnection(int connectionId) {
         Connection connection = connections.get(connectionId);
@@ -62,9 +72,10 @@ public class RoomService {
             game.playerDisconnected(connectionId);
         }
         room.removePlayer(connectionId);
+        room.setCurrentSize(room.getCurrentSize() - 1);
         connections.get(connectionId).getPlayer().setRoomId(-1);
         if (room.getCurrentSize() == 0) {
-            server.removeRoom(room.getId());
+            closed = true;
         }
     }
 
@@ -73,7 +84,5 @@ public class RoomService {
         connections.put(connection.getId(), connection);
         room.addPlayer(connection.getPlayer());
         room.setCurrentSize(room.getCurrentSize() + 1);
-
-        sendToConnections(new RoomWasUpdatedMessage(room, room.getId()));
     }
 }
