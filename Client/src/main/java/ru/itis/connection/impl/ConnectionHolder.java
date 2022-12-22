@@ -1,5 +1,6 @@
 package ru.itis.connection.impl;
 
+import ru.itis.protocol.message.client.PlayerDisconnectedMessage;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 
 public class ConnectionHolder {
@@ -21,6 +22,11 @@ public class ConnectionHolder {
 
     public static void closeConnection() throws Exception {
         if (connection != null) {
+            if (connection.getPlayer() != null) {
+                int playerId = connection.getId();
+                System.out.println("disconnecting");
+                connection.send(new PlayerDisconnectedMessage(playerId));
+            }
             connection.close();
         }
         // if user open and then immediately close window
