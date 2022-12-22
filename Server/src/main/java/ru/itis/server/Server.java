@@ -95,10 +95,10 @@ public class Server {
                 .id(roomId)
                 .creatorUsername(connections.get(creatorId).getPlayer().getUsername())
                 .capacity(maxSize)
-                .currentSize(1)
+                .currentSize(0)
                 .build();
-        room.addPlayer(connections.get(creatorId).getPlayer());
         rooms.put(roomId, new RoomService(room, this));
+        rooms.get(roomId).addConnection(connections.get(creatorId));
         sendToConnection(creatorId, new CreateRoomStatusMessage(room, creatorId));
         roomId++;
     }

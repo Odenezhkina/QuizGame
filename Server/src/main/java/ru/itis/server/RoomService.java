@@ -49,7 +49,8 @@ public class RoomService {
         for (Connection con : connections.values()) {
             try {
                 con.send(message);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
