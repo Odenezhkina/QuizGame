@@ -11,19 +11,20 @@ import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.List;
 
 public class MessageListener extends Thread {
-    private final ObjectInputStream in;
+    private final InputStream in;
     private final UiEventHandler handler;
     private final Socket socket;
 
     public MessageListener(Socket socket) throws IOException {
         this.socket = socket;
         this.handler = new UiEventHandler();
-        this.in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+        this.in = socket.getInputStream();
     }
 
 //     while (socket.isConnected()) {
@@ -48,7 +49,7 @@ public class MessageListener extends Thread {
                     ObjectInputStream objIn = new ObjectInputStream(in);
                     BasicMessage message = (BasicMessage) objIn.readObject();
                     //
-                    System.out.println(message.toString());
+//                    System.out.println(message.toString());
                     //
                     handleMessage(message);
                 }

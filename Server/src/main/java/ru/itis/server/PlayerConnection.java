@@ -69,13 +69,8 @@ public class PlayerConnection implements Connection, Runnable {
                     Thread.sleep(200);
                 }
             }
-//            ObjectInputStream objIn = new ObjectInputStream(in);
-//            while ((message = (ContentMessage<?>) objIn.readObject()) != null) {
-//                ClientEventListener listener = ServerEventListener.getListener(message.getType());
-//                listener.initServer(server);
-//                listener.handMessage(this, message);
-//            }
-        } catch (IOException | ClassNotFoundException | InterruptedException e) {
+        }
+        catch (IOException | ClassNotFoundException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
