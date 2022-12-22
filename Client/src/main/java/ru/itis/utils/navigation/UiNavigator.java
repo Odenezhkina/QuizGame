@@ -15,11 +15,15 @@ import java.io.IOException;
 public class UiNavigator {
     private static final String PATH_STYLE_CSS = "screens/style.css";
     private static final String PATH_START_SCREEN = "screens/start-screen.fxml";
-    private Stage currentStage;
+    private final Stage currentStage;
     private String css = MainApplication.class.getResource(PATH_STYLE_CSS).toExternalForm();
 
+    public UiNavigator(Stage currentStage) {
+        this.currentStage = currentStage;
+    }
+
     public Object navigateToScreen(ActionEvent event, String resPathString) throws IOException {
-        currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//        currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(resPathString));
         Scene scene = new Scene(fxmlLoader.load(), currentStage.getWidth(), currentStage.getHeight());
         scene.getStylesheets().add(css);

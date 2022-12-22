@@ -1,5 +1,6 @@
 package ru.itis.connection;
 
+import javafx.application.Platform;
 import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.models.Player;
 import ru.itis.models.Question;
@@ -9,7 +10,6 @@ import ru.itis.protocol.message.server.*;
 import ru.itis.utils.UiEventHandler;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -46,16 +46,21 @@ public class MessageListener extends Thread {
             while (socket.isConnected()) {
                 int b = in.available();
                 if (b != 0) {
-                    System.out.println("b");
                     ObjectInputStream objIn = new ObjectInputStream(in);
                     BasicMessage message = (BasicMessage) objIn.readObject();
                     //
-//                    System.out.println(message.toString());
+                    System.out.println(message.toString());
                     //
-                    handleMessage(message);
+                    Platform.runLater(() -> {
+                        try {
+                            handleMessage(message);
+                        } catch (ConnectionNotInitializedException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
             }
-        } catch (IOException | ClassNotFoundException | ConnectionNotInitializedException e) {
+        } catch (IOException | ClassNotFoundException e) {
             handler.showSystemMessage(e.getMessage());
         }
     }

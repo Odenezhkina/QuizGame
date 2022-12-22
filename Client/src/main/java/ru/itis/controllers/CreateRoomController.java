@@ -10,7 +10,8 @@ import ru.itis.protocol.message.client.CreateRoomMessage;
 import ru.itis.protocol.message.client.InitUsernameMessage;
 import ru.itis.utils.SystemErrorHandler;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
-import ru.itis.utils.navigation.UiNavigator;
+import ru.itis.utils.exceptions.NavigatorNotInitializedException;
+import ru.itis.utils.navigation.UiNavigatorHolder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,8 +54,8 @@ public class CreateRoomController implements Initializable {
 
     public void navigateBack(ActionEvent event) {
         try {
-            new UiNavigator().navigateToStartScreen(event);
-        } catch (IOException e) {
+            UiNavigatorHolder.getUiNavigator().navigateToStartScreen(event);
+        } catch (IOException | NavigatorNotInitializedException e) {
             new SystemErrorHandler().handleError(e.getMessage());
         }
     }

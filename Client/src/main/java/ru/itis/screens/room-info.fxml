@@ -13,6 +13,7 @@
     <Label fx:id="labelRoomNumber" text="Room #roomNumber" styleClass="label-title"/>
     <Label fx:id="labelRoomCreator" text="Creator: #username"/>
     <Label fx:id="labelRoomMaxMembers" text="Maximum number of members: #roomMembers"/>
+    <Label text="Active members"/>
     <ListView fx:id="lvActiveMembers">
         <!--        already joined members -->
     </ListView>

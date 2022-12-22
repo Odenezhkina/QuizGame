@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import ru.itis.models.Player;
 import ru.itis.utils.SystemErrorHandler;
+import ru.itis.utils.exceptions.NavigatorNotInitializedException;
 import ru.itis.utils.navigation.UiNavigatorHolder;
 
 import java.io.IOException;
@@ -61,7 +62,7 @@ public class FinalScoreController {
     public void backToRoomInfo(ActionEvent event) {
         try {
             UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "screens/room-info.fxml");
-        } catch (IOException e) {
+        } catch (IOException | NavigatorNotInitializedException e) {
             new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.INFORMATION);
         }
     }

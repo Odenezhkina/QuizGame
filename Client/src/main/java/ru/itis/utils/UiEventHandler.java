@@ -7,6 +7,7 @@ import ru.itis.models.Player;
 import ru.itis.models.Question;
 import ru.itis.models.Room;
 import ru.itis.utils.exceptions.InvalidStageStateException;
+import ru.itis.utils.exceptions.NavigatorNotInitializedException;
 import ru.itis.utils.navigation.UiNavigatorHolder;
 
 import java.io.IOException;
@@ -28,36 +29,36 @@ public class UiEventHandler {
 
     public void showNextQuestion(Question question) {
         try {
-            QuizController controller = (QuizController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("quiz-screen.fxml");
+            QuizController controller = (QuizController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("screens/quiz-screen.fxml");
             controller.initQuestion(question);
-        } catch (InvalidStageStateException | IOException e) {
+        } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());
         }
     }
 
     public void timeUp() {
         try {
-            QuizController controller = (QuizController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("quiz-screen.fxml");
+            QuizController controller = (QuizController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("screens/quiz-screen.fxml");
             controller.timeUp();
-        } catch (InvalidStageStateException | IOException e) {
+        } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());
         }
     }
 
     public void showStats(List<Player> players) {
         try {
-            FinalScoreController controller = (FinalScoreController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("final-score.fxml");
+            FinalScoreController controller = (FinalScoreController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("screens/final-score.fxml");
             controller.showStats(players);
-        } catch (InvalidStageStateException | IOException e) {
+        } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());
         }
     }
 
     private void navigateToRoomInfo(Room room) {
         try {
-            RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("room-info.fxml");
+            RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("screens/room-info.fxml");
             controller.initRoomInfo(room);
-        } catch (InvalidStageStateException | IOException e) {
+        } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());
         }
     }
@@ -66,7 +67,7 @@ public class UiEventHandler {
         try {
             RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("room-info.fxml");
             controller.initRoomInfo(room);
-        } catch (InvalidStageStateException | IOException e) {
+        } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());
         }
     }

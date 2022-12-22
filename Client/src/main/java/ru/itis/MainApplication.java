@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ru.itis.connection.impl.ConnectionHolder;
+import ru.itis.utils.navigation.UiNavigatorHolder;
 
 import java.io.IOException;
 
@@ -29,6 +30,7 @@ public class MainApplication extends Application {
         stage.show();
 
         ConnectionHolder.initializeConnection();
+        UiNavigatorHolder.initNavigator(stage);
     }
 
     @Override

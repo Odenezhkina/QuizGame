@@ -15,7 +15,8 @@ import ru.itis.protocol.message.client.GetNewQuestionMessage;
 import ru.itis.protocol.message.client.PlayerLeaveRoomMessage;
 import ru.itis.utils.SystemErrorHandler;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
-import ru.itis.utils.navigation.UiNavigator;
+import ru.itis.utils.exceptions.NavigatorNotInitializedException;
+import ru.itis.utils.navigation.UiNavigatorHolder;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -75,8 +76,8 @@ public class RoomInfoController {
         try {
             int playerId = ConnectionHolder.getConnection().getPlayer().getId();
             ConnectionHolder.getConnection().send(new PlayerLeaveRoomMessage(playerId));
-            new UiNavigator().navigateToStartScreen(event);
-        } catch (IOException | ConnectionNotInitializedException e) {
+            UiNavigatorHolder.getUiNavigator().navigateToStartScreen(event);
+        } catch (IOException | ConnectionNotInitializedException | NavigatorNotInitializedException e) {
             new SystemErrorHandler().handleError(e.getMessage());
         }
     }

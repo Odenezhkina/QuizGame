@@ -7,7 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ru.itis.connection.impl.ConnectionHolder;
-import ru.itis.utils.navigation.UiNavigator;
+import ru.itis.utils.exceptions.NavigatorNotInitializedException;
+import ru.itis.utils.navigation.UiNavigatorHolder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,8 +32,9 @@ public class StartScreenController implements Initializable {
     @FXML
     protected void navigateToJoinRoomScene(ActionEvent event) {
         try {
-            new UiNavigator().navigateToScreen(event, "screens/join-room.fxml");
-        } catch (IOException e) {
+            UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "screens/join-room.fxml");
+//            new UiNavigator(currentStage).navigateToScreen(event, "screens/join-room.fxml");
+        } catch (IOException | NavigatorNotInitializedException e) {
             e.printStackTrace();
         }
 
@@ -41,8 +43,9 @@ public class StartScreenController implements Initializable {
     @FXML
     protected void navigateToCreateRoomScene(ActionEvent event) {
         try {
-            new UiNavigator().navigateToScreen(event, "screens/create-room.fxml");
-        } catch (IOException e) {
+            UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "screens/create-room.fxml");
+//            new UiNavigator(currentStage).navigateToScreen(event, "screens/create-room.fxml");
+        } catch (IOException | NavigatorNotInitializedException e) {
             e.printStackTrace();
         }
     }
@@ -50,7 +53,8 @@ public class StartScreenController implements Initializable {
     @FXML
     protected void onExitButtonClick(ActionEvent event) {
         try {
-            new UiNavigator().exit(event);
+//            new UiNavigator(currentStage).exit(event);
+            UiNavigatorHolder.getUiNavigator().navigateToStartScreen(event);
             ConnectionHolder.closeConnection();
         } catch (Exception e) {
             e.printStackTrace();

@@ -26,7 +26,7 @@
 
 /* time up */
 .label-warning {
-    -fx-text-fill: red;
+    -fx-text-fill: #ff8080;
 }
 
 .text-field{
