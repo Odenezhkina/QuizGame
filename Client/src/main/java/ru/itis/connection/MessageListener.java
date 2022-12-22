@@ -15,19 +15,20 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.List;
 
-public class MessageListenerThread extends Thread {
+public class MessageListener extends Thread {
     private final ObjectInputStream in;
-    private final UiEventHandler handler = new UiEventHandler();
+    private final UiEventHandler handler;
 
-    public MessageListenerThread(InputStream in) throws IOException {
+    public MessageListener(InputStream in) throws IOException {
+        this.handler = new UiEventHandler();
         this.in = new ObjectInputStream(new BufferedInputStream(in));
     }
 
     @Override
     public void run() {
-        ContentMessage message;
+        ContentMessage<?> message;
         try {
-            while ((message = (ContentMessage) in.readObject()) != null) {
+            while ((message = (ContentMessage<?>) in.readObject()) != null) {
                 switch (message.getType()) {
                     case GAME_OVER -> {
                         List<Player> playerList = ((GameOverMessage) message).getContent();
@@ -57,6 +58,7 @@ public class MessageListenerThread extends Thread {
                         // initializing default player
                         ConnectionHolder.getConnection().setPlayer(player);
                     }
+                    default -> handler.showSystemMessage("Unknown message from server");
                 }
             }
         } catch (ClassNotFoundException | ConnectionNotInitializedException | IOException e) {

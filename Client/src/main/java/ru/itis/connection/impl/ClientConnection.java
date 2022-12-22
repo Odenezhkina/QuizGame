@@ -1,6 +1,6 @@
 package ru.itis.connection.impl;
 
-import ru.itis.connection.MessageListenerThread;
+import ru.itis.connection.MessageListener;
 import ru.itis.constants.ConnectionPreferences;
 import ru.itis.models.Player;
 import ru.itis.protocol.message.BasicMessage;
@@ -10,23 +10,21 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class ClientConnectionThread {
+public class ClientConnection {
     private final Socket socket;
     private final InputStream in;
     private final OutputStream out;
     private Player player;
 
-    public ClientConnectionThread() {
+    public ClientConnection() {
         try {
             socket = new Socket(InetAddress.getByName(ConnectionPreferences.host), ConnectionPreferences.port);
             in = socket.getInputStream();
             out = socket.getOutputStream();
-            // if server receives socket created earlier
-            // we have to wait until PlayerAcceptedStatusMessage from server init default player
-            MessageListenerThread messageListenerThread = new MessageListenerThread(in);
+            MessageListener messageListenerThread = new MessageListener(in);
             messageListenerThread.start();
         } catch (IOException e) {
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 

@@ -1,7 +1,8 @@
 import ru.itis.MainApplication;
 
-class ClassDemo{
+class ClientStart {
     public static void main(String[] args) {
         MainApplication.main(args);
     }
+
 }
