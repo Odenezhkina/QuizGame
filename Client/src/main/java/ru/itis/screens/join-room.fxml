@@ -9,10 +9,11 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
+    <ProgressIndicator fx:id="bar" visible="false"/>
 
     <Label fx:id="joinRoomTitle" text="Join room" styleClass="label-title"/>
     <TextField fx:id="tfUsername" text="Username"/>
-    <Label fx:id="labelRoomCodeError" text="Invalid room code" visible="false"/>
+    <Label fx:id="labelRoomCodeError" text="Invalid room code" visible="false" styleClass="label-warning"/>
     <TextField fx:id="tfRoomCode" text="Room code"/>
     <Button text="Join" styleClass="btn-primary" onAction="#joinRoom"/>
     <Button text="Back" styleClass="btn-default" onAction="#onBackButtonClick"/>

@@ -3,10 +3,7 @@ package ru.itis.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.constants.RoomPreferences;
 import ru.itis.protocol.message.client.CreateRoomMessage;
@@ -24,6 +21,9 @@ public class CreateRoomController implements Initializable {
     private Label labelCreateRoom;
 
     @FXML
+    private ProgressIndicator bar;
+
+    @FXML
     private TextField tfUsername;
 
     @FXML
@@ -39,9 +39,11 @@ public class CreateRoomController implements Initializable {
     @FXML
     protected void createRoom(ActionEvent event) {
         try {
+            bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+            bar.setVisible(true);
+
             int playerId = ConnectionHolder.getConnection().getId();
             ConnectionHolder.getConnection().getPlayer().setUsername(tfUsername.getText());
-
             ConnectionHolder.getConnection().send(new InitUsernameMessage(playerId, tfUsername.getText()));
             ConnectionHolder.getConnection().send(new CreateRoomMessage(spinnerMaxMembers.getValue(), playerId));
         } catch (IOException | ConnectionNotInitializedException e) {

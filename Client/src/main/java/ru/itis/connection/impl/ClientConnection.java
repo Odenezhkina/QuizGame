@@ -21,7 +21,7 @@ public class ClientConnection {
             socket = new Socket(InetAddress.getByName(ConnectionPreferences.host), ConnectionPreferences.port);
             in = socket.getInputStream();
             out = socket.getOutputStream();
-            MessageListener messageListenerThread = new MessageListener(in);
+            MessageListener messageListenerThread = new MessageListener(socket);
             messageListenerThread.start();
         } catch (IOException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -34,13 +34,21 @@ public class ClientConnection {
         objOut.flush();
     }
 
-    public Object receive() throws IOException, DisconnectedFromServerException, ClassNotFoundException {
-        if (!isConnected()) {
-            throw new DisconnectedFromServerException("Disconnected from server");
-        }
-        ObjectInputStream objIn = new ObjectInputStream(in);
-        return objIn.readObject();
-    }
+//    @Override
+//    public void run() {
+//        while (socket.isConnected()) {
+//            int b = in.available();
+//            if (b != 0) {
+//                ObjectInputStream objIn = new ObjectInputStream(in);
+//                ContentMessage<?> message = (ContentMessage<?>) objIn.readObject();
+//                MessageListener listener = MessageListener
+//                listener.initServer(server);
+//                listener.handMessage(this, message);
+//            } else {
+//                Thread.sleep(200);
+//            }
+//        }
+//    }
 
 
     public Player getPlayer() {

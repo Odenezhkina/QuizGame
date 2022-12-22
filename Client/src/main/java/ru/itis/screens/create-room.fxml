@@ -9,6 +9,8 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
+    <ProgressIndicator fx:id="bar" visible="false"/>
+
     <Label fx:id="labelCreateRoom" text="Create room" styleClass="label-title"/>
     <TextField fx:id="tfUsername" text="Username"/>
     <Spinner fx:id="spinnerMaxMembers" editable="true">

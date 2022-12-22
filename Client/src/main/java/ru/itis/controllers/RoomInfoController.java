@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.constants.RoomPreferences;
 import ru.itis.models.Player;
@@ -20,6 +21,9 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 public class RoomInfoController {
+    @FXML
+    private ProgressIndicator bar;
+
     @FXML
     private Label labelRoomNumber;
 
@@ -53,6 +57,8 @@ public class RoomInfoController {
             try {
                 int roomId = ConnectionHolder.getConnection().getPlayer().getRoomId();
 
+                bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+                bar.setVisible(true);
                 // send player room NOT player id
                 ConnectionHolder.getConnection().send(new GetNewQuestionMessage(roomId));
             } catch (ConnectionNotInitializedException e) {
