@@ -26,10 +26,15 @@
 
 /* time up */
 .label-warning {
-    -fx-text-fill: #ff8080;
+    -fx-text-fill: #d25656;
+    -fx-text-alignment: center;
 }
 
-.text-field{
+.label-important {
+    -fx-text-fill: #6C3DF2;
+}
+
+.text-field {
     -fx-font-weight: normal;
     -fx-font-family: "Roboto Light";
     -fx-min-width: 260px;

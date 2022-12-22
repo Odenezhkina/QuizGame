@@ -38,7 +38,7 @@ public class RoomInfoController {
     private Label labelError;
 
     @FXML
-    private ListView<String> listViewActiveMembers;
+    private ListView<String> listActiveMembers;
 
     private Room currentRoom;
 
@@ -47,13 +47,14 @@ public class RoomInfoController {
         labelRoomNumber.setText("Room №" + currentRoom.getId());
         labelRoomMaxMembers.setText("Max members: " + currentRoom.getCapacity());
         labelRoomCreator.setText("Creator: " + currentRoom.getCreatorUsername());
-        initListView();
+        initListView(room);
+        bar.setVisible(false);
     }
 
     public void onStartQuizClick(ActionEvent event) throws IOException {
         int activeMembers = currentRoom.getCurrentSize();
         if (activeMembers < RoomPreferences.MIN_ROOM_MEMBER) {
-            showErrorMessage("There are not enough participants for the quiz. " + "The minimum member count for starting the quiz: " + RoomPreferences.MIN_ROOM_MEMBER);
+            showErrorMessage("Not enough participants. " + "The minimum number is " + RoomPreferences.MIN_ROOM_MEMBER);
         } else {
             try {
                 int roomId = ConnectionHolder.getConnection().getPlayer().getRoomId();
@@ -82,13 +83,16 @@ public class RoomInfoController {
         }
     }
 
-    private void initListView() {
-        listViewActiveMembers = new ListView<>();
+    private void initListView(Room room) {
         ObservableList<String> activePlayers = FXCollections.observableArrayList(
-                currentRoom.getPlayers().values().
+                room.getPlayers().values().
                         stream()
                         .map(Player::getUsername)
                         .collect(Collectors.toList()));
-        listViewActiveMembers.setItems(activePlayers);
+        listActiveMembers.setItems(activePlayers);
+
+        //
+        room.getPlayers().values().stream().forEach(System.out::println);
+        //
     }
 }

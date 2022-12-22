@@ -65,7 +65,7 @@ public class UiEventHandler {
 
     public void updateRoom(Room room) {
         try {
-            RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("room-info.fxml");
+            RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("screens/room-info.fxml");
             controller.initRoomInfo(room);
         } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());

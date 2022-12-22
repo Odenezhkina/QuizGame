@@ -14,11 +14,9 @@
     <Label fx:id="labelRoomCreator" text="Creator: #username"/>
     <Label fx:id="labelRoomMaxMembers" text="Maximum number of members: #roomMembers"/>
     <Label text="Active members"/>
-    <ListView fx:id="lvActiveMembers">
-        <!--        already joined members -->
-    </ListView>
+    <ListView fx:id="listActiveMembers" maxHeight="100"/>
     <Button text="Start quiz" styleClass="btn-primary" onAction="#onStartQuizClick"/>
-    <Label fx:id="labelError" styleClass="label-warning"/>
     <Button text="Leave room" styleClass="btn-default" onAction="#onLeaveRoomClick"/>
+    <Label fx:id="labelError" styleClass="label-warning" wrapText="true"/>
 
 </VBox>
