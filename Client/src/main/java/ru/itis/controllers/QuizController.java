@@ -11,8 +11,8 @@ import ru.itis.constants.GameSettings;
 import ru.itis.models.Player;
 import ru.itis.models.Question;
 import ru.itis.protocol.message.client.RightAnswerMessage;
-import ru.itis.utils.additional.CountdownTimer;
 import ru.itis.utils.SystemErrorHandler;
+import ru.itis.utils.additional.CountdownTimer;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 
 import javax.swing.*;
@@ -37,6 +37,7 @@ public class QuizController {
     private Button btnAnswer;
 
     private Question currentQuestion;
+    private CountdownTimer timer;
 
     public void initQuestion(Question question) {
         btnAnswer.setDisable(false);
@@ -59,7 +60,7 @@ public class QuizController {
     }
 
     private void startQuizTimer() {
-        CountdownTimer timer = new CountdownTimer(labelTimer);
+        timer = new CountdownTimer(labelTimer);
         timer.start();
     }
 
@@ -78,6 +79,7 @@ public class QuizController {
         ObservableList<Node> nodesOnScreen = vboxAnswerVariants.getChildren();
         btnAnswer.getStyleClass().add("btn-primary-answered");
         btnAnswer.setText("Answer saved");
+        btnAnswer.setDisable(true);
 
         Optional<RadioButton> selectedRb = nodesOnScreen.stream()
                 .filter(it -> it instanceof RadioButton)
@@ -89,10 +91,12 @@ public class QuizController {
             try {
                 Player player = ConnectionHolder.getConnection().getPlayer();
                 if (Objects.equals(selectedRb.get().getId(), String.valueOf(currentQuestion.getCorrectAnsId()))) {
+                    // count points
+                    int points = currentQuestion.getPoints() * timer.getLeftSeconds();
                     // update points
-                    ConnectionHolder.getConnection().getPlayer().setPoints(player.getPoints() + currentQuestion.getPoints());
+                    ConnectionHolder.getConnection().getPlayer().setPoints(player.getPoints() + points);
                     // notify if answer is right
-                    ConnectionHolder.getConnection().send(new RightAnswerMessage(player.getId(), currentQuestion.getPoints()));
+                    ConnectionHolder.getConnection().send(new RightAnswerMessage(player.getId(), points));
                 }
 
             } catch (ConnectionNotInitializedException | IOException e) {

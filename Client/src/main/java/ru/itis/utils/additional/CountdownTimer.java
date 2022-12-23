@@ -21,6 +21,10 @@ public class CountdownTimer extends Label {
         observableCounter.addListener((observableValue, number, t1) -> label.setText(observableCounter.getValue().toString()));
     }
 
+    public Integer getLeftSeconds(){
+        return counter;
+    }
+
     public void start() {
         if (started) {
             return;
