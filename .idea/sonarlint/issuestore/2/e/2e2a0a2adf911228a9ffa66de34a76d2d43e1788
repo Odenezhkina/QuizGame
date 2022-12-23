@@ -1,0 +1,12 @@
+
+C
+java:S1604D"(Make this anonymous inner class a lambda(ÛİºËøÿÿÿÿ
+I
+java:S1602G",Remove useless curly braces around statement(ÃÉş©8İíºÚÓ0
+c
+java:S1612G"MReplace this lambda with method reference 'QuizController.this::showWarning'.(ÃÉş©
+e
+java:S1612Y"JReplace this lambda with method reference 'RadioButton.class::isInstance'.(Å£Åİşÿÿÿÿ
+f
+java:S1612Z"DReplace this lambda with method reference 'RadioButton.class::cast'.(§Äøûÿÿÿÿ8âíºÚÓ0
+V	java:S125s"<This block of commented-out lines of code should be removed.(ñ¥ùšøÿÿÿÿ
