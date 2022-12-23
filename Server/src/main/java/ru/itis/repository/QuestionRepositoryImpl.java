@@ -10,6 +10,7 @@ import java.util.Set;
 public class QuestionRepositoryImpl {
     private final Set<Integer> notAvailableIdSet = new HashSet<>();
     private final List<Question> questionArray = initQuestionArray();
+    //private final Random randomGenerator = new Random(questionArray.size());
 
     public Question getQuestion() {
         int newPosition = generate();
@@ -104,6 +105,17 @@ public class QuestionRepositoryImpl {
                         .correctAnsId(1)
                         .points(defaultPoints)
                         .build(),
+                Question.builder() //
+                        .question("Implementation of PagerAdapter that uses a Fragment to manage each page," +
+                                " this class also handles saving and restoring of fragment's state. ").
+                        answers(new String[]{
+                                "FragmentStatePagerAdapter",
+                                "FragmentStateAdapter",
+                                "FragmentPagerAdapter",
+                                "PagerAdapterImpl"})
+                        .correctAnsId(0)
+                        .points(defaultPoints)
+                        .build(),
                 Question.builder()
                         .question("Which of the above is not a component of android").
                         answers(new String[]{
@@ -118,9 +130,9 @@ public class QuestionRepositoryImpl {
                         .question("Which of the following is true about WorkManager").
                         answers(new String[]{
                                 "Tasks are typically chained, but not run in parallel",
-                                "WorkManager is part of Android Jetpack and requires a Gradle dependency to use.",
-                                "WorkManager does not necessarily guarantee that a task will be executed.",
-                                "WorkRequest is the name of the class responsible for scheduling and running tasks"})
+                                "WorkManager is part of Android Jetpack",
+                                "WorkManager doesn't necessarily guarantee that a task will be executed.",
+                                "WorkRequest is responsible for scheduling and running tasks"})
                         .correctAnsId(1)
                         .points(defaultPoints)
                         .build(),
