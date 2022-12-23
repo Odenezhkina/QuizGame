@@ -17,5 +17,5 @@
     <VBox fx:id="vboxAnswerVariants" styleClass="vbox-answer-variant"/>
 
     <Button fx:id="btnAnswer" text="Answer" styleClass="btn-primary" onAction="#answerQuestion"/>
-    <Label fx:id="labelTimeUp" text="Time is up" styleClass="label-warning"/>
+    <Label fx:id="labelWarning" text="Time is up" styleClass="label-warning"/>
 </VBox>

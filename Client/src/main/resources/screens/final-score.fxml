@@ -13,7 +13,7 @@
     </padding>
 
     <Canvas fx:id="canvas" width="100" height="100" visible="false"/>
-    <Label fx:id="labelYouWon" styleClass="label-important" visible="false" text="Win!"/>
+    <Label fx:id="labelYouWon" styleClass="label-important" visible="false" text="--WIN--"/>
 
     <Label fx:id="labelFinalScoreTitle" text="Final score" styleClass="label-title"/>
 

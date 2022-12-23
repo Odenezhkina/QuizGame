@@ -31,7 +31,7 @@ public class QuizController {
     private Label labelQuiz;
 
     @FXML
-    private Label labelTimeUp;
+    private Label labelWarning;
 
     @FXML
     private Button btnAnswer;
@@ -41,7 +41,7 @@ public class QuizController {
 
     public void initQuestion(Question question) {
         btnAnswer.setDisable(false);
-        labelTimeUp.setVisible(false);
+        labelWarning.setVisible(false);
 
         currentQuestion = question;
 
@@ -70,16 +70,13 @@ public class QuizController {
     }
 
     private void showWarning() {
-        labelTimeUp.setVisible(true);
-        labelTimeUp.setText("5 seconds left");
+        labelWarning.setVisible(true);
+        labelWarning.setText("5 seconds left");
     }
 
     // if player clicks on button Answer
     public void answerQuestion() {
         ObservableList<Node> nodesOnScreen = vboxAnswerVariants.getChildren();
-        btnAnswer.getStyleClass().add("btn-primary-answered");
-        btnAnswer.setText("Answer saved");
-        btnAnswer.setDisable(true);
 
         Optional<RadioButton> selectedRb = nodesOnScreen.stream()
                 .filter(it -> it instanceof RadioButton)
@@ -88,6 +85,10 @@ public class QuizController {
                 .findAny();
 
         if (selectedRb.isPresent()) {
+            btnAnswer.getStyleClass().add("btn-primary-answered");
+            btnAnswer.setText("Answer saved");
+            btnAnswer.setDisable(true);
+            vboxAnswerVariants.setDisable(true);
             try {
                 Player player = ConnectionHolder.getConnection().getPlayer();
                 if (Objects.equals(selectedRb.get().getId(), String.valueOf(currentQuestion.getCorrectAnsId()))) {
@@ -97,18 +98,24 @@ public class QuizController {
                     ConnectionHolder.getConnection().getPlayer().setPoints(player.getPoints() + points);
                     // notify if answer is right
                     ConnectionHolder.getConnection().send(new RightAnswerMessage(player.getId(), points));
-                }
 
+                    selectedRb.get().getStyleClass().add("right-answer");
+                } else {
+                    selectedRb.get().getStyleClass().add("wrong-answer");
+                }
             } catch (ConnectionNotInitializedException | IOException e) {
                 new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.ERROR);
             }
+        } else {
+            labelWarning.setVisible(true);
+            labelWarning.setText("Select answer");
         }
 
     }
 
     public void timeUp() {
-        labelTimeUp.setText("Time is up");
-        labelTimeUp.setVisible(true);
+        labelWarning.setText("Time is up");
+        labelWarning.setVisible(true);
         btnAnswer.setDisable(true);
     }
 }
