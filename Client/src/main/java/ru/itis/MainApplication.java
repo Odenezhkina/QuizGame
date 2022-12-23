@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ru.itis.connection.impl.ConnectionHolder;
+import ru.itis.connection.ConnectionHolder;
 import ru.itis.utils.navigation.UiNavigatorHolder;
 
 import java.io.IOException;
@@ -21,10 +21,10 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader =
                 new FXMLLoader(MainApplication
-                        .class.getResource("screens/start-screen.fxml"));
+                        .class.getResource("/screens/start-screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 400, 400);
 
-        String css = MainApplication.class.getResource("screens/style.css").toExternalForm();
+        String css = MainApplication.class.getResource("/screens/style.css").toExternalForm();
         scene.getStylesheets().add(css);
         stage.setTitle("QuizGame");
         stage.setScene(scene);

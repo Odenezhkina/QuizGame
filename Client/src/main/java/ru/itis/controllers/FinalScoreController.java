@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import ru.itis.connection.impl.ConnectionHolder;
+import ru.itis.connection.ConnectionHolder;
 import ru.itis.models.Player;
 import ru.itis.models.Room;
 import ru.itis.utils.additional.Drawer;
@@ -70,7 +70,7 @@ public class FinalScoreController {
 
     public void backToRoomInfo(ActionEvent event) {
         try {
-            RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "screens/room-info.fxml");
+            RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "/screens/room-info.fxml");
             if (playerRoom != null) {
                 controller.initRoomInfo(playerRoom);
             }

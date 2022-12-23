@@ -13,8 +13,8 @@ import ru.itis.utils.exceptions.InvalidStageStateException;
 import java.io.IOException;
 
 public class UiNavigator {
-    private static final String PATH_STYLE_CSS = "screens/style.css";
-    private static final String PATH_START_SCREEN = "screens/start-screen.fxml";
+    private static final String PATH_STYLE_CSS = "/screens/style.css";
+    private static final String PATH_START_SCREEN = "/screens/start-screen.fxml";
     private final Stage currentStage;
     private String css = MainApplication.class.getResource(PATH_STYLE_CSS).toExternalForm();
 

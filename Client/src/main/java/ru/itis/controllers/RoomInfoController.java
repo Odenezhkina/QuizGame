@@ -8,7 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
-import ru.itis.connection.impl.ConnectionHolder;
+import ru.itis.connection.ConnectionHolder;
 import ru.itis.constants.RoomPreferences;
 import ru.itis.models.Player;
 import ru.itis.models.Room;

@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import ru.itis.connection.impl.ConnectionHolder;
+import ru.itis.connection.ConnectionHolder;
 import ru.itis.constants.RoomPreferences;
 import ru.itis.protocol.message.client.CreateRoomMessage;
 import ru.itis.protocol.message.client.InitUsernameMessage;

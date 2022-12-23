@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
-import ru.itis.connection.impl.ConnectionHolder;
+import ru.itis.connection.ConnectionHolder;
 import ru.itis.protocol.message.client.InitUsernameMessage;
 import ru.itis.protocol.message.client.JoinRoomMessage;
 import ru.itis.utils.SystemErrorHandler;

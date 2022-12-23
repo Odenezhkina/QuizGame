@@ -1,4 +1,4 @@
-package ru.itis.connection.impl;
+package ru.itis.connection;
 
 import ru.itis.protocol.message.client.PlayerDisconnectedMessage;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;

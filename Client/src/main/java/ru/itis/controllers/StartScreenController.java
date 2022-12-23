@@ -31,7 +31,7 @@ public class StartScreenController implements Initializable {
     @FXML
     protected void navigateToJoinRoomScene(ActionEvent event) {
         try {
-            UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "screens/join-room.fxml");
+            UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "/screens/join-room.fxml");
         } catch (IOException | NavigatorNotInitializedException e) {
             new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -41,7 +41,7 @@ public class StartScreenController implements Initializable {
     @FXML
     protected void navigateToCreateRoomScene(ActionEvent event) {
         try {
-            UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "screens/create-room.fxml");
+            UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "/screens/create-room.fxml");
         } catch (IOException | NavigatorNotInitializedException e) {
             new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.ERROR);
         }

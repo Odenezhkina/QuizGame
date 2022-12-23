@@ -1,4 +1,4 @@
-package ru.itis.connection.impl;
+package ru.itis.connection;
 
 import ru.itis.connection.MessageListener;
 import ru.itis.constants.ConnectionPreferences;

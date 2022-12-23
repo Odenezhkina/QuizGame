@@ -23,7 +23,7 @@ public class UiEventHandler {
 
     public void showNextQuestion(Question question) {
         try {
-            QuizController controller = (QuizController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("screens/quiz-screen.fxml");
+            QuizController controller = (QuizController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("/screens/quiz-screen.fxml");
             controller.initQuestion(question);
         } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());
@@ -32,7 +32,7 @@ public class UiEventHandler {
 
     public void timeUp() {
         try {
-            QuizController controller = (QuizController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("screens/quiz-screen.fxml");
+            QuizController controller = (QuizController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("/screens/quiz-screen.fxml");
             controller.timeUp();
         } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());
@@ -41,7 +41,7 @@ public class UiEventHandler {
 
     public void showStats(Room room) {
         try {
-            FinalScoreController controller = (FinalScoreController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("screens/final-score.fxml");
+            FinalScoreController controller = (FinalScoreController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("/screens/final-score.fxml");
             controller.showStats(room);
         } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());
@@ -50,7 +50,7 @@ public class UiEventHandler {
 
     private void navigateToRoomInfo(Room room) {
         try {
-            RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("screens/room-info.fxml");
+            RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("/screens/room-info.fxml");
             controller.initRoomInfo(room);
         } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());
@@ -59,7 +59,7 @@ public class UiEventHandler {
 
     public void updateRoom(Room room) {
         try {
-            RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("screens/room-info.fxml");
+            RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("/screens/room-info.fxml");
             controller.initRoomInfo(room);
         } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());

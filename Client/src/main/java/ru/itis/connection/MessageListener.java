@@ -1,7 +1,6 @@
 package ru.itis.connection;
 
 import javafx.application.Platform;
-import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.models.Player;
 import ru.itis.models.Question;
 import ru.itis.models.Room;
