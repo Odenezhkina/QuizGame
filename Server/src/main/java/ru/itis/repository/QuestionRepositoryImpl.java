@@ -68,7 +68,10 @@ public class QuestionRepositoryImpl {
                 Question
                         .builder()
                         .question("What are the data class methods?")
-                        .answers(new String[]{"copy, equals, hashcode, toString", "equals, hashcode, toString", "equals, hashcode", "copy, equals, hashcode, toString, notify, notifyAll"})
+                        .answers(new String[]{
+                                "copy, equals, hashcode, toString",
+                                "equals, hashcode, toString", "equals, hashcode",
+                                "copy, equals, hashcode, toString, notify, notifyAll"})
                         .correctAnsId(0)
                         .points(defaultPoints)
                         .build(),
@@ -101,11 +104,11 @@ public class QuestionRepositoryImpl {
                         .build(),
                 Question.builder()
                         .question("What is the maximum value of hashCode()?").
-                        answers(new String[]{"2^32", " 2^16", " 2^8", " 2^8"})
+                        answers(new String[]{"2^32", " 2^16", " 2^8", " 2^4"})
                         .correctAnsId(1)
                         .points(defaultPoints)
                         .build(),
-                Question.builder() //
+                Question.builder()
                         .question("Implementation of PagerAdapter that uses a Fragment to manage each page," +
                                 " this class also handles saving and restoring of fragment's state. ").
                         answers(new String[]{
@@ -131,7 +134,7 @@ public class QuestionRepositoryImpl {
                         answers(new String[]{
                                 "Tasks are typically chained, but not run in parallel",
                                 "WorkManager is part of Android Jetpack",
-                                "WorkManager doesn't necessarily guarantee that a task will be executed.",
+                                "WorkManager doesn't necessarily guarantee that a task will be executed",
                                 "WorkRequest is responsible for scheduling and running tasks"})
                         .correctAnsId(1)
                         .points(defaultPoints)
@@ -144,20 +147,20 @@ public class QuestionRepositoryImpl {
                         .build(),
                 Question.builder()
                         .question("Which of the following would not require WorkManager?").
-                        answers(new String[]{"Performing a GET request to a web service.",
+                        answers(new String[]{"Performing a GET request to a web service",
                                 "Long running tasks such as downloading large amounts of data",
-                                "Scheduling a task to repeat after a set interval.",
-                                "Doing something while the app is in the background."})
+                                "Scheduling a task to repeat after a set interval",
+                                "Doing something while the app is in the background"})
                         .correctAnsId(0)
                         .points(defaultPoints)
                         .build(),
                 Question.builder()
                         .question("Which statement below is true about coroutines?").
                         answers(new String[]{
-                                "Once started, a coroutine cannot be canceled.",
-                                "A coroutine always runs on the main thread.",
-                                "A coroutine may or may not execute.",
-                                "Coroutines avoid the need to create new threads, by running every task on the same thread."})
+                                "Once started, a coroutine cannot be canceled",
+                                "A coroutine always runs on the main thread",
+                                "A coroutine may or may not execute",
+                                "Coroutines run every task on the same thread"})
                         .correctAnsId(2)
                         .points(defaultPoints)
                         .build(),
@@ -172,11 +175,21 @@ public class QuestionRepositoryImpl {
                         .points(defaultPoints)
                         .build(),
                 Question.builder()
+                        .question("Which order of clauses in a SELECT statement is correct?").
+                        answers(new String[]{
+                                "WHERE, LIMIT, ORDER BY, GROUP BY",
+                                "WHERE, LIMIT, GROUP BY, ORDER BY",
+                                "WHERE, ORDER BY, GROUP BY, LIMIT",
+                                "WHERE, GROUP BY, ORDER BY, LIMIT"})
+                        .correctAnsId(3)
+                        .points(defaultPoints)
+                        .build(),
+                Question.builder()
                         .question("Which statement below is false about async() and runBlocking()?").
-                        answers(new String[]{"Both functions take a CoroutineScope (a suspend function) as a parameter.",
+                        answers(new String[]{"Both functions take a CoroutineScope (a suspend function) as a parameter",
                                 "Both functions return a Deferred",
-                                "You'll typically not use runBlocking in Android app code.",
-                                "When using async, you need to use await() to access the returned value."})
+                                "You'll typically not use runBlocking in Android app code",
+                                "When using async, you need to use await() to access the returned value"})
                         .correctAnsId(1)
                         .points(defaultPoints)
                         .build());
