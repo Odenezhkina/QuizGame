@@ -16,7 +16,7 @@ QuizGame is an application that allow users play quiz game about Kotlin and Java
 
 ### Create room screen
 
-<img width="600px" alt="start screen" src="https://github.com/Odenezhkina/SemesterWork2/blob/master/.github/images/create_room_screen.png">
+<img width="600px" alt="start screen" src="https://github.com/Odenezhkina/SemesterWork2/blob/master/.github/images/create_room_sceen.png">
 
 ### Room info screen
 
