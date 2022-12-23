@@ -15,7 +15,7 @@ public class ServerEventListener {
                 return new StartGameListener((StartGameMessage) message);
             }
             case PLAYER_DISCONNECT -> {
-                return new PlayerDisconnectedListener((PlayerDisconnectedMessage) message);
+                return new PlayerDisconnectedListener();
             }
             case ROOM_CREATE -> {
                 return new CreateRoomListener((CreateRoomMessage) message);

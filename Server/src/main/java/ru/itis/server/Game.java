@@ -14,9 +14,11 @@ public class Game implements Runnable{
     private RoomService room;
     private HashMap<Integer, Player> players;
 
-    private QuestionRepositoryImpl repository ;
+    private QuestionRepositoryImpl repository;
 
     private int currentQ = 1;
+
+    private boolean gameStatus = true;
 
     public void start(RoomService room, HashMap<Integer,Player> connections) {
         this.room = room;
@@ -29,20 +31,27 @@ public class Game implements Runnable{
     @Override
     public void run() {
         try {
-            while(currentQ < 10){
+            while(currentQ < 10 && gameStatus){
                 room.sendToConnections(new NextQuestionMessage(repository.getQuestion(), -1));
                 Thread.sleep(TIME_FOR_QUESTION);
+                if (!gameStatus){
+                    break;
+                }
                 currentQ++;
                 room.sendToConnections(new TimeUpMessage(-1));
             }
-            gameOver();
-        } catch (InterruptedException e) {
+            if (gameStatus){
+                gameOver();
+            }
+            room.finishGame();
+        }
+        catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
     public void gameOver(){
+        gameStatus = false;
         room.sendToConnections(new GameOverMessage(room.getRoom(), room.getRoom().getId()));
-        room.finishGame();
     }
     public void playerDisconnected(int id){
         if (players.get(id) == null){

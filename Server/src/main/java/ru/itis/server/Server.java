@@ -44,7 +44,6 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 System.out.println("add connection");
                 addConnection(socket);
-
             }
             catch (IOException e) {
                 throw new RuntimeException(e.getMessage());
@@ -89,7 +88,6 @@ public class Server {
             leaveRoom(connection.getPlayer().getRoomId(), id);
         }
         connections.remove(id);
-//        connection.close();
     }
     public void createRoom(int creatorId, int maxSize){
         Room room = Room.builder()
@@ -129,8 +127,14 @@ public class Server {
     public void leaveRoom(int roomId, int senderId) {
         RoomService roomService = rooms.get(roomId);
         roomService.removeConnection(senderId);
-        roomService.sendToConnections(new RoomWasUpdatedMessage(roomService.getRoom(), -1));
         roomService.sendToConnections(new SystemMessage(connections.get(senderId).getPlayer().getUsername() + " disconnect", -1));
+        try {
+            Thread.sleep(3000);
+        }
+        catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        roomService.sendToConnections(new RoomWasUpdatedMessage(roomService.getRoom(), -1));
     }
 
     public void startGame(int roomId){

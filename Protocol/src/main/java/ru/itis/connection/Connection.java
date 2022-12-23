@@ -9,8 +9,6 @@ public interface Connection {
 
     void send(BasicMessage message) throws IOException;
 
-//    <T> ContentMessage<T> receive() throws IOException;
-
     Player getPlayer();
 
     void close();
