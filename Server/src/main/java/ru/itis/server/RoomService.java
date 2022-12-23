@@ -79,6 +79,7 @@ public class RoomService {
             game.gameOver();
         }
         connections.get(connectionId).getPlayer().setRoomId(-1);
+        connections.remove(connectionId);
         if (room.getCurrentSize() == 0) {
             closed = true;
         }
