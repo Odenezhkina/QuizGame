@@ -67,16 +67,13 @@ public class PlayerConnection implements Connection, Runnable {
                     ClientEventListener listener = ServerEventListener.getListener(message.getType(), message);
                     listener.initServer(server);
                     listener.handMessage(this);
-                    if (message.getType().equals(MessageTypes.PLAYER_DISCONNECT)){
-                        close();
-                    }
                 }
                 else {
                     Thread.sleep(200);
                 }
             }
         }
-        catch (SocketException ignore){
+        catch (SocketException e){
 
         }
         catch (IOException | ClassNotFoundException | InterruptedException | NullPointerException e) {

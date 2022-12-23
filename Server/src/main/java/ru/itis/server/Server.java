@@ -86,10 +86,10 @@ public class Server {
         }
         RoomService roomService = rooms.get(connection.getPlayer().getRoomId());
         if (roomService != null) {
-            roomService.removeConnection(id);
+            leaveRoom(connection.getPlayer().getRoomId(), id);
         }
         connections.remove(id);
-        connection.close();
+//        connection.close();
     }
     public void createRoom(int creatorId, int maxSize){
         Room room = Room.builder()
@@ -129,6 +129,7 @@ public class Server {
     public void leaveRoom(int roomId, int senderId) {
         RoomService roomService = rooms.get(roomId);
         roomService.removeConnection(senderId);
+        roomService.sendToConnections(new RoomWasUpdatedMessage(roomService.getRoom(), -1));
         roomService.sendToConnections(new SystemMessage(connections.get(senderId).getPlayer().getUsername() + " disconnect", -1));
     }
 
