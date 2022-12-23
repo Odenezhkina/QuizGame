@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.List;
 
 public class MessageListener extends Thread {
     private final InputStream in;
@@ -59,8 +58,8 @@ public class MessageListener extends Thread {
     private void handleMessage(BasicMessage message) throws ConnectionNotInitializedException {
         switch (message.getType()) {
             case GAME_OVER -> {
-                List<Player> playerList = ((GameOverMessage) message).getContent();
-                handler.showStats(playerList);
+                Room room = ((GameOverMessage) message).getContent();
+                handler.showStats(room);
             }
             case SYSTEM_MESSAGE -> {
                 String serverMessage = ((SystemMessage) message).getContent();

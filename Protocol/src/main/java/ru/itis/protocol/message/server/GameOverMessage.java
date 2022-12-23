@@ -2,14 +2,12 @@ package ru.itis.protocol.message.server;
 
 import lombok.AllArgsConstructor;
 import ru.itis.constants.MessageTypes;
-import ru.itis.models.Player;
+import ru.itis.models.Room;
 import ru.itis.protocol.message.ContentMessage;
 
-import java.util.List;
-
 @AllArgsConstructor
-public class GameOverMessage implements ContentMessage<List<Player>> {
-    private final List<Player> content;
+public class GameOverMessage implements ContentMessage<Room> {
+    private final Room content;
     private final int userId;
 
     @Override
@@ -18,7 +16,7 @@ public class GameOverMessage implements ContentMessage<List<Player>> {
     }
 
     @Override
-    public List<Player> getContent() {
+    public Room getContent() {
         return content;
     }
 

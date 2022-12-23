@@ -51,6 +51,12 @@
     -fx-font-size: 20px;
 }
 
+.label-important-small {
+    -fx-font-weight: bold;
+    -fx-text-fill: #6C3DF2;
+    -fx-font-size: 14px;
+}
+
 .text-field {
     -fx-font-weight: normal;
     -fx-font-family: "Roboto Light";
@@ -72,3 +78,6 @@
     -fx-max-width: 500px;
 }
 
+.score-grid {
+    -fx-max-width: 500px;
+}

@@ -2,12 +2,15 @@ package ru.itis.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import ru.itis.models.Player;
+import ru.itis.models.Room;
 import ru.itis.utils.SystemErrorHandler;
 import ru.itis.utils.exceptions.NavigatorNotInitializedException;
 import ru.itis.utils.navigation.UiNavigatorHolder;
@@ -20,10 +23,15 @@ public class FinalScoreController {
     @FXML
     private GridPane gridPane;
 
-    public void showStats(List<Player> playerList) {
+    private Room playerRoom;
+
+    public void showStats(Room room) {
+        this.playerRoom = room;
+        List<Player> playerList = room.getPlayers().values().stream().toList();
         // 1  | score | Username
-        gridPane = new GridPane();
         // определения столбцов
+        gridPane.setPadding(new Insets(5, 10, 5, 10));
+
         ColumnConstraints column1 = new ColumnConstraints();
         column1.setPercentWidth(10);
         gridPane.getColumnConstraints().add(column1);
@@ -48,20 +56,38 @@ public class FinalScoreController {
         playerList.sort(Comparator.comparingInt(Player::getPoints));
 
         gridPane.setGridLinesVisible(true);
-        gridPane.add(new Label("Place"), 0, 0);
-        gridPane.add(new Label("Score"), 1, 0);
-        gridPane.add(new Label("Username"), 2, 0);
+        Label labelPlace = new Label("Place");
+        Label labelScore = new Label("Score");
+        Label labelUsername = new Label("Username");
+        GridPane.setHalignment(labelPlace, HPos.CENTER);
+        GridPane.setHalignment(labelScore, HPos.CENTER);
+        GridPane.setHalignment(labelUsername, HPos.CENTER);
+        labelPlace.getStyleClass().add("label-important-small");
+        labelScore.getStyleClass().add("label-important-small");
+        labelUsername.getStyleClass().add("label-important-small");
+        gridPane.add(labelPlace, 0, 0);
+        gridPane.add(labelScore, 1, 0);
+        gridPane.add(labelUsername, 2, 0);
         for (int i = 1; i <= playerList.size(); i++) {
             Player currPlayer = playerList.get(i - 1);
-            gridPane.add(new Label(Integer.toString(i)), 0, i);
-            gridPane.add(new Label(Integer.toString(currPlayer.getPoints())), 1, i);
-            gridPane.add(new Label(currPlayer.getUsername()), 2, i);
+            Label labelPlayerPlace = new Label(Integer.toString(i));
+            Label labelPlayerScore = new Label(Integer.toString(currPlayer.getPoints()));
+            Label labelPlayerUsername = new Label(currPlayer.getUsername());
+            GridPane.setHalignment(labelPlayerPlace, HPos.CENTER);
+            GridPane.setHalignment(labelPlayerScore, HPos.CENTER);
+            GridPane.setHalignment(labelPlayerUsername, HPos.CENTER);
+            gridPane.add(labelPlayerPlace, 0, i);
+            gridPane.add(labelPlayerScore, 1, i);
+            gridPane.add(labelPlayerUsername, 2, i);
         }
     }
 
     public void backToRoomInfo(ActionEvent event) {
         try {
-            UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "screens/room-info.fxml");
+            RoomInfoController controller = (RoomInfoController) UiNavigatorHolder.getUiNavigator().navigateToScreen(event, "screens/room-info.fxml");
+            if (playerRoom != null) {
+                controller.initRoomInfo(playerRoom);
+            }
         } catch (IOException | NavigatorNotInitializedException e) {
             new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.INFORMATION);
         }

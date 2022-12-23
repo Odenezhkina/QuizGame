@@ -14,7 +14,7 @@
 
     <Label fx:id="labelFinalScoreTitle" text="Final score" styleClass="label-title"/>
 
-    <GridPane fx:id="gridPane"/>
+    <GridPane fx:id="gridPane" styleClass="score-grid"/>
 
     <Button fx:id="btnBackToRoom" text="Back to room" styleClass="btn-default" onAction="#backToRoomInfo"/>
 </VBox>

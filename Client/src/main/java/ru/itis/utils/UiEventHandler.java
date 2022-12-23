@@ -45,10 +45,10 @@ public class UiEventHandler {
         }
     }
 
-    public void showStats(List<Player> players) {
+    public void showStats(Room room) {
         try {
             FinalScoreController controller = (FinalScoreController) UiNavigatorHolder.getUiNavigator().navigateFromCurrentStage("screens/final-score.fxml");
-            controller.showStats(players);
+            controller.showStats(room);
         } catch (InvalidStageStateException | IOException | NavigatorNotInitializedException e) {
             showSystemMessage(e.getMessage());
         }
