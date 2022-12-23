@@ -5,9 +5,6 @@ import ru.itis.connection.Connection;
 import ru.itis.models.Player;
 import ru.itis.models.Room;
 import ru.itis.protocol.message.BasicMessage;
-import ru.itis.protocol.message.ContentMessage;
-import ru.itis.protocol.message.server.RoomWasUpdatedMessage;
-
 
 import java.io.IOException;
 import java.util.Collection;
@@ -30,8 +27,8 @@ public class RoomService {
 
     public void finishGame(){
         game = null;
-        for (Connection con: connections.values()){
-            con.getPlayer().setPoints(0);
+        for (Player player: room.getAllPlayers()){
+            player.setPoints(0);
         }
     }
 
@@ -79,7 +76,7 @@ public class RoomService {
         room.removePlayer(connectionId);
         room.setCurrentSize(room.getCurrentSize() - 1);
         if (game != null && room.getCurrentSize() == 1){
-            game = null;
+            game.gameOver();
         }
         connections.get(connectionId).getPlayer().setRoomId(-1);
         if (room.getCurrentSize() == 0) {

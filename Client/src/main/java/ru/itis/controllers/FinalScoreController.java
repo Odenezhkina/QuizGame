@@ -16,6 +16,7 @@ import ru.itis.utils.exceptions.NavigatorNotInitializedException;
 import ru.itis.utils.navigation.UiNavigatorHolder;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class FinalScoreController {
 
     public void showStats(Room room) {
         this.playerRoom = room;
-        List<Player> playerList = room.getPlayers().values().stream().toList();
+        List<Player> playerList = room.getAllPlayers();
         // 1  | score | Username
         // определения столбцов
         gridPane.setPadding(new Insets(5, 10, 5, 10));
@@ -52,8 +53,8 @@ public class FinalScoreController {
         RowConstraints row1 = new RowConstraints(minH, prefH, maxH);
         gridPane.getRowConstraints().add(row1);
 
-
         playerList.sort(Comparator.comparingInt(Player::getPoints));
+        Collections.reverse(playerList);
 
         gridPane.setGridLinesVisible(true);
         Label labelPlace = new Label("Place");

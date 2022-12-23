@@ -45,7 +45,8 @@ public class Server {
                 System.out.println("add connection");
                 addConnection(socket);
 
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new RuntimeException(e.getMessage());
             }
         }
@@ -104,7 +105,10 @@ public class Server {
     }
     public void joinRoom(int roomId, int senderId) {
         RoomService roomService = rooms.get(roomId);
-        if (roomService.getGame() != null){
+        if (roomService == null){
+            sendToConnection(senderId, new SystemMessage("This room does not exist", -1));
+        }
+        else if (roomService.getGame() != null){
             sendToConnection(senderId, new SystemMessage("Game has already started", -1));
         }
         else if(roomService.checkUsernames(connections.get(senderId).getPlayer().getUsername())){
@@ -136,6 +140,8 @@ public class Server {
     }
     public void handRightAnswer(int senderId, int points){
         RoomService roomService = rooms.get(connections.get(senderId).getPlayer().getRoomId());
-        roomService.getGame().rightAnswer(senderId, points);
+        if (roomService.getGame() != null){
+            roomService.getGame().rightAnswer(senderId, points);
+        }
     }
 }

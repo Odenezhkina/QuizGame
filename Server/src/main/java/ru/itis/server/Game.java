@@ -6,10 +6,7 @@ import ru.itis.protocol.message.server.NextQuestionMessage;
 import ru.itis.protocol.message.server.TimeUpMessage;
 import ru.itis.repository.QuestionRepositoryImpl;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 import static ru.itis.constants.GameSettings.TIME_FOR_QUESTION;
 
@@ -43,9 +40,8 @@ public class Game implements Runnable{
             throw new RuntimeException(e);
         }
     }
-    private void gameOver(){
-        ArrayList<Player> list = new ArrayList<>(players.values());
-        room.sendToConnections(new GameOverMessage(list, room.getRoom().getId()));
+    public void gameOver(){
+        room.sendToConnections(new GameOverMessage(room.getRoom(), room.getRoom().getId()));
         room.finishGame();
     }
     public void playerDisconnected(int id){
@@ -55,7 +51,7 @@ public class Game implements Runnable{
         players.remove(id);
     }
     public void rightAnswer(int id, int points){
-        Player player = players.get(id);
-        player.setPoints(player.getPoints() + points);
+        players.get(id).setPoints(players.get(id).getPoints() + points);
+        room.getRoom().updatePlayerPoints(id, players.get(id).getPoints());
     }
 }

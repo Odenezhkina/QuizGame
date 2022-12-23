@@ -10,7 +10,6 @@ import java.util.Set;
 public class QuestionRepositoryImpl {
     private final Set<Integer> notAvailableIdSet = new HashSet<>();
     private final List<Question> questionArray = initQuestionArray();
-    //private final Random randomGenerator = new Random(questionArray.size());
 
     public Question getQuestion() {
         int newPosition = generate();
@@ -103,12 +102,6 @@ public class QuestionRepositoryImpl {
                         .question("What is the maximum value of hashCode()?").
                         answers(new String[]{"2^32", " 2^16", " 2^8", " 2^8"})
                         .correctAnsId(1)
-                        .points(defaultPoints)
-                        .build(),
-                Question.builder()
-                        .question("What annotation is used when redefining a method?").
-                        answers(new String[]{"2^32", " 2^16", " 2^8", " 2^8"})
-                        .correctAnsId(0)
                         .points(defaultPoints)
                         .build(),
                 Question.builder()

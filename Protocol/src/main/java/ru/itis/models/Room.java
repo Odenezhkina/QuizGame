@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 
 @Builder
@@ -19,8 +20,12 @@ public class Room implements Serializable {
     private int currentSize;
     private String creatorUsername;
 
-    public Collection<Player> getAllPlayers() {
-        return players.values();
+    public List<Player> getAllPlayers() {
+        return new ArrayList<>(players.values());
+    }
+
+    public void updatePlayerPoints(int id, int points){
+        players.get(id).setPoints(points);
     }
 
     public void addPlayer(Player player) {
