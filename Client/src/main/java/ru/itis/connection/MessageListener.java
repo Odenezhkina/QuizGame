@@ -45,6 +45,7 @@ public class MessageListener extends Thread {
             while (socket.isConnected()) {
                 int b = in.available();
                 if (b != 0) {
+                    System.out.println("b");
                     ObjectInputStream objIn = new ObjectInputStream(in);
                     BasicMessage message = (BasicMessage) objIn.readObject();
                     //

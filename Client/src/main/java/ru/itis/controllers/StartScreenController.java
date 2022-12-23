@@ -51,7 +51,8 @@ public class StartScreenController implements Initializable {
     protected void onExitButtonClick(ActionEvent event) {
         try {
             new UiNavigator().exit(event);
-        } catch (IOException e) {
+            ConnectionHolder.closeConnection();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
