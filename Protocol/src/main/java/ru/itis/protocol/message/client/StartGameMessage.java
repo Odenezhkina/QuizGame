@@ -5,12 +5,12 @@ import ru.itis.constants.MessageTypes;
 import ru.itis.protocol.message.BasicMessage;
 
 @AllArgsConstructor
-public class GetNewQuestionMessage implements BasicMessage {
+public class StartGameMessage implements BasicMessage {
     private final int roomId;
 
     @Override
     public MessageTypes getType() {
-        return MessageTypes.NEXT_QUESTION;
+        return MessageTypes.GAME_START;
     }
 
     @Override

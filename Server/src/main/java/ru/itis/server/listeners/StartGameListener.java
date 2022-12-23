@@ -1,15 +1,15 @@
 package ru.itis.server.listeners;
 
-import ru.itis.protocol.message.client.GetNewQuestionMessage;
+import ru.itis.protocol.message.client.StartGameMessage;
 import ru.itis.server.PlayerConnection;
 import ru.itis.server.Server;
 
-public class NextQuestionListener implements ClientEventListener{
+public class StartGameListener implements ClientEventListener{
     private Server server;
 
-    private GetNewQuestionMessage message;
+    private StartGameMessage message;
 
-    public NextQuestionListener(GetNewQuestionMessage message) {
+    public StartGameListener(StartGameMessage message) {
         this.message = message;
     }
 
@@ -19,6 +19,6 @@ public class NextQuestionListener implements ClientEventListener{
 
     @Override
     public void handMessage(PlayerConnection connection) {
-        server.nextQuestion(message.getSenderId());
+        server.startGame(message.getSenderId());
     }
 }
