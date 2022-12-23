@@ -10,7 +10,6 @@ import java.util.Set;
 public class QuestionRepositoryImpl {
     private final Set<Integer> notAvailableIdSet = new HashSet<>();
     private final List<Question> questionArray = initQuestionArray();
-    //private final Random randomGenerator = new Random(questionArray.size());
 
     public Question getQuestion() {
         int newPosition = generate();
@@ -44,7 +43,7 @@ public class QuestionRepositoryImpl {
                                 "Framework",
                                 "Plugin",
                                 "Class"})
-                        .correctAnsId(2)
+                        .correctAnsId(1)
                         .points(defaultPoints)
                         .build(),
                 Question
@@ -86,7 +85,7 @@ public class QuestionRepositoryImpl {
                         .builder()
                         .question("In which version of Java was the try-with-resources operator added? :)(:")
                         .answers(new String[]{"Java 8", "Java 7", "Java 5", "Java 11"})
-                        .correctAnsId(0)
+                        .correctAnsId(2)
                         .points(defaultPoints)
                         .build(),
                 Question
@@ -104,8 +103,8 @@ public class QuestionRepositoryImpl {
                         .build(),
                 Question.builder()
                         .question("What is the maximum value of hashCode()?").
-                        answers(new String[]{"2^32", " 2^16", " 2^8", " 2^4"})
-                        .correctAnsId(1)
+                        answers(new String[]{"2^31 - 1", " 2^16 - 1", " 2^8", " 2^4"})
+                        .correctAnsId(0)
                         .points(defaultPoints)
                         .build(),
                 Question.builder()
