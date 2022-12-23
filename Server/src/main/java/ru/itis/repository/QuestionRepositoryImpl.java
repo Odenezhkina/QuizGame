@@ -2,7 +2,10 @@ package ru.itis.repository;
 
 import ru.itis.models.Question;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class QuestionRepositoryImpl {
     private final Set<Integer> notAvailableIdSet = new HashSet<>();
@@ -17,7 +20,7 @@ public class QuestionRepositoryImpl {
         return questionArray.get(newPosition);
     }
 
-    private int generate(){
+    private int generate() {
         return (int) (Math.random() * 18);
     }
 
@@ -26,14 +29,21 @@ public class QuestionRepositoryImpl {
         return Arrays.asList(Question
                         .builder()
                         .question("What’s the difference between == and === operators in Kotlin?")
-                        .answers(new String[]{"They both work like an equals", "First compares only by reference, second compares like an equals", "First works like an equals, second compares only by references", "There is no difference"})
+                        .answers(new String[]{
+                                "They are same",
+                                "First compares only by reference, second compares like an equals",
+                                "First works like an equals, second compares only by references",
+                                "No difference"})
                         .correctAnsId(2)
                         .points(defaultPoints)
                         .build(),
                 Question
                         .builder()
                         .question("What’s Collections in Java?")
-                        .answers(new String[]{"Library", "Framework", "Plugin", "Class"})
+                        .answers(new String[]{"Library",
+                                "Framework",
+                                "Plugin",
+                                "Class"})
                         .correctAnsId(2)
                         .points(defaultPoints)
                         .build(),
@@ -60,16 +70,6 @@ public class QuestionRepositoryImpl {
                         .question("What are the data class methods?")
                         .answers(new String[]{"copy, equals, hashcode, toString", "equals, hashcode, toString", "equals, hashcode", "copy, equals, hashcode, toString, notify, notifyAll"})
                         .correctAnsId(0)
-                        .points(defaultPoints)
-                        .build(),
-                Question
-                        .builder()
-                        .question("What’s the main difference between inline and infix functions?")
-                        .answers(new String[]{"They both do the same",
-                                "The inline function tells the compiler to copy parameters and functions to the call site. The infix function allows us to call one-argument functions quickly.",
-                                "The infix function tells the compiler to copy parameters and functions to the call site. The inline function allows us to call one-argument functions quickly.",
-                                "Inline functions is better to use because of it's optimization"})
-                        .correctAnsId(1)
                         .points(defaultPoints)
                         .build(),
                 Question
@@ -109,6 +109,16 @@ public class QuestionRepositoryImpl {
                         .question("What annotation is used when redefining a method?").
                         answers(new String[]{"2^32", " 2^16", " 2^8", " 2^8"})
                         .correctAnsId(0)
+                        .points(defaultPoints)
+                        .build(),
+                Question.builder()
+                        .question("Which of the above is not a component of android").
+                        answers(new String[]{
+                                "Activity",
+                                "Fragment",
+                                "BroadcastReceiver",
+                                "ContentProvider"})
+                        .correctAnsId(1)
                         .points(defaultPoints)
                         .build(),
                 Question.builder()
@@ -153,16 +163,6 @@ public class QuestionRepositoryImpl {
                                 "Dispatcher",
                                 "Job",
                                 "GlobalScope"})
-                        .correctAnsId(1)
-                        .points(defaultPoints)
-                        .build(),
-                Question.builder()
-                        .question("n the URL https://google.com/search?q=android, /search is called the ___.").
-                        answers(new String[]{
-                                "Host",
-                                "Path",
-                                "Query",
-                                "Parameters"})
                         .correctAnsId(1)
                         .points(defaultPoints)
                         .build(),

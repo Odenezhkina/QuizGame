@@ -46,6 +46,7 @@
 }
 
 .label-important {
+    -fx-font-weight: bold;
     -fx-text-fill: #6C3DF2;
     -fx-font-size: 20px;
 }
@@ -60,6 +61,10 @@
 .vbox-answer-variant {
     -fx-max-width: 500px;
     -fx-wrap-text: true;
+}
+
+.list-view {
+    -fx-max-width: 500px;
 }
 
 .rb-answer-variant {
