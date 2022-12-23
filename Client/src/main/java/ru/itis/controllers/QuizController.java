@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public class QuizController {
     @FXML
-    private CountdownTimer labelTimer;
+    private Label labelTimer;
 
     @FXML
     private VBox vboxAnswerVariants;
@@ -60,8 +60,8 @@ public class QuizController {
     }
 
     private void startQuizTimer() {
-        labelTimer = new CountdownTimer();
-        labelTimer.start();
+        CountdownTimer timer = new CountdownTimer(labelTimer);
+        timer.start();
     }
 
     private void startQuizWarningTimer() {
@@ -84,6 +84,8 @@ public class QuizController {
     // if player clicks on button Answer
     public void answerQuestion() {
         ObservableList<Node> nodesOnScreen = btnAnswer.getScene().getRoot().getChildrenUnmodifiable();
+        btnAnswer.getStyleClass().add("btn-primary-answered");
+        btnAnswer.setText("Answer saved");
 
         Optional<RadioButton> selectedRb = nodesOnScreen.stream()
                 .filter(it -> it instanceof RadioButton)
@@ -93,6 +95,9 @@ public class QuizController {
 
         if (selectedRb.isPresent()) {
             try {
+                //
+                System.out.println("selected " + selectedRb.get().getId());
+                //
                 Player player = ConnectionHolder.getConnection().getPlayer();
                 if (Objects.equals(selectedRb.get().getId(), String.valueOf(currentQuestion.getCorrectAnsId()))) {
                     // update points

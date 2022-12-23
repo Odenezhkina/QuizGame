@@ -11,8 +11,19 @@
 }
 
 .btn-primary {
+    /*-fx-text-fill: white;*/
     -fx-background-color: #6C3DF2;
-    -fx-border-radius: 30px;
+    -fx-padding: 10px;
+    -fx-min-width: 180px;
+    -fx-border-radius: 2px;
+    -fx-border-color: black;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 1, 1, 1, 1);
+}
+
+.btn-primary-answered {
+    -fx-text-fill: white;
+    -fx-background-color: #4927af;
+    -fx-border-radius: 2px;
     -fx-padding: 10px;
     -fx-min-width: 180px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 1, 1, 1, 1);
@@ -36,6 +47,7 @@
 
 .label-important {
     -fx-text-fill: #6C3DF2;
+    -fx-font-size: 20px;
 }
 
 .text-field {
@@ -43,5 +55,15 @@
     -fx-font-family: "Roboto Light";
     -fx-min-width: 260px;
     -fx-max-width: 260px;
+}
+
+.vbox-answer-variant {
+    -fx-max-width: 500px;
+    -fx-wrap-text: true;
+}
+
+.rb-answer-variant {
+    -fx-wrap-text: true;
+    -fx-max-width: 500px;
 }
 

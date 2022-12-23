@@ -1,18 +1,31 @@
 package ru.itis.utils;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import ru.itis.constants.GameSettings;
 
 public class CountdownTimer extends Label {
-    private int counter;
+    private Integer counter;
     private boolean started;
+    private SimpleIntegerProperty observableCounter;
 
-    public CountdownTimer() {
-        this.counter = GameSettings.TIME_FOR_QUESTION;
-        setText(String.valueOf(counter));
+    public CountdownTimer(Label label) {
+        this.started = false;
+        this.counter = GameSettings.TIME_FOR_QUESTION / 1000;
+        label.setText(String.valueOf(counter));
+        observableCounter = new SimpleIntegerProperty(counter);
+        observableCounter.addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                label.setText(observableCounter.getValue().toString());
+            }
+        });
     }
 
     public void start() {
@@ -20,17 +33,19 @@ public class CountdownTimer extends Label {
             return;
         }
         Timeline timeline = new Timeline();
-        KeyFrame kf = new KeyFrame(Duration.seconds(0),
+        timeline.setCycleCount(Animation.INDEFINITE);
+
+        KeyFrame kf = new KeyFrame(Duration.seconds(1),
                 event -> {
-                    setText(String.valueOf(counter--));
+                    counter--;
+                    observableCounter.set(counter);
                     if (counter <= 0) {
                         timeline.stop();
                     }
                 });
-        timeline.getKeyFrames().addAll(kf, new KeyFrame(Duration.seconds(1)));
-//        timeline.setOnFinished(event -> System.out.println("Done!"));
-//        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        timeline.getKeyFrames().add(kf);
+        timeline.playFromStart();
         started = true;
     }
+
 }

@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import ru.itis.connection.impl.ConnectionHolder;
+import ru.itis.utils.CountdownTimer;
 import ru.itis.utils.exceptions.NavigatorNotInitializedException;
 import ru.itis.utils.navigation.UiNavigatorHolder;
 
@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StartScreenController implements Initializable {
+
     @FXML
     private Label labelQuizGame;
 
