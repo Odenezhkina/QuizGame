@@ -8,6 +8,7 @@ import ru.itis.server.listeners.ServerEventListener;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class PlayerConnection implements Connection, Runnable {
     private final Socket socket;
@@ -46,7 +47,8 @@ public class PlayerConnection implements Connection, Runnable {
             in.close();
             out.close();
             socket.close();
-        } catch (IOException ignored) {
+        }
+        catch (IOException ignored) {
         }
     }
 
@@ -64,10 +66,14 @@ public class PlayerConnection implements Connection, Runnable {
                     ClientEventListener listener = ServerEventListener.getListener(message.getType(), message);
                     listener.initServer(server);
                     listener.handMessage(this);
-                } else {
+                }
+                else {
                     Thread.sleep(200);
                 }
             }
+        }
+        catch (SocketException ignore){
+
         }
         catch (IOException | ClassNotFoundException | InterruptedException | NullPointerException e) {
             throw new RuntimeException(e);

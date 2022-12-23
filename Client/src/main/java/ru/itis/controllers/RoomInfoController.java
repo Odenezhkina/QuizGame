@@ -11,7 +11,7 @@ import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.constants.RoomPreferences;
 import ru.itis.models.Player;
 import ru.itis.models.Room;
-import ru.itis.protocol.message.client.GetNewQuestionMessage;
+import ru.itis.protocol.message.client.StartGameMessage;
 import ru.itis.protocol.message.client.PlayerLeaveRoomMessage;
 import ru.itis.utils.SystemErrorHandler;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
@@ -62,7 +62,7 @@ public class RoomInfoController {
                 bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
                 bar.setVisible(true);
                 // send player room NOT player id
-                ConnectionHolder.getConnection().send(new GetNewQuestionMessage(roomId));
+                ConnectionHolder.getConnection().send(new StartGameMessage(roomId));
             } catch (ConnectionNotInitializedException e) {
                 new SystemErrorHandler().handleError(e.getMessage());
             }
