@@ -4,9 +4,11 @@ import ru.itis.connection.MessageListener;
 import ru.itis.constants.ConnectionPreferences;
 import ru.itis.models.Player;
 import ru.itis.protocol.message.BasicMessage;
-import ru.itis.utils.exceptions.DisconnectedFromServerException;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -34,23 +36,6 @@ public class ClientConnection {
         objOut.flush();
     }
 
-//    @Override
-//    public void run() {
-//        while (socket.isConnected()) {
-//            int b = in.available();
-//            if (b != 0) {
-//                ObjectInputStream objIn = new ObjectInputStream(in);
-//                ContentMessage<?> message = (ContentMessage<?>) objIn.readObject();
-//                MessageListener listener = MessageListener
-//                listener.initServer(server);
-//                listener.handMessage(this, message);
-//            } else {
-//                Thread.sleep(200);
-//            }
-//        }
-//    }
-
-
     public Player getPlayer() {
         return player;
     }
@@ -61,10 +46,6 @@ public class ClientConnection {
 
     public int getId() {
         return player.getId();
-    }
-
-    public boolean isConnected() {
-        return !socket.isClosed();
     }
 
     public void close() throws Exception {

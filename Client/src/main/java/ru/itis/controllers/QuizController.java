@@ -11,12 +11,11 @@ import ru.itis.constants.GameSettings;
 import ru.itis.models.Player;
 import ru.itis.models.Question;
 import ru.itis.protocol.message.client.RightAnswerMessage;
-import ru.itis.utils.CountdownTimer;
+import ru.itis.utils.additional.CountdownTimer;
 import ru.itis.utils.SystemErrorHandler;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
@@ -65,14 +64,7 @@ public class QuizController {
     }
 
     private void startQuizWarningTimer() {
-        Timer timer = new Timer(GameSettings.WARNING_TIME_UP_DELAY, new ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                Platform.runLater(() -> {
-                    showWarning();
-                });
-            }
-        });
+        Timer timer = new Timer(GameSettings.WARNING_TIME_UP_DELAY, e -> Platform.runLater(this::showWarning));
         timer.start();
     }
 
@@ -114,12 +106,5 @@ public class QuizController {
         labelTimeUp.setText("Time is up");
         labelTimeUp.setVisible(true);
         btnAnswer.setDisable(true);
-//        try {
-//            // anyway notify what room need new question
-//            Player player = ConnectionHolder.getConnection().getPlayer();
-//            ConnectionHolder.getConnection().send(new GetNewQuestionMessage(player.getRoomId()));
-//        } catch (IOException | ConnectionNotInitializedException e) {
-//            new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.ERROR);
-//        }
     }
 }

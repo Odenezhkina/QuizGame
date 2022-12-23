@@ -24,7 +24,7 @@ public class ConnectionHolder {
         if (connection != null) {
             if (connection.getPlayer() != null) {
                 int playerId = connection.getId();
-                System.out.println("disconnecting");
+                System.out.println("Disconnecting from server");
                 connection.send(new PlayerDisconnectedMessage(playerId));
             }
             connection.close();

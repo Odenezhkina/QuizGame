@@ -3,7 +3,6 @@ package ru.itis.utils;
 import ru.itis.controllers.FinalScoreController;
 import ru.itis.controllers.QuizController;
 import ru.itis.controllers.RoomInfoController;
-import ru.itis.models.Player;
 import ru.itis.models.Question;
 import ru.itis.models.Room;
 import ru.itis.utils.exceptions.InvalidStageStateException;
@@ -11,16 +10,11 @@ import ru.itis.utils.exceptions.NavigatorNotInitializedException;
 import ru.itis.utils.navigation.UiNavigatorHolder;
 
 import java.io.IOException;
-import java.util.List;
 
 public class UiEventHandler {
 
     public void showSystemMessage(String content) {
         new SystemErrorHandler().handleError(content);
-    }
-
-    public void joinRoom(Room room) {
-        navigateToRoomInfo(room);
     }
 
     public void roomCreated(Room room) {

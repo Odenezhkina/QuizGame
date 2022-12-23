@@ -18,8 +18,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CreateRoomController implements Initializable {
-    @FXML
-    private Label labelCreateRoom;
 
     @FXML
     private ProgressIndicator bar;
@@ -38,7 +36,7 @@ public class CreateRoomController implements Initializable {
     }
 
     @FXML
-    protected void createRoom(ActionEvent event) {
+    protected void createRoom() {
         try {
             bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
             bar.setVisible(true);
@@ -56,7 +54,7 @@ public class CreateRoomController implements Initializable {
         try {
             UiNavigatorHolder.getUiNavigator().navigateToStartScreen(event);
         } catch (IOException | NavigatorNotInitializedException e) {
-            new SystemErrorHandler().handleError(e.getMessage());
+            new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 

@@ -14,7 +14,7 @@ public class UiNavigatorHolder {
 
     public static UiNavigator getUiNavigator() throws NavigatorNotInitializedException {
         if (navigator == null) {
-            throw new NavigatorNotInitializedException("Stage is not initialized");
+            throw new NavigatorNotInitializedException("Navigator is not initialized");
         }
         return navigator;
     }

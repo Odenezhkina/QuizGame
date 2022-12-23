@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
@@ -11,8 +12,8 @@ import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.constants.RoomPreferences;
 import ru.itis.models.Player;
 import ru.itis.models.Room;
-import ru.itis.protocol.message.client.StartGameMessage;
 import ru.itis.protocol.message.client.PlayerLeaveRoomMessage;
+import ru.itis.protocol.message.client.StartGameMessage;
 import ru.itis.utils.SystemErrorHandler;
 import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 import ru.itis.utils.exceptions.NavigatorNotInitializedException;
@@ -40,37 +41,31 @@ public class RoomInfoController {
     @FXML
     private ListView<String> listActiveMembers;
 
-    private Room currentRoom;
+    private Room room;
 
     public void initRoomInfo(Room room) {
-        currentRoom = room;
-        labelRoomNumber.setText("Room №" + currentRoom.getId());
-        labelRoomMaxMembers.setText("Max members: " + currentRoom.getCapacity());
-        labelRoomCreator.setText("Creator: " + currentRoom.getCreatorUsername());
+        this.room = room;
+        labelRoomNumber.setText("Room №" + room.getId());
+        labelRoomMaxMembers.setText("Max members: " + room.getCapacity());
+        labelRoomCreator.setText("Creator: " + room.getCreatorUsername());
         initListView(room);
         bar.setVisible(false);
     }
 
-    public void onStartQuizClick(ActionEvent event) throws IOException {
-        int activeMembers = currentRoom.getCurrentSize();
+    public void onStartQuizClick() throws IOException {
+        int activeMembers = room.getCurrentSize();
         if (activeMembers < RoomPreferences.MIN_ROOM_MEMBER) {
-            showErrorMessage("Not enough participants. " + "The minimum number is " + RoomPreferences.MIN_ROOM_MEMBER);
+            labelError.setText("Not enough participants. " + "The minimum number is " + RoomPreferences.MIN_ROOM_MEMBER);
         } else {
             try {
                 int roomId = ConnectionHolder.getConnection().getPlayer().getRoomId();
-
                 bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
                 bar.setVisible(true);
-                // send player room NOT player id
                 ConnectionHolder.getConnection().send(new StartGameMessage(roomId));
             } catch (ConnectionNotInitializedException e) {
-                new SystemErrorHandler().handleError(e.getMessage());
+                new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.ERROR);
             }
         }
-    }
-
-    private void showErrorMessage(String errorMessage) {
-        labelError.setText(errorMessage);
     }
 
     public void onLeaveRoomClick(ActionEvent event) {
@@ -79,7 +74,7 @@ public class RoomInfoController {
             ConnectionHolder.getConnection().send(new PlayerLeaveRoomMessage(playerId));
             UiNavigatorHolder.getUiNavigator().navigateToStartScreen(event);
         } catch (IOException | ConnectionNotInitializedException | NavigatorNotInitializedException e) {
-            new SystemErrorHandler().handleError(e.getMessage());
+            new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
@@ -90,9 +85,5 @@ public class RoomInfoController {
                         .map(Player::getUsername)
                         .collect(Collectors.toList()));
         listActiveMembers.setItems(activePlayers);
-
-        //
-        room.getPlayers().values().stream().forEach(System.out::println);
-        //
     }
 }

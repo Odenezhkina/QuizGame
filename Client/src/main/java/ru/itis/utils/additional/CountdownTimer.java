@@ -1,11 +1,9 @@
-package ru.itis.utils;
+package ru.itis.utils.additional;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import ru.itis.constants.GameSettings;
@@ -13,19 +11,14 @@ import ru.itis.constants.GameSettings;
 public class CountdownTimer extends Label {
     private Integer counter;
     private boolean started;
-    private SimpleIntegerProperty observableCounter;
+    private final SimpleIntegerProperty observableCounter;
 
     public CountdownTimer(Label label) {
         this.started = false;
         this.counter = GameSettings.TIME_FOR_QUESTION / 1000;
         label.setText(String.valueOf(counter));
         observableCounter = new SimpleIntegerProperty(counter);
-        observableCounter.addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                label.setText(observableCounter.getValue().toString());
-            }
-        });
+        observableCounter.addListener((observableValue, number, t1) -> label.setText(observableCounter.getValue().toString()));
     }
 
     public void start() {
@@ -34,7 +27,6 @@ public class CountdownTimer extends Label {
         }
         Timeline timeline = new Timeline();
         timeline.setCycleCount(Animation.INDEFINITE);
-
         KeyFrame kf = new KeyFrame(Duration.seconds(1),
                 event -> {
                     counter--;

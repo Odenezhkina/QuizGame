@@ -1,4 +1,4 @@
-package ru.itis.utils;
+package ru.itis.utils.additional;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -13,7 +13,6 @@ public class Drawer {
     }
 
     public void drawCrown() {
-//        GraphicsContext g = canvas.getGraphicsContext2D();
         g.setFill(Color.rgb(108, 61, 242));
         int height = 80;
         int width = 100;

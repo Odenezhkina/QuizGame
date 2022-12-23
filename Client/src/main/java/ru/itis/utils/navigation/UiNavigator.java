@@ -23,7 +23,6 @@ public class UiNavigator {
     }
 
     public Object navigateToScreen(ActionEvent event, String resPathString) throws IOException {
-//        currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(resPathString));
         Scene scene = new Scene(fxmlLoader.load(), currentStage.getWidth(), currentStage.getHeight());
         scene.getStylesheets().add(css);
