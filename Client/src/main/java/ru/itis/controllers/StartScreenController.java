@@ -3,11 +3,13 @@ package ru.itis.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import ru.itis.utils.CountdownTimer;
 import ru.itis.utils.exceptions.NavigatorNotInitializedException;
 import ru.itis.utils.navigation.UiNavigatorHolder;
 
@@ -16,12 +18,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StartScreenController implements Initializable {
-
     @FXML
     private Label labelQuizGame;
 
     @FXML
     private ImageView imageView;
+
 
 
     @Override

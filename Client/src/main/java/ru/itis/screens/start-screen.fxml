@@ -5,6 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <?import ru.itis.utils.CountdownTimer?>
+<?import javafx.scene.canvas.Canvas?>
 <VBox alignment="CENTER" spacing="5.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="ru.itis.controllers.StartScreenController">
     <padding>

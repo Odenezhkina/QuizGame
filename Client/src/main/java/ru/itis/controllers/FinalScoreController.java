@@ -4,14 +4,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import ru.itis.connection.impl.ConnectionHolder;
 import ru.itis.models.Player;
 import ru.itis.models.Room;
+import ru.itis.utils.Drawer;
 import ru.itis.utils.SystemErrorHandler;
+import ru.itis.utils.exceptions.ConnectionNotInitializedException;
 import ru.itis.utils.exceptions.NavigatorNotInitializedException;
 import ru.itis.utils.navigation.UiNavigatorHolder;
 
@@ -24,11 +28,18 @@ public class FinalScoreController {
     @FXML
     private GridPane gridPane;
 
+    @FXML
+    private Label labelYouWon;
+
+    @FXML
+    private Canvas canvas;
+
     private Room playerRoom;
 
     public void showStats(Room room) {
         this.playerRoom = room;
         List<Player> playerList = room.getAllPlayers();
+
         // 1  | score | Username
         // определения столбцов
         gridPane.setPadding(new Insets(5, 10, 5, 10));
@@ -55,6 +66,8 @@ public class FinalScoreController {
 
         playerList.sort(Comparator.comparingInt(Player::getPoints));
         Collections.reverse(playerList);
+        // drawing crown if user won
+        drawCrown(playerList);
 
         gridPane.setGridLinesVisible(true);
         Label labelPlace = new Label("Place");
@@ -91,6 +104,20 @@ public class FinalScoreController {
             }
         } catch (IOException | NavigatorNotInitializedException e) {
             new SystemErrorHandler().handleError(e.getMessage(), Alert.AlertType.INFORMATION);
+        }
+    }
+
+    private void drawCrown(List<Player> playerList) {
+        try {
+            int playerId = ConnectionHolder.getConnection().getPlayer().getId();
+            if (playerId == playerList.get(0).getId()) {
+                Drawer drawer = new Drawer(canvas);
+                drawer.drawCrown();
+                canvas.setVisible(true);
+                labelYouWon.setVisible(true);
+            }
+        } catch (ConnectionNotInitializedException e) {
+            new SystemErrorHandler().handleError(e.getMessage());
         }
     }
 }
