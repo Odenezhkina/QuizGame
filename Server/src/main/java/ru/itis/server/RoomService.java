@@ -30,6 +30,9 @@ public class RoomService {
 
     public void finishGame(){
         game = null;
+        for (Connection con: connections.values()){
+            con.getPlayer().setPoints(0);
+        }
     }
 
     public void startGame() {
@@ -75,6 +78,9 @@ public class RoomService {
         }
         room.removePlayer(connectionId);
         room.setCurrentSize(room.getCurrentSize() - 1);
+        if (game != null && room.getCurrentSize() == 1){
+            game = null;
+        }
         connections.get(connectionId).getPlayer().setRoomId(-1);
         if (room.getCurrentSize() == 0) {
             closed = true;

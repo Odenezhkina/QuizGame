@@ -134,4 +134,8 @@ public class Server {
             roomService.startGame();
         }
     }
+    public void handRightAnswer(int senderId, int points){
+        RoomService roomService = rooms.get(connections.get(senderId).getPlayer().getRoomId());
+        roomService.getGame().rightAnswer(senderId, points);
+    }
 }

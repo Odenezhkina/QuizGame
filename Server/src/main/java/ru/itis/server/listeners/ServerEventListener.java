@@ -8,6 +8,9 @@ public class ServerEventListener {
 
     public static ClientEventListener getListener(MessageTypes type, BasicMessage message){
         switch (type) {
+            case RIGHT_ANSWER -> {
+                return new RightAnswerListener((RightAnswerMessage) message);
+            }
             case GAME_START -> {
                 return new StartGameListener((StartGameMessage) message);
             }

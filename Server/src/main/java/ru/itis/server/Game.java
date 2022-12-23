@@ -6,6 +6,8 @@ import ru.itis.protocol.message.server.NextQuestionMessage;
 import ru.itis.protocol.message.server.TimeUpMessage;
 import ru.itis.repository.QuestionRepositoryImpl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,7 +44,8 @@ public class Game implements Runnable{
         }
     }
     private void gameOver(){
-        room.sendToConnections(new GameOverMessage((List<Player>) players.values(), room.getRoom().getId()));
+        ArrayList<Player> list = new ArrayList<>(players.values());
+        room.sendToConnections(new GameOverMessage(list, room.getRoom().getId()));
         room.finishGame();
     }
     public void playerDisconnected(int id){
@@ -50,5 +53,9 @@ public class Game implements Runnable{
             return;
         }
         players.remove(id);
+    }
+    public void rightAnswer(int id, int points){
+        Player player = players.get(id);
+        player.setPoints(player.getPoints() + points);
     }
 }
