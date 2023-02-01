@@ -6,6 +6,13 @@
 - Play in user-friendly and intuitive interface
 - Simplify and improve the learning process by answering questions
 
+## Features
+- [X] Java Socket
+- [X] Client-Server Achitecture
+- [X] JavaFx
+- [X] JavaFx Graphics
+- [X] Protocol
+
 
 ## Design
 
